@@ -1,8 +1,12 @@
 package com.example.newsapp;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.WindowManager;
+
+import com.githang.statusbar.StatusBarCompat;
 
 import java.util.Objects;
 
@@ -20,6 +24,8 @@ public class SettingsActivity extends DefaultSwipeBackActivity {
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+
+//        StatusBarCompat.setStatusBarColor(this, getResources().getColor(R.color.colorPrimary));
     }
 
     @Override

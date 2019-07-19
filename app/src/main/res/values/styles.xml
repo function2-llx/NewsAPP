@@ -21,5 +21,12 @@
         <!--<item name="@android:windowEnterAnimation">@anim/fade_in</item>-->
         <!--<item name="@android:windowExitAnimation">@anim/fade_out</item>-->
     <!--</style>-->
+    <!--<set xmlns:android="http://schemas.android.com/apk/res/android">-->
+        <!--<alpha-->
+            <!--android:duration="1000"-->
+            <!--android:fromAlpha="0"-->
+            <!--android:interpolator="@android:anim/decelerate_interpolator"-->
+            <!--android:toAlpha="1.0"/>-->
+    <!--</set>-->
 
 </resources>

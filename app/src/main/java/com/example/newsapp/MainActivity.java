@@ -27,6 +27,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 
+import com.githang.statusbar.StatusBarCompat;
 import com.ortiz.touchview.TouchImageView;
 import com.wildma.pictureselector.PictureSelector;
 
@@ -100,6 +101,7 @@ public class MainActivity extends DefaultSwipeBackActivity
             }
         });
         reFreshCover();
+        setSwipeBackEnable(false);
     }
 
     private String getCoverPath() {

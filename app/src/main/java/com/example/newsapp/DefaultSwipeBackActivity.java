@@ -1,8 +1,8 @@
 package com.example.newsapp;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.view.View;
+
+import com.githang.statusbar.StatusBarCompat;
 
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
@@ -15,5 +15,6 @@ public class DefaultSwipeBackActivity extends SwipeBackActivity {
         setSwipeBackEnable(true);
         SwipeBackLayout swipeBackLayout = getSwipeBackLayout();
         swipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
+        StatusBarCompat.setStatusBarColor(this, getResources().getColor(R.color.colorPrimary));
     }
 }
