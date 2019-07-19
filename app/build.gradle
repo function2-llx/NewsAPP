@@ -4,7 +4,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.example.newsapp"
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -29,6 +29,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'com.github.wildma:PictureSelector:1.1.3'
-    implementation 'com.github.MikeOrtiz:TouchImageView:1.4.0' // Support Lib}
-    implementation 'me.imid.swipebacklayout.lib:library:1.1.0'
+//    implementation 'me.imid.swipebacklayout.lib:library:1.1.0'
+    implementation project(':SwipeBackLayout')
+    implementation 'com.github.MikeOrtiz:TouchImageView:1.4.0' // Support Lib    implementation 'me.imid.swipebacklayout.lib:library:1.1.0'
 }

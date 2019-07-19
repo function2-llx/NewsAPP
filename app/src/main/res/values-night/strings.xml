@@ -16,5 +16,4 @@
     <string name="action_search">搜索</string>
     <string name="preferences_name">preferences</string>
     <string name="preference_night_mode">night_mode</string>
-    <string name="preference_save_traffic">save_traffic</string>
 </resources>

@@ -1,8 +1,10 @@
 package com.example.newsapp;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -32,16 +34,18 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
+import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
-    private NavigationView navigationView;
+public class MainActivity extends DefaultSwipeBackActivity
+    implements NavigationView.OnNavigationItemSelectedListener {
     private View navigationHeader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.preferences_name), MODE_PRIVATE);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -53,7 +57,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        navigationView = findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -77,17 +81,14 @@ public class MainActivity extends AppCompatActivity
                             break;
                             case 1:
                                 TouchImageView image = new TouchImageView(MainActivity.this);
-//                                ImageView image = new ImageView(MainActivity.this);
                                 image.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-//                                image.setImageResource(R.drawable.side_nav_bar);
-
                                 image.setImageDrawable(getCoverDrawable());
 
                                 final Dialog imageDialog = new Dialog(MainActivity.this);
                                 WindowManager.LayoutParams attributes = getWindow().getAttributes();
                                 attributes.width = WindowManager.LayoutParams.MATCH_PARENT;
                                 attributes.height = WindowManager.LayoutParams.MATCH_PARENT;
-                                imageDialog.getWindow().setAttributes(attributes);
+                                Objects.requireNonNull(imageDialog.getWindow()).setAttributes(attributes);
 
                                 imageDialog.setContentView(image);
                                 imageDialog.show();
@@ -96,13 +97,10 @@ public class MainActivity extends AppCompatActivity
                     }
                 });
                 builder.show();
-//                Toast.makeText(MainActivity.this, "newsapp!", Toast.LENGTH_SHORT).show();
             }
         });
         reFreshCover();
     }
-
-//    private final String coverPath = getExternalFilesDir(null) + "cover.jpg";
 
     private String getCoverPath() {
         String dir = getExternalFilesDir(null).getAbsolutePath();
@@ -194,6 +192,7 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_home) {
             // Handle the camera action
+//            recreate();
         } else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {
@@ -210,4 +209,5 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 }

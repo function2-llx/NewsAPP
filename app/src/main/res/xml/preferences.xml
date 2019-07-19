@@ -2,9 +2,11 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory>
         <SwitchPreference
+            android:key="@string/preference_night_mode"
             android:defaultValue="false"
             android:title="夜间模式"/>
         <SwitchPreference
+            android:key="@string/preference_save_traffic"
             android:defaultValue="false"
             android:title="省流量模式"/>
     </PreferenceCategory>
