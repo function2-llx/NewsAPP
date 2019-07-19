@@ -5,13 +5,21 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.view.Window;
 import android.view.WindowManager;
 
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity extends DeFaultActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        //  必须放在 super.onCreate 前面，否则第一次打开程序时会产生两个 MainActivity
+        if (isNightMode()) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+
+        }
+
         super.onCreate(savedInstanceState);
+
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
@@ -24,6 +32,6 @@ public class SplashActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             }
-        }, 2 * 1000);
+        }, 1500);
     }
 }

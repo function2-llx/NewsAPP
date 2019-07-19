@@ -33,4 +33,5 @@ dependencies {
     implementation project(':SwipeBackLayout')
     implementation 'com.github.MikeOrtiz:TouchImageView:1.4.0' // Support Lib
     implementation 'com.githang:status-bar-compat:0.7'
+    implementation 'org.greenrobot:eventbus:3.0.0'
 }

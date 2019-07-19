@@ -8,6 +8,7 @@ import android.view.WindowManager;
 
 import com.githang.statusbar.StatusBarCompat;
 
+
 import java.util.Objects;
 
 public class SettingsActivity extends DefaultSwipeBackActivity {
@@ -20,12 +21,10 @@ public class SettingsActivity extends DefaultSwipeBackActivity {
                 .replace(R.id.settings_container, new SettingsFragment())
                 .commit();
 
-        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-
-//        StatusBarCompat.setStatusBarColor(this, getResources().getColor(R.color.colorPrimary));
     }
 
     @Override

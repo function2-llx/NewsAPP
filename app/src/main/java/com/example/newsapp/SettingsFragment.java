@@ -1,12 +1,14 @@
 package com.example.newsapp;
 
-import android.content.Context;
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
+
+import com.example.newsapp.Event.NightModeChangeEvent;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.Objects;
 
@@ -28,12 +30,19 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 } else {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                 }
+//                getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+//                getActivity().getWindow().setWindowAnimations(R.style.WindowAnimationFadeInOut);
                 Objects.requireNonNull(getActivity()).getSupportFragmentManager()
                         .beginTransaction()
                         .remove(this)
                         .commit();
-                getActivity().getWindow().setWindowAnimations(R.style.Widget_AppCompat_ActionBar_Solid);
-                getActivity().recreate();
+
+                startActivity(new Intent(getContext(), SettingsActivity.class));
+                getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                getActivity().finish();
+//                getActivity().recreate();
+                EventBus.getDefault().post(new NightModeChangeEvent());
+
             }
             return super.onPreferenceTreeClick(preference);
         } catch (Exception e) {

@@ -20,6 +20,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.EventLog;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,9 +28,14 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 
+import com.example.newsapp.Event.NightModeChangeEvent;
 import com.githang.statusbar.StatusBarCompat;
 import com.ortiz.touchview.TouchImageView;
 import com.wildma.pictureselector.PictureSelector;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -38,17 +44,19 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
-public class MainActivity extends DefaultSwipeBackActivity
+public class MainActivity extends DeFaultActivity
     implements NavigationView.OnNavigationItemSelectedListener {
     private View navigationHeader;
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.preferences_name), MODE_PRIVATE);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+
+        this.toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,12 +65,18 @@ public class MainActivity extends DefaultSwipeBackActivity
                         .setAction("Action", null).show();
             }
         });
+
+        configureNavigationView();
+
+        EventBus.getDefault().register(this);
+    }
+
+    private void configureNavigationView() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
-
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
         navigationHeader = navigationView.getHeaderView(0);
@@ -101,7 +115,6 @@ public class MainActivity extends DefaultSwipeBackActivity
             }
         });
         reFreshCover();
-        setSwipeBackEnable(false);
     }
 
     private String getCoverPath() {
@@ -212,4 +225,14 @@ public class MainActivity extends DefaultSwipeBackActivity
         return true;
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(NightModeChangeEvent event) {
+        recreate();
+    }
 }
