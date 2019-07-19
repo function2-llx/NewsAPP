@@ -30,12 +30,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 } else {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                 }
-//                getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-//                getActivity().getWindow().setWindowAnimations(R.style.WindowAnimationFadeInOut);
-                Objects.requireNonNull(getActivity()).getSupportFragmentManager()
-                        .beginTransaction()
-                        .remove(this)
-                        .commit();
 
                 startActivity(new Intent(getContext(), SettingsActivity.class));
                 getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
