@@ -1,4 +1,4 @@
 package com.example.newsapp.Event;
 
-public abstract class EventBase {
+abstract class EventBase {
 }
