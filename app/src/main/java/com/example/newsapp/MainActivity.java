@@ -18,6 +18,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 
 import android.view.Menu;
 import android.view.MenuItem;
@@ -41,7 +42,7 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class MainActivity extends DeFaultActivity
-    implements NavigationView.OnNavigationItemSelectedListener {
+    implements NavigationView.OnNavigationItemSelectedListener, NewsListFragment.Callbacks {
     private View navigationHeader;
     Toolbar toolbar;
 
@@ -65,6 +66,9 @@ public class MainActivity extends DeFaultActivity
         configureNavigationView();
 
         EventBus.getDefault().register(this);
+
+
+
     }
 
     private void configureNavigationView() {
@@ -231,4 +235,22 @@ public class MainActivity extends DeFaultActivity
     public void onEvent(NightModeChangeEvent event) {
         recreate();
     }
+
+    @Override
+    public void onItemSelected(Integer id)
+    {
+        // 创建Bundle，准备向Fragment传入参数
+        Bundle arguments = new Bundle();
+        arguments.putInt(NewsDetailFragment.ITEM_ID, id);
+        // 创建BookDetailFragment对象
+        NewsDetailFragment fragment = new NewsDetailFragment();
+        // 向Fragment传入参数
+        fragment.setArguments(arguments);
+        // 使用fragment替换book_detail_container容器当前显示的Fragment
+        getFragmentManager().beginTransaction()
+                .replace(R.id.book_detail_container, fragment)
+                .commit();  // ①
+    }
 }
+
+
