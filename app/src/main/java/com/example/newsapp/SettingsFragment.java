@@ -2,9 +2,9 @@ package com.example.newsapp;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatDelegate;
-import android.support.v7.preference.Preference;
-import android.support.v7.preference.PreferenceFragmentCompat;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
 
 import com.example.newsapp.Event.NightModeChangeEvent;
 
@@ -34,6 +34,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 startActivity(new Intent(getContext(), SettingsActivity.class));
                 getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 getActivity().finish();
+                //  recreate 仿佛有坑，慎用
 //                getActivity().recreate();
                 EventBus.getDefault().post(new NightModeChangeEvent());
 

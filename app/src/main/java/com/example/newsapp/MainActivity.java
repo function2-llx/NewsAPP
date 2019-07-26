@@ -1,26 +1,23 @@
 package com.example.newsapp;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.EventLog;
+import androidx.annotation.Nullable;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
+
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,7 +26,7 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 
 import com.example.newsapp.Event.NightModeChangeEvent;
-import com.githang.statusbar.StatusBarCompat;
+import com.google.android.material.tabs.TabLayout;
 import com.ortiz.touchview.TouchImageView;
 import com.wildma.pictureselector.PictureSelector;
 
@@ -41,13 +38,13 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.List;
 import java.util.Objects;
 
 public class MainActivity extends DeFaultActivity
     implements NavigationView.OnNavigationItemSelectedListener {
     private View navigationHeader;
     Toolbar toolbar;
+    TabLayout tabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,10 +62,18 @@ public class MainActivity extends DeFaultActivity
                         .setAction("Action", null).show();
             }
         });
-
         configureNavigationView();
-
         EventBus.getDefault().register(this);
+        tabLayout = findViewById(R.id.tab_layout);
+
+        tabLayout.addTab(tabLayout.newTab().setText("首页").setIcon(R.mipmap.ic_launcher));
+//        tabLayout.addTab(tabLayout.newTab().setText(""));
+
+
+        for (int i = 0; i < 10; i++) {
+            tabLayout.addTab(tabLayout.newTab().setText("选项卡" + i));
+//            tabLayout.newTab().setText("选项卡" + i);
+        }
     }
 
     private void configureNavigationView() {
@@ -192,33 +197,43 @@ public class MainActivity extends DeFaultActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Intent intent = new Intent(this, SettingsActivity.class);
-            startActivity(intent);
+            startSettings();
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void startSettings() {
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
+//        int id = item.getItemId();
 
-        if (id == R.id.nav_home) {
-            // Handle the camera action
-//            recreate();
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_tools) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        switch (item.getItemId()) {
+            case R.id.nav_settings:
+                startSettings();
+            break;
         }
+//
+//        if (id == R.id.nav_home) {
+//            // Handle the camera action
+////            recreate();
+//        } else if (id == R.id.nav_gallery) {
+//
+//        } else if (id == R.id.nav_slideshow) {
+//
+//        } else if (id == R.id.nav_tools) {
+//
+//        } else if (id == R.id.nav_share) {
+//
+//        } else if (id == R.id.nav_send) {
+//
+//        }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
