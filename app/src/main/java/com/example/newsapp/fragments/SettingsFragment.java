@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
-import com.example.newsapp.Event.NightModeChangeEvent;
+import com.example.newsapp.events.NightModeChangeEvent;
 
 import org.greenrobot.eventbus.EventBus;
 

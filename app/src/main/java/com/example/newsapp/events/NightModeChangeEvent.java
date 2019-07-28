@@ -1,4 +1,4 @@
-package com.example.newsapp.Event;
+package com.example.newsapp.events;
 
 public class NightModeChangeEvent extends EventBase {
 

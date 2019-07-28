@@ -9,14 +9,17 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import com.example.newsapp.models.ChannelsManager;
+import com.example.newsapp.models.SectionsPagerAdapter;
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
+
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
+import androidx.viewpager.widget.ViewPager;
 
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,7 +28,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 
-import com.example.newsapp.Event.NightModeChangeEvent;
+import com.example.newsapp.events.NightModeChangeEvent;
 import com.google.android.material.tabs.TabLayout;
 import com.ortiz.touchview.TouchImageView;
 import com.wildma.pictureselector.PictureSelector;
@@ -45,6 +48,18 @@ public class MainActivity extends DeFaultActivity
     private View navigationHeader;
     Toolbar toolbar;
     TabLayout tabLayout;
+    ViewPager viewPager;
+
+    private void initTabs() {
+        tabLayout = findViewById(R.id.tab_layout);
+        for (int i = 0; i < ChannelsManager.getInstance().getCount(); i++) {
+            tabLayout.addTab(tabLayout.newTab().setText(ChannelsManager.getInstance().getChannel(i)));
+        }
+
+        viewPager = findViewById(R.id.view_pager);
+        viewPager.setAdapter(new SectionsPagerAdapter(getSupportFragmentManager()));
+        tabLayout.setupWithViewPager(viewPager);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,26 +69,10 @@ public class MainActivity extends DeFaultActivity
         this.toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
         configureNavigationView();
+        initTabs();
+
         EventBus.getDefault().register(this);
-        tabLayout = findViewById(R.id.tab_layout);
-
-        tabLayout.addTab(tabLayout.newTab().setText("首页").setIcon(R.mipmap.ic_launcher));
-//        tabLayout.addTab(tabLayout.newTab().setText(""));
-
-
-        for (int i = 0; i < 10; i++) {
-            tabLayout.addTab(tabLayout.newTab().setText("选项卡" + i));
-//            tabLayout.newTab().setText("选项卡" + i);
-        }
     }
 
     private void configureNavigationView() {
@@ -190,14 +189,10 @@ public class MainActivity extends DeFaultActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            startSettings();
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                startSettings();
+            break;
         }
 
         return super.onOptionsItemSelected(item);
@@ -219,21 +214,6 @@ public class MainActivity extends DeFaultActivity
                 startSettings();
             break;
         }
-//
-//        if (id == R.id.nav_home) {
-//            // Handle the camera action
-////            recreate();
-//        } else if (id == R.id.nav_gallery) {
-//
-//        } else if (id == R.id.nav_slideshow) {
-//
-//        } else if (id == R.id.nav_tools) {
-//
-//        } else if (id == R.id.nav_share) {
-//
-//        } else if (id == R.id.nav_send) {
-//
-//        }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
