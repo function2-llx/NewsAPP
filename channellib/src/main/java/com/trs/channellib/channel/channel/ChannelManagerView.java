@@ -40,7 +40,7 @@ public class ChannelManagerView extends FrameLayout {
     }
 
     private void init() {
-        mRecy = (RecyclerView) findViewById(R.id.recy);
+        mRecy = findViewById(R.id.recy);
         manager = new GridLayoutManager(getContext(), 4);
         mRecy.setLayoutManager(manager);
 

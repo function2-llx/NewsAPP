@@ -136,7 +136,7 @@ public class ChannelDataHelper<T extends  ChannelEntity.ChannelEntityCreater> im
             popupWindow.setOutsideTouchable(true);
             popupWindow.setFocusable(true);
             popupWindow.setAnimationStyle(R.style.subscribe_popwindow_anim_style);
-            cmv = (ChannelManagerView) popupView.findViewById(R.id.cmv);
+            cmv = popupView.findViewById(R.id.cmv);
             cmv.setDataChangeListenter(this);
             popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
                 @Override

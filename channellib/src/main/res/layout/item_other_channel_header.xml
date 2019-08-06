@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         android:text="@string/other_channel"
         android:textSize="16sp" />
 

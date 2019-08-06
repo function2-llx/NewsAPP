@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         android:text="@string/my_cahnnel"
         android:textSize="16sp" />
 
@@ -20,8 +20,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/tv"
-        android:layout_marginLeft="16dp"
-        android:layout_toRightOf="@id/tv"
+        android:layout_marginStart="16dp"
+        android:layout_toEndOf="@id/tv"
         android:text="@string/tip_drag"
         android:textColor="@color/tip"
         android:textSize="12sp" />
@@ -31,9 +31,9 @@
         android:layout_width="56dp"
         android:layout_height="25dp"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="8dp"
-        android:layout_toRightOf="@+id/tv_info"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="8dp"
+        android:layout_toEndOf="@+id/tv_info"
         android:background="@drawable/bg_btn"
         android:gravity="center"
         android:text="@string/edit"
@@ -48,13 +48,14 @@
         android:background="@color/tip" />
 
     <ImageView
+        android:contentDescription="关闭"
         android:id="@+id/close_subscribe_view"
         android:layout_width="35dp"
         android:layout_height="35dp"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:layout_gravity="center_vertical|right"
-        android:layout_marginRight="10dp"
-        android:background="@drawable/icon_subscribe_up"
+        android:layout_gravity="center_vertical|end"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/subscribe_arrow_up"
         android:visibility="visible" />
 </RelativeLayout>

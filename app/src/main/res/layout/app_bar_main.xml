@@ -33,7 +33,7 @@
                 android:layout_weight="7"
                 android:contentDescription="频道管理"
                 android:scaleType="centerCrop"
-                android:src="@drawable/icon_subscribe_up" />
+                android:src="@drawable/subscribe_arrow_down" />
 
         </LinearLayout>
 
