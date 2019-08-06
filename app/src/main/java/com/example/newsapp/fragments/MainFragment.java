@@ -12,10 +12,16 @@ import androidx.fragment.app.Fragment;
 import com.example.newsapp.R;
 
 public class MainFragment extends Fragment {
-    String title;
+//    String title;
 
-    public MainFragment(String title) {
-        this.title = title;
+    public MainFragment() {}
+
+    public static MainFragment newInstance(String channel) {
+        MainFragment fragment = new MainFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("channel", channel);
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     @Nullable

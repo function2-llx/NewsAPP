@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="fixed_channels">
+        <item>首页</item>
+        <item>推荐</item>
+    </string-array>
+    <string-array name="unfixed_channels">
+        <item>政治</item>
+        <item>军事</item>
+        <item>体育</item>
+        <item>经济</item>
+        <item>文化</item>
+        <item>篮球</item>
+        <item>教育</item>
+        <item>科技</item>
+        <item>IT</item>
+    </string-array>
+</resources>

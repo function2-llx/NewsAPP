@@ -1,9 +1,11 @@
 package com.example.newsapp;
 
 import android.os.Bundle;
-import androidx.appcompat.widget.Toolbar;
 import android.view.MenuItem;
 
+import androidx.appcompat.widget.Toolbar;
+
+import com.example.newsapp.fragments.SettingsFragment;
 
 import java.util.Objects;
 

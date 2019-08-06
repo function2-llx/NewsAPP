@@ -1,15 +1,16 @@
 
-package me.imid.swipebacklayout.lib.app;
+package com.example.newsapp;
 
 import android.os.Bundle;
-
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.Utils;
+import me.imid.swipebacklayout.lib.app.SwipeBackActivityBase;
+import me.imid.swipebacklayout.lib.app.SwipeBackActivityHelper;
 
-public class SwipeBackActivity extends AppCompatActivity implements SwipeBackActivityBase {
+
+public class SwipeBackActivity extends DeFaultActivity implements SwipeBackActivityBase {
     private SwipeBackActivityHelper mHelper;
 
     @Override

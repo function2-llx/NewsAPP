@@ -8,19 +8,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-
-import com.example.newsapp.models.ChannelsManager;
-import com.example.newsapp.models.SectionsPagerAdapter;
-import com.google.android.material.navigation.NavigationView;
-
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.Toolbar;
-import androidx.viewpager.widget.ViewPager;
-
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,9 +15,21 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.viewpager.widget.ViewPager;
+
 import com.example.newsapp.events.NightModeChangeEvent;
+import com.example.newsapp.models.ChannelBean;
+import com.example.newsapp.models.SectionsPagerAdapter;
+import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.ortiz.touchview.TouchImageView;
+import com.trs.channellib.channel.channel.helper.ChannelDataHelper;
 import com.wildma.pictureselector.PictureSelector;
 
 import org.greenrobot.eventbus.EventBus;
@@ -41,24 +40,62 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 
 public class MainActivity extends DeFaultActivity
-    implements NavigationView.OnNavigationItemSelectedListener {
+    implements NavigationView.OnNavigationItemSelectedListener,
+        ChannelDataHelper.ChannelDataRefreshListenter {
     private View navigationHeader;
-    Toolbar toolbar;
-    TabLayout tabLayout;
-    ViewPager viewPager;
+    private Toolbar toolbar;
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
+    private ChannelDataHelper<ChannelBean> channelDataHelper;
+    private int selectedChannelPosition = -1;
+    private SectionsPagerAdapter pagerAdapter;
+
+    @Override
+    public void updateData() {
+        refreshTabs();
+    }
+
+    @Override
+    public void onChannelSelected(boolean update, int position) {
+        if (!update) {
+            viewPager.setCurrentItem(position);
+        } else {
+            selectedChannelPosition = position;
+        }
+    }
+
+    void refreshTabs() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                final List<ChannelBean> channels = channelDataHelper.getShowChannels(getAllChannels());
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        pagerAdapter.updateChannels(channels);
+                        if (selectedChannelPosition != -1) {
+//                            viewPager.setCurrentItem(selectedChannelPosition);
+                            selectedChannelPosition = -1;
+                        }
+                    }
+                });
+            }
+        }).start();
+    }
 
     private void initTabs() {
-        tabLayout = findViewById(R.id.tab_layout);
-        for (int i = 0; i < ChannelsManager.getInstance().getCount(); i++) {
-            tabLayout.addTab(tabLayout.newTab().setText(ChannelsManager.getInstance().getChannel(i)));
-        }
-
         viewPager = findViewById(R.id.view_pager);
-        viewPager.setAdapter(new SectionsPagerAdapter(getSupportFragmentManager()));
+        pagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(pagerAdapter);
+        tabLayout = findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(viewPager);
+        channelDataHelper = new ChannelDataHelper<ChannelBean>(this, this, findViewById(R.id.toolbar));
+        channelDataHelper.setSwitchView(findViewById(R.id.subscribe));
+        refreshTabs();
     }
 
     @Override
@@ -148,6 +185,7 @@ public class MainActivity extends DeFaultActivity
                 if (data != null) {
                     String path = data.getStringExtra(PictureSelector.PICTURE_PATH);
                     try {
+                        assert path != null;
                         FileInputStream is = new FileInputStream(path);
                         FileOutputStream os = new FileOutputStream(getCoverPath());
                         for (;;) {
@@ -203,12 +241,8 @@ public class MainActivity extends DeFaultActivity
         startActivity(intent);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-//        int id = item.getItemId();
-
         switch (item.getItemId()) {
             case R.id.nav_settings:
                 startSettings();
