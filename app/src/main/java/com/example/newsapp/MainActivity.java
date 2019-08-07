@@ -43,6 +43,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
+import cn.sharesdk.onekeyshare.OnekeyShare;
+
 public class MainActivity extends DeFaultActivity
     implements NavigationView.OnNavigationItemSelectedListener,
         ChannelDataHelper.ChannelDataRefreshListenter {
@@ -230,6 +232,14 @@ public class MainActivity extends DeFaultActivity
         switch (item.getItemId()) {
             case R.id.action_settings:
                 startSettings();
+            break;
+
+            case R.id.share_test:
+                OnekeyShare oks = new OnekeyShare();
+                oks.disableSSOWhenAuthorize();
+                oks.setTitle("分享测试");
+                oks.setText("咕鸽快来写代码");
+                oks.show(this);
             break;
         }
 

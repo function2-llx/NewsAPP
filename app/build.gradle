@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.mob.sdk'
 
 android {
     compileSdkVersion 29
@@ -16,6 +17,26 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+}
+
+MobSDK {
+    appKey "2bfa2d146d4c9"
+    appSecret "c33a406178289682204b515e85dab1fc"
+
+    ShareSDK {
+        devInfo {
+            SinaWeibo {
+                Id 1
+                SortId 1
+                appKey "1906685492"
+                appSecret "1554b4e88050d86be98f81086550b0dc"
+                callbackUri "http://www.sharesdk.cn"
+                shareByAppClient true
+                Enable true
+            }
+        }
+    }
+
 }
 
 dependencies {
@@ -36,6 +57,4 @@ dependencies {
     implementation 'com.github.MikeOrtiz:TouchImageView:2.2.0' // Support Lib
     implementation 'com.githang:status-bar-compat:0.7'
     implementation 'org.greenrobot:eventbus:3.0.0'
-
-    implementation 'com.google.android.material:material:1.0.0'
 }

@@ -13,5 +13,12 @@
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="ifRoom" />
 
+    <item
+        android:id="@+id/share_test"
+        android:title="分享测试"
+        android:icon="@drawable/menu_share"
+
+        app:showAsAction="ifRoom" />
+
 
 </menu>
