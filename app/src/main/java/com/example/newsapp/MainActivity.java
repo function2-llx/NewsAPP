@@ -9,6 +9,12 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
+
+import com.example.newsapp.bean.AppConstant;
+import com.example.newsapp.bean.TabEntity;
+import com.flyco.tablayout.CommonTabLayout;
+import com.flyco.tablayout.listener.CustomTabEntity;
+import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
@@ -19,6 +25,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,6 +35,7 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 
 import com.example.newsapp.Event.NightModeChangeEvent;
+import com.jaydenxiao.common.commonutils.LogUtils;
 import com.ortiz.touchview.TouchImageView;
 import com.wildma.pictureselector.PictureSelector;
 
@@ -39,12 +47,23 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Objects;
 
+import butterknife.Bind;
+
 public class MainActivity extends DeFaultActivity
-    implements NavigationView.OnNavigationItemSelectedListener, NewsListFragment.Callbacks {
+    implements NavigationView.OnNavigationItemSelectedListener {
     private View navigationHeader;
     Toolbar toolbar;
+    private NewsMainFragment newsMainFragment;
+    @Bind(R.id.tab_layout)
+    CommonTabLayout tabLayout;
+    private static int tabLayoutHeight;
+    private String[] mTitles = {"首页"};
+    private int[] mIconUnselectIds = {R.mipmap.ic_home_normal};
+    private int[] mIconSelectIds = {R.mipmap.ic_home_selected};
+    private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,8 +86,10 @@ public class MainActivity extends DeFaultActivity
 
         EventBus.getDefault().register(this);
 
-
-
+        initTab();
+        initFragment(savedInstanceState);
+        tabLayout.measure(0,0);
+        tabLayoutHeight=tabLayout.getMeasuredHeight();
     }
 
     private void configureNavigationView() {
@@ -236,20 +257,67 @@ public class MainActivity extends DeFaultActivity
         recreate();
     }
 
-    @Override
-    public void onItemSelected(Integer id)
-    {
-        // 创建Bundle，准备向Fragment传入参数
-        Bundle arguments = new Bundle();
-        arguments.putInt(NewsDetailFragment.ITEM_ID, id);
-        // 创建BookDetailFragment对象
-        NewsDetailFragment fragment = new NewsDetailFragment();
-        // 向Fragment传入参数
-        fragment.setArguments(arguments);
-        // 使用fragment替换book_detail_container容器当前显示的Fragment
-        getFragmentManager().beginTransaction()
-                .replace(R.id.book_detail_container, fragment)
-                .commit();  // ①
+//    @Override
+//    public void onItemSelected(Integer id)
+//    {
+//        // 创建Bundle，准备向Fragment传入参数
+//        Bundle arguments = new Bundle();
+//        arguments.putInt(NewsDetailFragment.ITEM_ID, id);
+//        // 创建BookDetailFragment对象
+//        NewsDetailFragment fragment = new NewsDetailFragment();
+//        // 向Fragment传入参数
+//        fragment.setArguments(arguments);
+//        // 使用fragment替换book_detail_container容器当前显示的Fragment
+//        getFragmentManager().beginTransaction()
+//                .replace(R.id.book_detail_container, fragment)
+//                .commit();  // ①
+//    }
+//    private NewsMainFragment newsMainFragment;
+
+
+    private void initTab() {
+        for (int i = 0; i < mTitles.length; i++) {
+            mTabEntities.add(new TabEntity(mTitles[i], mIconSelectIds[i], mIconUnselectIds[i]));
+        }
+        tabLayout.setTabData(mTabEntities);
+        //点击监听
+        tabLayout.setOnTabSelectListener(new OnTabSelectListener() {
+            @Override
+            public void onTabSelect(int position) {
+                SwitchTo(position);
+            }
+            @Override
+            public void onTabReselect(int position) {
+            }
+        });
+    }
+    private void initFragment(Bundle savedInstanceState) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        int currentTabPosition = 0;
+        if (savedInstanceState != null) {
+            newsMainFragment = (NewsMainFragment) getSupportFragmentManager().findFragmentByTag("newsMainFragment");
+            currentTabPosition = savedInstanceState.getInt(AppConstant.HOME_CURRENT_TAB_POSITION);
+        } else {
+            newsMainFragment = new NewsMainFragment();
+            transaction.add(R.id.fl_body, newsMainFragment, "newsMainFragment");
+        }
+        transaction.commit();
+        SwitchTo(currentTabPosition);
+        tabLayout.setCurrentTab(currentTabPosition);
+    }
+
+    private void SwitchTo(int position) {
+        LogUtils.logd("主页菜单position" + position);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        switch (position) {
+            //首页
+            case 0:
+                transaction.show(newsMainFragment);
+                transaction.commitAllowingStateLoss();
+                break;
+            default:
+                break;
+        }
     }
 }
 

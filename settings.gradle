@@ -1,2 +1,8 @@
 include ':app'
 include ':SwipeBackLayout'
+include ':library:common'
+include ':library:irecyclerview'
+include ':library:oneKeyShareSDK'
+include ':library:photoPicker'
+include ':library:jcvideoplayer'
+include ':library:selectordialog'

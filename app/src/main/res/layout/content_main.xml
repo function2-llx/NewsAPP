@@ -1,48 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".MainActivity"
-    tools:showIn="@layout/app_bar_main">
+    tools:showIn="@layout/app_bar_main"
+    xmlns:tl="http://schemas.android.com/apk/res-auto">
 
-    <!--<TextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="lqbtql!\ngjrtql!"-->
-        <!--app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--app:layout_constraintLeft_toLeftOf="parent"-->
-        <!--app:layout_constraintRight_toRightOf="parent"-->
-        <!--app:layout_constraintTop_toTopOf="parent" />-->
-    <!--<com.marshalchen.ultimaterecyclerview.UltimateRecyclerView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:id="@+id/ultimate_recycler_view"-->
-        <!--/>-->
-    <LinearLayout
-        android:baselineAligned="false"
-        android:orientation="horizontal"
+
+    <FrameLayout
+        android:id="@+id/fl_body"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:divider="?android:attr/dividerHorizontal"
-        android:showDividers="middle">
-        <!-- 添加一个Fragment -->
-        <fragment
-            android:name="com.example.newsapp.NewsListFragment"
-            android:id="@+id/book_list"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-        <!-- 添加一个FrameLayout容器 -->
-        <FrameLayout
-            android:id="@+id/book_detail_container"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="3" />
-    </LinearLayout>
+        android:layout_above="@+id/tab_layout"
+        android:background="?attr/dayNightBackground"
+        android:layout_height="match_parent"/>
+    <com.flyco.tablayout.CommonTabLayout
+        android:id="@+id/tab_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:layout_alignParentBottom="true"
+        android:background="?attr/dayNightBackground"
+        app:dayNightBackgroundAttr="dayNightBackground"
+        tl:tl_indicator_height="0dp"
+        tl:tl_iconHeight="20dp"
+        tl:tl_iconWidth="20dp"
+        tl:tl_indicator_color="@color/gray"
+        tl:tl_textSelectColor="@color/main_color"
+        tl:tl_textUnselectColor="@color/light_gray"
+        tl:tl_textsize="11sp"
+        tl:tl_underline_height="0dp" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>
