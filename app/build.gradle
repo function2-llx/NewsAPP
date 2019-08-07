@@ -10,6 +10,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        javaCompileOptions { annotationProcessorOptions { includeCompileClasspath = true } }
     }
     buildTypes {
         release {
@@ -57,4 +58,12 @@ dependencies {
     implementation 'com.github.MikeOrtiz:TouchImageView:2.2.0' // Support Lib
     implementation 'com.githang:status-bar-compat:0.7'
     implementation 'org.greenrobot:eventbus:3.0.0'
+    implementation 'com.marshalchen.ultimaterecyclerview:library:0.9.0'
+
+    api project(':library:photoPicker')//图片选择
+    api project(':library:irecyclerview')//万能适配器和recyclerview
+    api project(':library:oneKeyShareSDK')//分享
+    api project(':library:jcvideoplayer')//视频播放
+    api project(':library:selectordialog')//常用提示框
+
 }

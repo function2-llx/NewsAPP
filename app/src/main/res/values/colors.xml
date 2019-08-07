@@ -3,4 +3,10 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="zone_textcolor_bg">#DDDDDD</color>
+    <color name="circle_name_selector_color">#cccccc</color>
+    <color name="container_background">#EBEBEB</color>
+    <color name="primary_text_white">#deffffff</color>
+    <!--87%white-->
+    <color name="progress_bar_unfinished">#D4D4D4</color>
 </resources>

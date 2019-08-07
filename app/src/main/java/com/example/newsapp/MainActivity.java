@@ -8,6 +8,25 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import androidx.annotation.Nullable;
+
+import com.example.newsapp.bean.AppConstant;
+import com.example.newsapp.bean.TabEntity;
+import com.flyco.tablayout.CommonTabLayout;
+import com.flyco.tablayout.listener.CustomTabEntity;
+import com.flyco.tablayout.listener.OnTabSelectListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,6 +47,8 @@ import com.example.newsapp.models.ChannelBean;
 import com.example.newsapp.models.SectionsPagerAdapter;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
+import com.example.newsapp.Event.NightModeChangeEvent;
+import com.jaydenxiao.common.commonutils.LogUtils;
 import com.ortiz.touchview.TouchImageView;
 import com.trs.channellib.channel.channel.helper.ChannelDataHelper;
 import com.wildma.pictureselector.PictureSelector;
@@ -40,10 +61,11 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.List;
+import java.util.ArrayList;
 import java.util.Objects;
 
 import cn.sharesdk.onekeyshare.OnekeyShare;
+import butterknife.Bind;
 
 public class MainActivity extends DeFaultActivity
     implements NavigationView.OnNavigationItemSelectedListener,
@@ -112,6 +134,11 @@ public class MainActivity extends DeFaultActivity
         initTabs();
 
         EventBus.getDefault().register(this);
+
+        initTab();
+        initFragment(savedInstanceState);
+        tabLayout.measure(0,0);
+        tabLayoutHeight=tabLayout.getMeasuredHeight();
     }
 
     private void configureNavigationView() {
@@ -274,4 +301,69 @@ public class MainActivity extends DeFaultActivity
     public void onEvent(NightModeChangeEvent event) {
         recreate();
     }
+
+//    @Override
+//    public void onItemSelected(Integer id)
+//    {
+//        // 创建Bundle，准备向Fragment传入参数
+//        Bundle arguments = new Bundle();
+//        arguments.putInt(NewsDetailFragment.ITEM_ID, id);
+//        // 创建BookDetailFragment对象
+//        NewsDetailFragment fragment = new NewsDetailFragment();
+//        // 向Fragment传入参数
+//        fragment.setArguments(arguments);
+//        // 使用fragment替换book_detail_container容器当前显示的Fragment
+//        getFragmentManager().beginTransaction()
+//                .replace(R.id.book_detail_container, fragment)
+//                .commit();  // ①
+//    }
+//    private NewsMainFragment newsMainFragment;
+
+
+    private void initTab() {
+        for (int i = 0; i < mTitles.length; i++) {
+            mTabEntities.add(new TabEntity(mTitles[i], mIconSelectIds[i], mIconUnselectIds[i]));
+        }
+        tabLayout.setTabData(mTabEntities);
+        //点击监听
+        tabLayout.setOnTabSelectListener(new OnTabSelectListener() {
+            @Override
+            public void onTabSelect(int position) {
+                SwitchTo(position);
+            }
+            @Override
+            public void onTabReselect(int position) {
+            }
+        });
+    }
+    private void initFragment(Bundle savedInstanceState) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        int currentTabPosition = 0;
+        if (savedInstanceState != null) {
+            newsMainFragment = (NewsMainFragment) getSupportFragmentManager().findFragmentByTag("newsMainFragment");
+            currentTabPosition = savedInstanceState.getInt(AppConstant.HOME_CURRENT_TAB_POSITION);
+        } else {
+            newsMainFragment = new NewsMainFragment();
+            transaction.add(R.id.fl_body, newsMainFragment, "newsMainFragment");
+        }
+        transaction.commit();
+        SwitchTo(currentTabPosition);
+        tabLayout.setCurrentTab(currentTabPosition);
+    }
+
+    private void SwitchTo(int position) {
+        LogUtils.logd("主页菜单position" + position);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        switch (position) {
+            //首页
+            case 0:
+                transaction.show(newsMainFragment);
+                transaction.commitAllowingStateLoss();
+                break;
+            default:
+                break;
+        }
+    }
 }
+
+
