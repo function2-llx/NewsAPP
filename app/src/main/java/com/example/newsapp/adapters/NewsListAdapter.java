@@ -15,7 +15,7 @@ import com.example.newsapp.R;
 import com.example.newsapp.bean.AppApplication;
 import com.example.newsapp.bean.NewsPhotoDetail;
 import com.example.newsapp.bean.NewsSummary;
-import com.jaydenxiao.common.commonutils.DisplayUtil;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -148,9 +148,12 @@ public class NewsListAdapter extends MultiItemRecycleViewAdapter<NewsSummary>
     }
 
     private void setImageView(ViewHolderHelper holder, NewsSummary newsSummary) {
-        int PhotoThreeHeight = (int) DisplayUtil.dip2px(90);
-        int PhotoTwoHeight = (int) DisplayUtil.dip2px(120);
-        int PhotoOneHeight = (int) DisplayUtil.dip2px(150);
+//        int PhotoThreeHeight = (int) DisplayUtil.dip2px(90);
+//        int PhotoTwoHeight = (int) DisplayUtil.dip2px(120);
+//        int PhotoOneHeight = (int) DisplayUtil.dip2px(150);
+        int PhotoThreeHeight = 90;
+        int PhotoTwoHeight = 120;
+        int PhotoOneHeight = 150;
 
         String imgSrcLeft = null;
         String imgSrcMiddle = null;

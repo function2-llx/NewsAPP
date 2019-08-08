@@ -21,17 +21,29 @@ import com.aspsine.irecyclerview.widget.LoadMoreFooterView;
 
 import com.example.newsapp.R;
 import com.example.newsapp.adapters.NewsListAdapter;
+import com.example.newsapp.api.Api;
+import com.example.newsapp.api.ApiConstants;
+import com.example.newsapp.api.HostType;
 import com.example.newsapp.bean.AppConstant;
 import com.example.newsapp.bean.NewsSummary;
 import com.example.newsapp.adapters.NewListAdapter;
 
+import com.jaydenxiao.common.baserx.RxSchedulers;
+import com.jaydenxiao.common.commonutils.TimeUtil;
 import com.jaydenxiao.common.commonwidget.LoadingTip;
 
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
 
 import butterknife.Bind;
+import rx.Observable;
+import rx.functions.Func1;
+import rx.functions.Func2;
 
 /**
  * des:新闻fragment
@@ -78,7 +90,7 @@ public class NewsListFragment extends Fragment implements OnRefreshListener, OnL
         mStartPage = 0;
         //发起请求
         irc.setRefreshing(true);
-//        mPresenter.getNewsListDataRequest(mNewsType, mNewsId, mStartPage);
+        getNewsListDataRequest(mNewsType, mNewsId, mStartPage, true, false);
     }
 
     @Override
@@ -86,7 +98,7 @@ public class NewsListFragment extends Fragment implements OnRefreshListener, OnL
         newsListAdapter.getPageBean().setRefresh(false);
         //发起请求
         irc.setLoadMoreStatus(LoadMoreFooterView.Status.LOADING);
-//        mPresenter.getNewsListDataRequest(mNewsType, mNewsId, mStartPage);
+        getNewsListDataRequest(mNewsType, mNewsId, mStartPage, false, true);
     }
 
     @Override
@@ -119,7 +131,30 @@ public class NewsListFragment extends Fragment implements OnRefreshListener, OnL
         newsListAdapter.openLoadAnimation(new ScaleInAnimation());
         irc.setAdapter(newsListAdapter);
         irc.setOnRefreshListener(this);
-        irc.setOnLoadMoreListener(this);        return view;
+        irc.setOnLoadMoreListener(this);
+        //数据为空才重新发起请求
+        if(newsListAdapter.getSize()<=0) {
+            mStartPage = 0;
+            getNewsListDataRequest(mNewsType, mNewsId, mStartPage, false, false);
+        }
+        return view;
+    }
+
+    public void getNewsListDataRequest(String type, String id, int startPage, boolean isOnRefresh, boolean isOnLoadMore) {
+        List<NewsSummary> newsSummaries = new ArrayList<NewsSummary>();
+        for (int i = 0; i < 20; ++i) {
+            NewsSummary a = new NewsSummary();
+            String t = "";
+            if (isOnRefresh) {
+                t = " fresh";
+            }
+            if (isOnLoadMore) {
+                t = " loadMore";
+            }
+            a.setTitle("Title" + i + t);
+            newsSummaries.add(a);
+        }
+        returnNewsListData(newsSummaries);
     }
 
     public void returnNewsListData(List<NewsSummary> newsSummaries) {
@@ -137,5 +172,9 @@ public class NewsListFragment extends Fragment implements OnRefreshListener, OnL
                 }
             }
         }
+    }
+
+    public void scrolltoTop() {
+        irc.smoothScrollToPosition(0);
     }
 }
