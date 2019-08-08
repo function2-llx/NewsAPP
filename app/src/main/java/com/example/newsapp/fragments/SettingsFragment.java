@@ -2,6 +2,9 @@ package com.example.newsapp.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
 
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.preference.Preference;

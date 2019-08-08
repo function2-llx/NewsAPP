@@ -1,11 +1,13 @@
-package com.example.newsapp.models;
+package com.example.newsapp.adapters;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.example.newsapp.fragments.MainFragment;
+import com.example.newsapp.fragments.ListFragment;
+import com.example.newsapp.fragments.NewsMainFragment;
+import com.example.newsapp.models.ChannelBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +27,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     }
 
     @Override
-    public Fragment getItem(int position) { return MainFragment.newInstance(channels.get(position).getName()); }
+    public Fragment getItem(int position) { return ListFragment.newInstance(channels.get(position).getName()); }
 
     @Nullable
     @Override

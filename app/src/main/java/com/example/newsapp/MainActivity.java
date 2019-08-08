@@ -8,6 +8,16 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import androidx.annotation.Nullable;
+
+import com.google.android.material.navigation.NavigationView;
+
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
+
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,18 +25,11 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.newsapp.events.NightModeChangeEvent;
 import com.example.newsapp.models.ChannelBean;
-import com.example.newsapp.models.SectionsPagerAdapter;
-import com.google.android.material.navigation.NavigationView;
+import com.example.newsapp.adapters.SectionsPagerAdapter;
 import com.google.android.material.tabs.TabLayout;
 import com.ortiz.touchview.TouchImageView;
 import com.trs.channellib.channel.channel.helper.ChannelDataHelper;
@@ -55,6 +58,7 @@ public class MainActivity extends DeFaultActivity
     private ChannelDataHelper<ChannelBean> channelDataHelper;
     private int selectedChannelPosition = -1;
     private SectionsPagerAdapter pagerAdapter;
+//    private NewsMainFragment newsMainFragment;
 
     @Override
     public void updateData() {
@@ -80,7 +84,7 @@ public class MainActivity extends DeFaultActivity
                     public void run() {
                         pagerAdapter.updateChannels(channels);
                         if (selectedChannelPosition != -1) {
-//                            viewPager.setCurrentItem(selectedChannelPosition);
+                            viewPager.setCurrentItem(selectedChannelPosition);
                             selectedChannelPosition = -1;
                         }
                     }
@@ -112,6 +116,8 @@ public class MainActivity extends DeFaultActivity
         initTabs();
 
         EventBus.getDefault().register(this);
+
+//        initFragment(savedInstanceState);
     }
 
     private void configureNavigationView() {
@@ -274,4 +280,52 @@ public class MainActivity extends DeFaultActivity
     public void onEvent(NightModeChangeEvent event) {
         recreate();
     }
+
+//    @Override
+//    public void onItemSelected(Integer id)
+//    {
+//        // 创建Bundle，准备向Fragment传入参数
+//        Bundle arguments = new Bundle();
+//        arguments.putInt(NewsDetailFragment.ITEM_ID, id);
+//        // 创建BookDetailFragment对象
+//        NewsDetailFragment fragment = new NewsDetailFragment();
+//        // 向Fragment传入参数
+//        fragment.setArguments(arguments);
+//        // 使用fragment替换book_detail_container容器当前显示的Fragment
+//        getFragmentManager().beginTransaction()
+//                .replace(R.id.book_detail_container, fragment)
+//                .commit();  // ①
+//    }
+//    private NewsMainFragment newsMainFragment;
+
+//    private void initFragment(Bundle savedInstanceState) {
+//        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//        int currentTabPosition = 0;
+//        if (savedInstanceState != null) {
+//            newsMainFragment = (NewsMainFragment) getSupportFragmentManager().findFragmentByTag("newsMainFragment");
+//            currentTabPosition = savedInstanceState.getInt(AppConstant.HOME_CURRENT_TAB_POSITION);
+//        } else {
+//            newsMainFragment = new NewsMainFragment();
+//            transaction.add(R.id.fl_body, newsMainFragment, "newsMainFragment");
+//        }
+//        transaction.commit();
+//        SwitchTo(currentTabPosition);
+//        tabLayout.setCurrentTab(currentTabPosition);
+//    }
+
+//    private void SwitchTo(int position) {
+//        LogUtils.logd("主页菜单position" + position);
+//        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//        switch (position) {
+//            //首页
+//            case 0:
+//                transaction.show(newsMainFragment);
+//                transaction.commitAllowingStateLoss();
+//                break;
+//            default:
+//                break;
+//        }
+//    }
 }
+
+
