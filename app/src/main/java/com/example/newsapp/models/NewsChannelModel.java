@@ -1,4 +1,4 @@
-package com.example.newsapp.model;
+package com.example.newsapp.models;
 
 import com.example.newsapp.R;
 import com.example.newsapp.api.ApiConstants;

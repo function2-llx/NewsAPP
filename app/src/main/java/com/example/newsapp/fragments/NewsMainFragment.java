@@ -1,4 +1,4 @@
-package com.example.newsapp;
+package com.example.newsapp.fragments;
 
 import android.os.Bundle;
 import android.view.View;
@@ -8,12 +8,13 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.newsapp.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.example.newsapp.bean.AppConstant;
 import com.example.newsapp.bean.NewsChannelTable;
 import com.example.newsapp.contract.NewsMainContract;
-import com.example.newsapp.model.NewsMainModel;
+import com.example.newsapp.models.NewsMainModel;
 import com.example.newsapp.presenter.NewsMainPresenter;
 import com.example.newsapp.NewsChannelActivity;
 import com.example.newsapp.NewsFragment;
@@ -33,7 +34,7 @@ import butterknife.OnClick;
  * on 2016.09.16:45
  */
 public class NewsMainFragment extends BaseFragment<NewsMainPresenter,NewsMainModel> implements NewsMainContract.View {
-
+    public NewsMainFragment() {}
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -47,6 +48,19 @@ public class NewsMainFragment extends BaseFragment<NewsMainPresenter,NewsMainMod
     FloatingActionButton fab;
     private BaseFragmentAdapter fragmentAdapter;
 
+    public static NewsMainFragment newInstance(String channel) {
+        NewsMainFragment fragment = new NewsMainFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("channel", channel);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
+    String getChannel() {
+        assert this.getArguments() != null;
+        return this.getArguments().getString("channel");
+    }
+
     @Override
     protected int getLayoutResource() {
         return R.layout.app_bar_news;
@@ -56,6 +70,8 @@ public class NewsMainFragment extends BaseFragment<NewsMainPresenter,NewsMainMod
     public void initPresenter() {
       mPresenter.setVM(this,mModel);
     }
+
+
 
     @Override
     public void initView() {

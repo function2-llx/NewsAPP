@@ -1,4 +1,4 @@
-package com.example.newsapp.adapter;
+package com.example.newsapp.adapters;
 
 import android.content.Context;
 import android.view.MotionEvent;

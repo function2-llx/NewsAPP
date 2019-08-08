@@ -15,10 +15,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.newsapp.bean.AppConstant;
 import com.example.newsapp.bean.NewsChannelTable;
-import com.example.newsapp.adapter.ChannelAdapter;
+import com.example.newsapp.adapters.ChannelAdapter;
 import com.example.newsapp.contract.NewsChannelContract;
 import com.example.newsapp.Event.ChannelItemMoveEvent;
-import com.example.newsapp.model.NewsChannelModel;
+import com.example.newsapp.models.NewsChannelModel;
 import com.example.newsapp.presenter.NewsChanelPresenter;
 import com.example.newsapp.widget.ItemDragHelperCallback;
 import com.jaydenxiao.common.base.BaseActivity;

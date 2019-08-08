@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.newsapp.model.BookContent;
+import com.example.newsapp.models.BookContent;
 
 
 public class NewsDetailFragment extends Fragment

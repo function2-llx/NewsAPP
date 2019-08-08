@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.example.newsapp.model.BookContent;
+import com.example.newsapp.models.BookContent;
 
 
 public class NewsListFragment extends ListFragment

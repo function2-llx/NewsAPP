@@ -18,14 +18,13 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.content.ContextCompat;
 
-import com.bumptech.glide.Glide;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.example.newsapp.bean.AppConstant;
 import com.example.newsapp.bean.NewsDetail;
 import com.example.newsapp.contract.NewsDetailContract;
-import com.example.newsapp.model.NewsDetailModel;
+import com.example.newsapp.models.NewsDetailModel;
 import com.example.newsapp.presenter.NewsDetailPresenter;
 import com.example.newsapp.widget.URLImageGetter;
 import com.jaydenxiao.common.base.BaseActivity;

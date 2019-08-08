@@ -10,12 +10,11 @@ import com.aspsine.irecyclerview.OnRefreshListener;
 import com.aspsine.irecyclerview.animation.ScaleInAnimation;
 import com.aspsine.irecyclerview.widget.LoadMoreFooterView;
 
-import com.example.newsapp.R;
 import com.example.newsapp.bean.AppConstant;
 import com.example.newsapp.bean.NewsSummary;
-import com.example.newsapp.adapter.NewListAdapter;
+import com.example.newsapp.adapters.NewListAdapter;
 import com.example.newsapp.contract.NewsListContract;
-import com.example.newsapp.model.NewsListModel;
+import com.example.newsapp.models.NewsListModel;
 import com.example.newsapp.presenter.NewsListPresenter;
 
 import com.jaydenxiao.common.base.BaseFragment;

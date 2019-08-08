@@ -10,22 +10,13 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 
-import com.example.newsapp.bean.AppConstant;
-import com.example.newsapp.bean.TabEntity;
-import com.flyco.tablayout.CommonTabLayout;
-import com.flyco.tablayout.listener.CustomTabEntity;
-import com.flyco.tablayout.listener.OnTabSelectListener;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
+
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,21 +25,12 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.newsapp.events.NightModeChangeEvent;
 import com.example.newsapp.models.ChannelBean;
-import com.example.newsapp.models.SectionsPagerAdapter;
-import com.google.android.material.navigation.NavigationView;
+import com.example.newsapp.adapters.SectionsPagerAdapter;
 import com.google.android.material.tabs.TabLayout;
-import com.example.newsapp.Event.NightModeChangeEvent;
-import com.jaydenxiao.common.commonutils.LogUtils;
 import com.ortiz.touchview.TouchImageView;
 import com.trs.channellib.channel.channel.helper.ChannelDataHelper;
 import com.wildma.pictureselector.PictureSelector;
@@ -61,11 +43,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import cn.sharesdk.onekeyshare.OnekeyShare;
-import butterknife.Bind;
 
 public class MainActivity extends DeFaultActivity
     implements NavigationView.OnNavigationItemSelectedListener,
@@ -77,6 +58,7 @@ public class MainActivity extends DeFaultActivity
     private ChannelDataHelper<ChannelBean> channelDataHelper;
     private int selectedChannelPosition = -1;
     private SectionsPagerAdapter pagerAdapter;
+//    private NewsMainFragment newsMainFragment;
 
     @Override
     public void updateData() {
@@ -102,7 +84,7 @@ public class MainActivity extends DeFaultActivity
                     public void run() {
                         pagerAdapter.updateChannels(channels);
                         if (selectedChannelPosition != -1) {
-//                            viewPager.setCurrentItem(selectedChannelPosition);
+                            viewPager.setCurrentItem(selectedChannelPosition);
                             selectedChannelPosition = -1;
                         }
                     }
@@ -135,10 +117,7 @@ public class MainActivity extends DeFaultActivity
 
         EventBus.getDefault().register(this);
 
-        initTab();
-        initFragment(savedInstanceState);
-        tabLayout.measure(0,0);
-        tabLayoutHeight=tabLayout.getMeasuredHeight();
+//        initFragment(savedInstanceState);
     }
 
     private void configureNavigationView() {
@@ -319,51 +298,34 @@ public class MainActivity extends DeFaultActivity
 //    }
 //    private NewsMainFragment newsMainFragment;
 
+//    private void initFragment(Bundle savedInstanceState) {
+//        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//        int currentTabPosition = 0;
+//        if (savedInstanceState != null) {
+//            newsMainFragment = (NewsMainFragment) getSupportFragmentManager().findFragmentByTag("newsMainFragment");
+//            currentTabPosition = savedInstanceState.getInt(AppConstant.HOME_CURRENT_TAB_POSITION);
+//        } else {
+//            newsMainFragment = new NewsMainFragment();
+//            transaction.add(R.id.fl_body, newsMainFragment, "newsMainFragment");
+//        }
+//        transaction.commit();
+//        SwitchTo(currentTabPosition);
+//        tabLayout.setCurrentTab(currentTabPosition);
+//    }
 
-    private void initTab() {
-        for (int i = 0; i < mTitles.length; i++) {
-            mTabEntities.add(new TabEntity(mTitles[i], mIconSelectIds[i], mIconUnselectIds[i]));
-        }
-        tabLayout.setTabData(mTabEntities);
-        //点击监听
-        tabLayout.setOnTabSelectListener(new OnTabSelectListener() {
-            @Override
-            public void onTabSelect(int position) {
-                SwitchTo(position);
-            }
-            @Override
-            public void onTabReselect(int position) {
-            }
-        });
-    }
-    private void initFragment(Bundle savedInstanceState) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        int currentTabPosition = 0;
-        if (savedInstanceState != null) {
-            newsMainFragment = (NewsMainFragment) getSupportFragmentManager().findFragmentByTag("newsMainFragment");
-            currentTabPosition = savedInstanceState.getInt(AppConstant.HOME_CURRENT_TAB_POSITION);
-        } else {
-            newsMainFragment = new NewsMainFragment();
-            transaction.add(R.id.fl_body, newsMainFragment, "newsMainFragment");
-        }
-        transaction.commit();
-        SwitchTo(currentTabPosition);
-        tabLayout.setCurrentTab(currentTabPosition);
-    }
-
-    private void SwitchTo(int position) {
-        LogUtils.logd("主页菜单position" + position);
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        switch (position) {
-            //首页
-            case 0:
-                transaction.show(newsMainFragment);
-                transaction.commitAllowingStateLoss();
-                break;
-            default:
-                break;
-        }
-    }
+//    private void SwitchTo(int position) {
+//        LogUtils.logd("主页菜单position" + position);
+//        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//        switch (position) {
+//            //首页
+//            case 0:
+//                transaction.show(newsMainFragment);
+//                transaction.commitAllowingStateLoss();
+//                break;
+//            default:
+//                break;
+//        }
+//    }
 }
 
 

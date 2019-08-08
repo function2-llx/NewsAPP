@@ -5,7 +5,7 @@ android {
     compileSdkVersion 29
     defaultConfig {
         applicationId "com.example.newsapp"
-        minSdkVersion 28
+        minSdkVersion 26
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -62,7 +62,7 @@ dependencies {
 
     api project(':library:photoPicker')//图片选择
     api project(':library:irecyclerview')//万能适配器和recyclerview
-    api project(':library:oneKeyShareSDK')//分享
+//    api project(':library:oneKeyShareSDK')//分享
     api project(':library:jcvideoplayer')//视频播放
     api project(':library:selectordialog')//常用提示框
 
