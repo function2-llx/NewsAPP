@@ -6,10 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.example.newsapp.models.ChannelBean;
+import com.example.newsapp.bean.ChannelBean;
 import com.githang.statusbar.StatusBarCompat;
 
 import java.util.ArrayList;

@@ -6,7 +6,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.example.newsapp.fragments.NewsListFragment;
-import com.example.newsapp.models.ChannelBean;
+import com.example.newsapp.bean.ChannelBean;
 
 import java.util.ArrayList;
 import java.util.List;
