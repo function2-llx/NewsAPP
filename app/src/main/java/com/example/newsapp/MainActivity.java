@@ -28,7 +28,7 @@ import android.widget.LinearLayout;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.newsapp.events.NightModeChangeEvent;
-import com.example.newsapp.models.ChannelBean;
+import com.example.newsapp.bean.ChannelBean;
 import com.example.newsapp.adapters.SectionsPagerAdapter;
 import com.google.android.material.tabs.TabLayout;
 import com.ortiz.touchview.TouchImageView;

@@ -1,4 +1,4 @@
-package com.example.newsapp.models;
+package com.example.newsapp.bean;
 
 import com.trs.channellib.channel.channel.ChannelEntity;
 
