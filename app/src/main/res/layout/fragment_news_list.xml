@@ -1,37 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal">
 
-    <!--<TextView-->
-        <!--android:id="@+id/textView2"-->
-        <!--android:layout_width="145dp"-->
-        <!--android:layout_height="83dp"-->
-        <!--android:layout_marginBottom="313dp"-->
-        <!--android:text="文字测试"-->
-        <!--app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintStart_toStartOf="parent" />-->
-    <com.aspsine.irecyclerview.IRecyclerView
-        android:id="@+id/news_irc"
-        android:layout_below="@+id/ntb"
-        android:layout_height="match_parent"
+    <com.aspsine.irecyclerview.IRecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/iRecyclerView"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:loadMoreEnabled="true"
-        android:background="?attr/dayNightBackground"
-        app:dayNightBackgroundAttr="dayNightBackground"
-        app:refreshHeaderLayout="@layout/layout_irecyclerview_refresh_header"
+        app:loadMoreFooterLayout="@layout/layout_irecyclerview_load_more_footer"
         app:refreshEnabled="true"
-        />
-
+        app:refreshHeaderLayout="@layout/layout_irecyclerview_refresh_header"/>
     <com.jaydenxiao.common.commonwidget.LoadingTip
         android:id="@+id/loadedTip"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:gravity="center" />
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</FrameLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+    <!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--xmlns:tools="http://schemas.android.com/tools"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+    <!--android:orientation="horizontal">-->
+
+    <!--<com.aspsine.irecyclerview.IRecyclerView xmlns:android="http://schemas.android.com/apk/res/android"-->
+        <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+        <!--android:id="@+id/irc"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--app:loadMoreEnabled="true"-->
+        <!--app:loadMoreFooterLayout="@layout/layout_irecyclerview_load_more_footer"-->
+        <!--app:refreshEnabled="true"-->
+        <!--app:refreshHeaderLayout="@layout/layout_irecyclerview_refresh_header"/>-->
+    <!--<com.aspsine.irecyclerview.IRecyclerView-->
+        <!--android:id="@+id/irc"-->
+        <!--android:layout_below="@+id/ntb"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_width="match_parent"-->
+        <!--app:loadMoreEnabled="true"-->
+        <!--android:background="?attr/dayNightBackground"-->
+        <!--app:dayNightBackgroundAttr="dayNightBackground"-->
+        <!--app:refreshHeaderLayout="@layout/layout_irecyclerview_refresh_header"-->
+        <!--app:refreshEnabled="true"-->
+        <!--/>-->
+    <!--<com.jaydenxiao.common.commonwidget.LoadingTip-->
+        <!--android:id="@+id/loadedTip"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:gravity="center"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"/>-->
+<!--</FrameLayout>-->
+
+
+
+
+    <!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+    <!--xmlns:tools="http://schemas.android.com/tools"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:orientation="vertical">-->
+
+    <!--&lt;!&ndash;<TextView&ndash;&gt;-->
+        <!--&lt;!&ndash;android:id="@+id/textView2"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_width="145dp"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_height="83dp"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_marginBottom="313dp"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:text="文字测试"&ndash;&gt;-->
+        <!--&lt;!&ndash;app:layout_constraintBottom_toBottomOf="parent"&ndash;&gt;-->
+        <!--&lt;!&ndash;app:layout_constraintEnd_toEndOf="parent"&ndash;&gt;-->
+        <!--&lt;!&ndash;app:layout_constraintStart_toStartOf="parent" />&ndash;&gt;-->
+    <!--<com.aspsine.irecyclerview.IRecyclerView-->
+        <!--android:id="@+id/news_irc"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_width="match_parent"-->
+        <!--app:loadMoreEnabled="true"-->
+        <!--android:background="?attr/dayNightBackground"-->
+        <!--app:dayNightBackgroundAttr="dayNightBackground"-->
+        <!--app:refreshHeaderLayout="@layout/layout_irecyclerview_refresh_header"-->
+        <!--app:refreshEnabled="true"-->
+        <!--/>-->
+
+    <!--<com.jaydenxiao.common.commonwidget.LoadingTip-->
+        <!--android:id="@+id/loadedTip"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:gravity="center" />-->
+
+<!--</androidx.constraintlayout.widget.ConstraintLayout>-->

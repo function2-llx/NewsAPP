@@ -92,13 +92,19 @@ public class NewsListFragment extends Fragment implements OnRefreshListener, OnL
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+//        return super.onCreateView(inflater, container, savedInstanceState);
+        View view = inflater.inflate(R.layout.fragment_news_list, container, false);
+        irc = view.findViewById(R.id.irc);
         if (getArguments() != null) {
 //            mNewsId = getArguments().getString(AppConstant.NEWS_ID);
 //            mNewsType = getArguments().getString(AppConstant.NEWS_TYPE);
         }
-//        Context a = getContext();
-//        System.out.println(getContext());
-
         irc.setLayoutManager(new LinearLayoutManager(getContext()));
         datas.clear();
         newsListAdapter = new NewsListAdapter(getContext(), datas);
@@ -111,14 +117,6 @@ public class NewsListFragment extends Fragment implements OnRefreshListener, OnL
 //            mStartPage = 0;
 //            mPresenter.getNewsListDataRequest(mNewsType, mNewsId, mStartPage);
 //        }
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-//        return super.onCreateView(inflater, container, savedInstanceState);
-        View view = inflater.inflate(R.layout.fragment_news_list, container, false);
-        irc = view.findViewById(R.id.news_irc);
         return view;
     }
 
