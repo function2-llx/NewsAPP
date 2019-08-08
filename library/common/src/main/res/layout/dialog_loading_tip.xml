@@ -22,7 +22,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="15dp"
-        android:textColor="?attr/dayNightOneTextColor"
         android:textSize="@dimen/font_normal"
         android:text="加载中..." />
     <Button
@@ -35,7 +34,6 @@
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:paddingTop="5dp"
-        android:textColor="?attr/dayNightOneTextColor"
         android:visibility="gone"
         tools:text="@string/reload" />
 </LinearLayout>

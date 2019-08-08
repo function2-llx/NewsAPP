@@ -40,7 +40,7 @@ import butterknife.Bind;
  */
 public class NewsListFragment extends Fragment implements OnRefreshListener, OnLoadMoreListener {
 //    @Bind(R.id.irc)
-    IRecyclerView irc;
+    private IRecyclerView irc;
     @Bind(R.id.loadedTip)
     LoadingTip loadedTip;
     private NewsListAdapter newsListAdapter;
@@ -92,6 +92,7 @@ public class NewsListFragment extends Fragment implements OnRefreshListener, OnL
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
 //            mNewsId = getArguments().getString(AppConstant.NEWS_ID);
 //            mNewsType = getArguments().getString(AppConstant.NEWS_TYPE);
@@ -99,13 +100,6 @@ public class NewsListFragment extends Fragment implements OnRefreshListener, OnL
 //        Context a = getContext();
 //        System.out.println(getContext());
 
-        irc.setLayoutManager(new LinearLayoutManager(getContext()));
-        datas.clear();
-        newsListAdapter = new NewsListAdapter(getContext(), datas);
-        newsListAdapter.openLoadAnimation(new ScaleInAnimation());
-        irc.setAdapter(newsListAdapter);
-        irc.setOnRefreshListener(this);
-        irc.setOnLoadMoreListener(this);
 //        //数据为空才重新发起请求
 //        if(newListAdapter.getSize()<=0) {
 //            mStartPage = 0;
@@ -119,7 +113,13 @@ public class NewsListFragment extends Fragment implements OnRefreshListener, OnL
 //        return super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_news_list, container, false);
         irc = view.findViewById(R.id.news_irc);
-        return view;
+        irc.setLayoutManager(new LinearLayoutManager(getContext()));
+        datas.clear();
+        newsListAdapter = new NewsListAdapter(getContext(), datas);
+        newsListAdapter.openLoadAnimation(new ScaleInAnimation());
+        irc.setAdapter(newsListAdapter);
+        irc.setOnRefreshListener(this);
+        irc.setOnLoadMoreListener(this);        return view;
     }
 
     public void returnNewsListData(List<NewsSummary> newsSummaries) {

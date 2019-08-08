@@ -66,4 +66,5 @@ dependencies {
     api project(':library:jcvideoplayer')//视频播放
     api project(':library:selectordialog')//常用提示框
 
+    implementation 'com.yanzhenjie.nohttp:nohttp:1.1.11'
 }

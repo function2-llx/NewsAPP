@@ -17,15 +17,12 @@
         <!--app:layout_constraintStart_toStartOf="parent" />-->
     <com.aspsine.irecyclerview.IRecyclerView
         android:id="@+id/news_irc"
-        android:layout_below="@+id/ntb"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         app:loadMoreEnabled="true"
-        android:background="?attr/dayNightBackground"
-        app:dayNightBackgroundAttr="dayNightBackground"
         app:refreshHeaderLayout="@layout/layout_irecyclerview_refresh_header"
-        app:refreshEnabled="true"
-        />
+        app:loadMoreFooterLayout="@layout/layout_irecyclerview_load_more_footer"
+        app:refreshEnabled="true" />
 
     <com.jaydenxiao.common.commonwidget.LoadingTip
         android:id="@+id/loadedTip"
