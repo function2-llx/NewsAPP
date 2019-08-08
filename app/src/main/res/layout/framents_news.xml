@@ -17,10 +17,11 @@
         app:refreshHeaderLayout="@layout/layout_irecyclerview_refresh_header"
         app:refreshEnabled="true"
         />
+
     <com.jaydenxiao.common.commonwidget.LoadingTip
         android:id="@+id/loadedTip"
-        android:layout_gravity="center"
-        android:gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:gravity="center" />
 </FrameLayout>

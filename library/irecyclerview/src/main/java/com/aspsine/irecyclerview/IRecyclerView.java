@@ -81,6 +81,7 @@ public class IRecyclerView extends RecyclerView {
 
     public IRecyclerView(Context context, @Nullable AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+
         final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.IRecyclerView, defStyle, 0);
 
         int refreshFinalMoveOffset = -1;
