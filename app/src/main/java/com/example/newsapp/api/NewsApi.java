@@ -1,26 +1,29 @@
 package com.example.newsapp.api;
 
+import android.os.Handler;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.newsapp.bean.NewsBean;
 import com.example.newsapp.bean.NewsDateTime;
-import com.yanzhenjie.nohttp.BasicRequest;
 import com.yanzhenjie.nohttp.Headers;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yanzhenjie.nohttp.RequestMethod;
 import com.yanzhenjie.nohttp.rest.Request;
 import com.yanzhenjie.nohttp.rest.Response;
-import com.yanzhenjie.nohttp.rest.RestRequest;
 import com.yanzhenjie.nohttp.rest.StringRequest;
-
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class NewsApi {
-    interface Callback {
+    public interface Callback {
         void onNewsReceived(List<NewsBean> newsBeanList);
+    }
+
+    public static void init() {
+
     }
 
     static class FastJsonRequest extends Request<JSONObject> {
@@ -41,51 +44,40 @@ public class NewsApi {
         }
     }
     public static class SearchParams {
-        private int size;
+        private int size = 10;
         private NewsDateTime start, end;
         private String words, category;
-        public SearchParams(int size, NewsDateTime start, NewsDateTime end, String words, String category) {
-            this.size = size;
-            this.start = start;
-            this.end = end;
-            this.words = words;
-            this.category = category;
-        }
 
-        public SearchParams(int size, NewsDateTime start, NewsDateTime end, String words) { this(size, start, end, words, ""); }
-        public SearchParams(int size, NewsDateTime start, NewsDateTime end) { this(size, start, end, ""); }
-        public SearchParams(int size) {this(size, new NewsDateTime(), new NewsDateTime()); }
-        public SearchParams() { this(10); }
+        public SearchParams setSize(int size) { this.size = size; return this; }
+        public SearchParams setStartDate(NewsDateTime start) { this.start = start; return this; }
+        public SearchParams setEndDate(NewsDateTime end) { this.end = end; return this; }
+        public SearchParams setWords(String words) { this.words = words; return this; }
+        public SearchParams setCategory(String category) { this.category = category; return this; }
 
-        static final String DEFAULT_URL = "https://api2.newsminer.net/svc/news/queryNewsList";
-
-//        String toUrl() {
-//            return "https://api2.newsminer.net/svc/news/queryNewsList?size="
-//                    + size + "&startDate=" + start + "&endDate" + end + "&words=" + words + "&categories=" +category;
-//        }
-
+        private static final String DEFAULT_URL = "https://api2.newsminer.net/svc/news/queryNewsList";
         FastJsonRequest toFastJsonRequest() {
-            return (FastJsonRequest)new FastJsonRequest(DEFAULT_URL)
-                    .add("size", size)
-                    .add("startDate", start.toString())
-                    .add("endDate", end.toString())
-                    .add("words", words)
-                    .add("categories", category);
+            FastJsonRequest request = new FastJsonRequest(DEFAULT_URL);
+            request.add("size", size);
+            if (start != null) request.add("startDate", start.toString());
+            if (end != null) request.add("endDate", end.toString());
+            if (words != null) request.add("words", words);
+            if (category != null) request.add("categories", category);
+            return request;
         }
-
     }
 
     public static void requestNews(SearchParams params, Callback callback) {
+        Handler handler = new Handler();
         new Thread(() -> {
             FastJsonRequest request = params.toFastJsonRequest();
             Response<JSONObject> response = NoHttp.startRequestSync(request);
             JSONObject json = response.get();
             JSONArray newsJsonArray = json.getJSONArray("data");
-            for (Object newsObject: newsJsonArray) {
-
-            }
             List<NewsBean> newsBeanList = new ArrayList<>();
-            callback.onNewsReceived(newsBeanList);
+            for (Object newsJson: newsJsonArray) {
+                newsBeanList.add(NewsBean.parse((JSONObject)newsJson));
+            }
+            handler.post(() -> { callback.onNewsReceived(newsBeanList); });
         }).start();
     }
 }

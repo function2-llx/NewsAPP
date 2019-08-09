@@ -1,30 +1,34 @@
 package com.example.newsapp.bean;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Locale;
 
 public class NewsDateTime {
 //    private LocalDateTime localDateTime;
     private LocalDate date;
     private  LocalTime time;
-//    private int year, month, day, hours, minutes, seconds;
+
+    public NewsDateTime() { this(LocalDate.now()); }
+    public NewsDateTime(@NonNull LocalDate date) { this(date, null); }
+    public NewsDateTime(@NonNull LocalDate date, @Nullable LocalTime time) {
+        this.date = date;
+        this.time = time;
+    }
 
     public NewsDateTime(int year, int month, int day, int hours, int minutes, int seconds) {
-//        localDateTime = LocalDateTime.of(year, month, day, hours, minutes, seconds);
         date = LocalDate.of(year, month, day);
-        if (hours != -1) time = LocalTime.of(hours, minutes, seconds);
+        time = LocalTime.of(hours, minutes, seconds);
     }
     public NewsDateTime(int year, int month, int day, int hours, int minutes) { this(year, month, day, hours, minutes, 0); }
     public NewsDateTime(int year, int month, int day, int hours) { this(year, month, day, hours, 0); }
 
-    public NewsDateTime(int year, int month, int day) { this(year, month, day, -1); }
+    public NewsDateTime(int year, int month, int day) { this(LocalDate.of(year, month, day)); }
     public NewsDateTime(int year, int month) { this(year, month, 1); }
-    public NewsDateTime() { date = LocalDate.now(); }
-    public NewsDateTime(LocalDate date, LocalTime time) {
-        this.date = date;
-        this.time = time;
-    }
 
     public static NewsDateTime parse(String s) {
         String[] datetime = s.split(" ");
@@ -33,16 +37,13 @@ public class NewsDateTime {
 
     @Override
     public String toString() {
-        StringBuilder ret = new StringBuilder();
-        ret.append(date.getYear())
-                .append("-")
-                .append(date.getMonthValue())
-                .append(date.getDayOfMonth());
-
+        StringBuilder ret = new StringBuilder(date.toString());
         if (time != null) {
-            ret.append(time.getHour())
-                    .append(time.getMinute())
-                    .append(time.getSecond());
+//            if (time.getNano() != 0) throw new AssertionError();
+            ret.append(" ")
+                    .append(String.format(Locale.SIMPLIFIED_CHINESE, "%02d", time.getHour())).append(":")
+                    .append(String.format(Locale.SIMPLIFIED_CHINESE, "%02d", time.getMinute())).append(":")
+                    .append(String.format(Locale.SIMPLIFIED_CHINESE, "%02d", time.getSecond()));
         }
         return ret.toString();
     }

@@ -10,8 +10,12 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 
+import com.example.newsapp.api.NewsApi;
+import com.example.newsapp.bean.NewsBean;
+import com.example.newsapp.bean.NewsDateTime;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.appcompat.widget.SearchView;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -24,6 +28,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.viewpager.widget.ViewPager;
 
@@ -58,6 +63,7 @@ public class MainActivity extends DeFaultActivity
     private ChannelDataHelper<ChannelBean> channelDataHelper;
     private int selectedChannelPosition = -1;
     private SectionsPagerAdapter pagerAdapter;
+    private SearchView searchView;
 //    private NewsMainFragment newsMainFragment;
 
     @Override
@@ -104,6 +110,13 @@ public class MainActivity extends DeFaultActivity
         refreshTabs();
     }
 
+    void initSearchView(Menu optionsMenu) {
+        searchView = (SearchView)optionsMenu.findItem(R.id.action_search).getActionView();
+        searchView.setQueryHint("家事国事天下事");
+        searchView.setIconifiedByDefault(true);
+//        searchView.setIconified(false);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,8 +129,6 @@ public class MainActivity extends DeFaultActivity
         initTabs();
 
         EventBus.getDefault().register(this);
-
-//        initFragment(savedInstanceState);
     }
 
     private void configureNavigationView() {
@@ -228,8 +239,8 @@ public class MainActivity extends DeFaultActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+        initSearchView(menu);
         return true;
     }
 
@@ -240,12 +251,32 @@ public class MainActivity extends DeFaultActivity
                 startSettings();
             break;
 
+            case R.id.action_search:
+                searchView.onActionViewExpanded();
+
+            break;
+
             case R.id.share_test:
                 OnekeyShare oks = new OnekeyShare();
                 oks.disableSSOWhenAuthorize();
                 oks.setTitle("分享测试");
                 oks.setText("咕鸽快来写代码");
                 oks.show(this);
+            break;
+
+            case R.id.news_test:
+                NewsApi.requestNews(new NewsApi.SearchParams()
+                        .setSize(20)
+                        .setWords("咕咕")
+                        .setCategory("科技")
+                        .setStartDate(new NewsDateTime(2019, 7, 1))
+                        .setEndDate(new NewsDateTime(2019, 7, 3)), newsBeanList -> {
+                    if (newsBeanList.isEmpty()) {
+                        Toast.makeText(this, "莫得新闻了，等哈再来哈", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(this, newsBeanList.get(0).getTitle(), Toast.LENGTH_SHORT).show();
+                    }
+                });
             break;
         }
 
@@ -280,52 +311,4 @@ public class MainActivity extends DeFaultActivity
     public void onEvent(NightModeChangeEvent event) {
         recreate();
     }
-
-//    @Override
-//    public void onItemSelected(Integer id)
-//    {
-//        // 创建Bundle，准备向Fragment传入参数
-//        Bundle arguments = new Bundle();
-//        arguments.putInt(NewsDetailFragment.ITEM_ID, id);
-//        // 创建BookDetailFragment对象
-//        NewsDetailFragment fragment = new NewsDetailFragment();
-//        // 向Fragment传入参数
-//        fragment.setArguments(arguments);
-//        // 使用fragment替换book_detail_container容器当前显示的Fragment
-//        getFragmentManager().beginTransaction()
-//                .replace(R.id.book_detail_container, fragment)
-//                .commit();  // ①
-//    }
-//    private NewsMainFragment newsMainFragment;
-
-//    private void initFragment(Bundle savedInstanceState) {
-//        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-//        int currentTabPosition = 0;
-//        if (savedInstanceState != null) {
-//            newsMainFragment = (NewsMainFragment) getSupportFragmentManager().findFragmentByTag("newsMainFragment");
-//            currentTabPosition = savedInstanceState.getInt(AppConstant.HOME_CURRENT_TAB_POSITION);
-//        } else {
-//            newsMainFragment = new NewsMainFragment();
-//            transaction.add(R.id.fl_body, newsMainFragment, "newsMainFragment");
-//        }
-//        transaction.commit();
-//        SwitchTo(currentTabPosition);
-//        tabLayout.setCurrentTab(currentTabPosition);
-//    }
-
-//    private void SwitchTo(int position) {
-//        LogUtils.logd("主页菜单position" + position);
-//        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-//        switch (position) {
-//            //首页
-//            case 0:
-//                transaction.show(newsMainFragment);
-//                transaction.commitAllowingStateLoss();
-//                break;
-//            default:
-//                break;
-//        }
-//    }
 }
-
-
