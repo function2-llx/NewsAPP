@@ -7,39 +7,10 @@
     android:id="@+id/container_main"
     tools:context=".MainActivity">
 
-    <!--<com.arlib.floatingsearchview.FloatingSearchView-->
-        <!--android:id="@+id/search_view"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--app:floatingSearch_close_search_on_keyboard_dismiss="true"-->
-        <!--app:floatingSearch_leftActionMode="showHamburger"-->
-        <!--app:floatingSearch_searchHint="Search..."-->
-        <!--app:floatingSearch_showSearchKey="false"-->
-        <!--app:floatingSearch_suggestionsListAnimDuration="250" />-->
-
-    <!--<com.mancj.materialsearchbar.MaterialSearchBar-->
-        <!--style="@style/CustomMaterialSearchBarTheme"-->
-        <!--app:mt_hint="家事国事天下事"-->
-        <!--app:mt_maxSuggestionsCount="10"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--app:mt_menuDividerEnabled="true"-->
-        <!--android:id="@+id/search_view" />-->
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize">
-
-        </androidx.appcompat.widget.Toolbar>
-    </com.google.android.material.appbar.AppBarLayout>
-
     <LinearLayout
-        android:layout_marginTop="50dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginTop="50dp"
         android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:context=".MainActivity">
@@ -75,8 +46,14 @@
 
     </LinearLayout>
 
-
-
+    <com.mancj.materialsearchbar.MaterialSearchBar
+        style="@style/CustomMaterialSearchBarTheme"
+        app:mt_hint="家事国事天下事"
+        app:mt_maxSuggestionsCount="10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:mt_menuDividerEnabled="true"
+        android:id="@+id/search_view" />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

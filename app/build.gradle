@@ -2,11 +2,11 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.mob.sdk'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 28
     defaultConfig {
         applicationId "com.example.newsapp"
-        minSdkVersion 28
-        targetSdkVersion 29
+        minSdkVersion 26
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -83,5 +83,5 @@ dependencies {
     implementation 'net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:2.3.0'
     implementation 'com.miguelcatalan:materialsearchview:1.4.0'
     implementation 'com.github.arimorty:floatingsearchview:2.1.1'
-    implementation 'com.github.mancj:MaterialSearchBar:0.8.2'
+    implementation project(':MaterialSearchBar')
 }

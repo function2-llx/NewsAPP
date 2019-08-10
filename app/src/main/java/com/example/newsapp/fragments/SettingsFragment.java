@@ -9,6 +9,9 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import com.example.newsapp.R;
 import com.example.newsapp.SettingsActivity;
+import com.example.newsapp.events.NightModeChangeEvent;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.Objects;
 
@@ -34,7 +37,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 }
 
                 restart();
-//                EventBus.getDefault().post(new NightModeChangeEvent());
+                EventBus.getDefault().post(new NightModeChangeEvent());
 
             }
             return super.onPreferenceTreeClick(preference);
@@ -45,7 +48,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
     private void restart() {
         startActivity(new Intent(getContext(), SettingsActivity.class));
-        Objects.requireNonNull(getActivity()).overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+        Objects.requireNonNull(getActivity()).overridePendingTransition(R.anim.fade_in, R.anim.fade_out_bar);
         getActivity().finish();
         //  recreate 仿佛有坑，慎用
         //  getActivity().recreate();
