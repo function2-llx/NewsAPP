@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Locale;
 
@@ -39,9 +38,7 @@ public class NewsDateTime {
     public String toString() {
         StringBuilder ret = new StringBuilder(date.toString());
         if (time != null) {
-//            if (time.getNano() != 0) throw new AssertionError();
-            ret.append(" ")
-                    .append(String.format(Locale.SIMPLIFIED_CHINESE, "%02d", time.getHour())).append(":")
+            ret.append(" ").append(String.format(Locale.SIMPLIFIED_CHINESE, "%02d", time.getHour())).append(":")
                     .append(String.format(Locale.SIMPLIFIED_CHINESE, "%02d", time.getMinute())).append(":")
                     .append(String.format(Locale.SIMPLIFIED_CHINESE, "%02d", time.getSecond()));
         }

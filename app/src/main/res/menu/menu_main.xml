@@ -7,12 +7,13 @@
         android:title="@string/action_settings"
         app:showAsAction="never" />
 
-    <item
-        android:id="@+id/action_search"
-        android:title="@string/action_search"
-        app:actionViewClass="androidx.appcompat.widget.SearchView"
-        app:showAsAction="ifRoom" />
-
+    <!--showAsAction 属性必须设为 always，否则无法监听关闭事件-->
+    <!--<item-->
+        <!--android:id="@+id/action_search"-->
+        <!--android:title="@string/action_search"-->
+        <!--android:orderInCategory="100"-->
+        <!--android:icon="@drawable/ic_action_action_search"-->
+        <!--app:showAsAction="always" />-->
     <item
         android:id="@+id/share_test"
         android:title="分享测试"
@@ -22,6 +23,4 @@
     <item
         android:id="@+id/news_test"
         android:title="来点新闻" />
-
-
 </menu>

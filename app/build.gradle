@@ -5,7 +5,7 @@ android {
     compileSdkVersion 29
     defaultConfig {
         applicationId "com.example.newsapp"
-        minSdkVersion 26
+        minSdkVersion 28
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -38,6 +38,13 @@ MobSDK {
                 callbackUri "http://www.sharesdk.cn"
                 shareByAppClient true
                 Enable true
+            }
+
+            Wechat {
+                Id 2
+                SortId 2
+                appId "wxe12f3153552d7412"
+                appSecret "27446fde797434dbadb925d3e1347fd5"
             }
         }
     }
@@ -72,4 +79,9 @@ dependencies {
 
     implementation 'com.yanzhenjie.nohttp:nohttp:1.1.11'
     implementation 'com.yanzhenjie.nohttp:okhttp:1.1.11'
+
+    implementation 'net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:2.3.0'
+    implementation 'com.miguelcatalan:materialsearchview:1.4.0'
+    implementation 'com.github.arimorty:floatingsearchview:2.1.1'
+    implementation 'com.github.mancj:MaterialSearchBar:0.8.2'
 }

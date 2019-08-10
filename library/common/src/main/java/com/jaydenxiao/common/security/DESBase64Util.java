@@ -142,7 +142,7 @@ public class DESBase64Util {
     }
  
     
-    /*public static void main(String[] args) throws NoSuchAlgorithmException, UnsupportedEncodingException   {
+    /*public static void menu_main(String[] args) throws NoSuchAlgorithmException, UnsupportedEncodingException   {
         String info = "收费水电费{phonsaffffffe:\"13729817965\"}";
         //生成密文
         String encodeInfo = encodeInfo(info);       

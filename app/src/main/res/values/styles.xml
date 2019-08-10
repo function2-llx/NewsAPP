@@ -22,6 +22,50 @@
         <item name="android:windowExitAnimation">@anim/fade_out</item>
     </style>
 
+    <!--<style name="MaterialSearchViewStyle">-->
+        <!--&lt;!&ndash; Background for the search bar &ndash;&gt;-->
+        <!--<item name="searchBackground">@color/colorPrimary</item>-->
+
+        <!--&lt;!&ndash; Change voice icon &ndash;&gt;-->
+        <!--<item name="searchVoiceIcon">@drawable/ic_action_voice_search_inverted</item>-->
+
+        <!--&lt;!&ndash; Change clear text icon &ndash;&gt;-->
+        <!--<item name="searchCloseIcon">@drawable/ic_action_navigation_close_inverted</item>-->
+
+        <!--&lt;!&ndash; Change up icon &ndash;&gt;-->
+        <!--<item name="searchBackIcon">@drawable/ic_action_navigation_arrow_back_inverted</item>-->
+
+        <!--&lt;!&ndash; Change icon for the suggestions &ndash;&gt;-->
+        <!--<item name="searchSuggestionIcon">@drawable/ic_suggestion</item>-->
+
+        <!--&lt;!&ndash; Change background for the suggestions list view &ndash;&gt;-->
+        <!--<item name="searchSuggestionBackground">@android:color/white</item>-->
+
+        <!--&lt;!&ndash; Change text color for edit text. This will also be the color of the cursor &ndash;&gt;-->
+        <!--&lt;!&ndash;<item name="android:textColor">@color/colorPrimaryDark</item>&ndash;&gt;-->
+
+        <!--&lt;!&ndash; Change hint text color for edit text &ndash;&gt;-->
+        <!--<item name="android:textColorHint">@color/colorPrimaryDark</item>-->
+
+        <!--&lt;!&ndash; Hint for edit text &ndash;&gt;-->
+        <!--<item name="android:hint">@string/search_hint</item>-->
+    <!--</style>-->
+
+    <!--<style name="CustomMaterialSearchBarTheme" parent="MaterialSearchBarLight">-->
+        <!--&lt;!&ndash;<item name="mt_searchBarColor">@color/searchBarPrimaryColor</item>&ndash;&gt;-->
+        <!--<item name="mt_dividerColor">@color/searchBarDividerColor</item>-->
+        <!--<item name="mt_navIconTint">@color/searchBarNavIconTintColor</item>-->
+        <!--<item name="mt_searchIconTint">@color/searchBarSearchIconTintColor</item>-->
+        <!--<item name="mt_clearIconTint">@color/searchBarClearIconTintColor</item>-->
+        <!--<item name="mt_menuIconTint">@color/searchBarMenuIconTintColor</item>-->
+        <!--<item name="mt_backIconTint">@color/searchBarBackIconTintColor</item>-->
+        <!--<item name="mt_textCursorTint">@color/searchBarCursorColor</item>-->
+        <!--<item name="mt_textColor">@color/searchBarTextColor</item>-->
+        <!--<item name="mt_hintColor">@color/searchBarHintColor</item>-->
+        <!--<item name="mt_placeholderColor">@color/searchBarPlaceholderColor</item>-->
+        <!--<item name="mt_highlightedTextColor">@color/searchBarTextHighlightColor</item>-->
+    <!--</style>-->
+
     <!--<set xmlns:android="http://schemas.android.com/apk/res/android">-->
         <!--<alpha-->
             <!--android:duration="1000"-->

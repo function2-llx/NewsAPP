@@ -2,9 +2,6 @@ package com.example.newsapp.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatDelegate;
-import androidx.preference.Preference;
-import androidx.preference.PreferenceFragmentCompat;
 
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.preference.Preference;
@@ -12,9 +9,6 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import com.example.newsapp.R;
 import com.example.newsapp.SettingsActivity;
-import com.example.newsapp.events.NightModeChangeEvent;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.Objects;
 
@@ -40,7 +34,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 }
 
                 restart();
-                EventBus.getDefault().post(new NightModeChangeEvent());
+//                EventBus.getDefault().post(new NightModeChangeEvent());
 
             }
             return super.onPreferenceTreeClick(preference);

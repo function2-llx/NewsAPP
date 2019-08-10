@@ -1,25 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:openDrawer="start">
+    android:id="@+id/container_main"
+    tools:context=".MainActivity">
 
-    <include
-        layout="@layout/app_bar_main"
+    <!--<com.arlib.floatingsearchview.FloatingSearchView-->
+        <!--android:id="@+id/search_view"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--app:floatingSearch_close_search_on_keyboard_dismiss="true"-->
+        <!--app:floatingSearch_leftActionMode="showHamburger"-->
+        <!--app:floatingSearch_searchHint="Search..."-->
+        <!--app:floatingSearch_showSearchKey="false"-->
+        <!--app:floatingSearch_suggestionsListAnimDuration="250" />-->
+
+    <!--<com.mancj.materialsearchbar.MaterialSearchBar-->
+        <!--style="@style/CustomMaterialSearchBarTheme"-->
+        <!--app:mt_hint="家事国事天下事"-->
+        <!--app:mt_maxSuggestionsCount="10"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--app:mt_menuDividerEnabled="true"-->
+        <!--android:id="@+id/search_view" />-->
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize">
 
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_view"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:fitsSystemWindows="true"
-        app:headerLayout="@layout/nav_header_main"
-        app:menu="@menu/activity_main_drawer" />
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
 
-</androidx.drawerlayout.widget.DrawerLayout>
+    <LinearLayout
+        android:layout_marginTop="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context=".MainActivity">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tab_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:tabGravity="fill"
+                app:tabMode="scrollable" />
+
+            <ImageView
+                android:id="@+id/subscribe"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="7"
+                android:contentDescription="频道管理"
+                android:scaleType="centerCrop"
+                android:src="@drawable/subscribe_arrow_down" />
+
+        </LinearLayout>
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+
+
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

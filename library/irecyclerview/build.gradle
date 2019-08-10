@@ -1,11 +1,11 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 28
 
     defaultConfig {
         minSdkVersion 26
-        targetSdkVersion 29
+        targetSdkVersion 28
         versionCode 3
         versionName "0.0.3"
         javaCompileOptions { annotationProcessorOptions { includeCompileClasspath = true } }
