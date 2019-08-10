@@ -20,6 +20,7 @@ import java.util.List;
 public class NewsApi {
     public interface Callback {
         void onNewsReceived(List<NewsBean> newsBeanList);
+        void onHandleException(Exception e);
     }
 
     public static void init() {
@@ -71,13 +72,20 @@ public class NewsApi {
         new Thread(() -> {
             FastJsonRequest request = params.toFastJsonRequest();
             Response<JSONObject> response = NoHttp.startRequestSync(request);
-            JSONObject json = response.get();
-            JSONArray newsJsonArray = json.getJSONArray("data");
-            List<NewsBean> newsBeanList = new ArrayList<>();
-            for (Object newsJson: newsJsonArray) {
-                newsBeanList.add(NewsBean.parse((JSONObject)newsJson));
+//            response.getException().printStackTrace();
+//            System.err.println(response.getException());
+//            response.getException()
+            if (response.getException() != null) {
+                handler.post(() -> callback.onHandleException(response.getException()));
+            } else {
+                JSONObject json = response.get();
+                JSONArray newsJsonArray = json.getJSONArray("data");
+                List<NewsBean> newsBeanList = new ArrayList<>();
+                for (Object newsJson: newsJsonArray) {
+                    newsBeanList.add(NewsBean.parse((JSONObject)newsJson));
+                }
+                handler.post(() -> callback.onNewsReceived(newsBeanList) );
             }
-            handler.post(() -> { callback.onNewsReceived(newsBeanList); });
         }).start();
     }
 }

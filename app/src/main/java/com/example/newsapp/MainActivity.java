@@ -10,7 +10,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +29,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.example.newsapp.adapters.SectionsPagerAdapter;
 import com.example.newsapp.api.NewsApi;
 import com.example.newsapp.bean.ChannelBean;
+import com.example.newsapp.bean.NewsBean;
 import com.example.newsapp.bean.NewsDateTime;
 import com.example.newsapp.events.NightModeChangeEvent;
 import com.google.android.material.navigation.NavigationView;
@@ -38,6 +38,7 @@ import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.ortiz.touchview.TouchImageView;
 import com.trs.channellib.channel.channel.helper.ChannelDataHelper;
 import com.wildma.pictureselector.PictureSelector;
+import com.yanzhenjie.nohttp.error.NetworkError;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -170,11 +171,21 @@ public class MainActivity extends DeFaultActivity
                                         .setCategory("科技")
                                         .setStartDate(new NewsDateTime(2019, 7, 1))
                                         .setEndDate(new NewsDateTime(2019, 7, 3)),
-                                newsBeanList -> {
-                                    if (newsBeanList.isEmpty()) {
-                                        Toast.makeText(MainActivity.this, "莫得新闻了，等哈再来哈", Toast.LENGTH_SHORT).show();
-                                    } else {
-                                        Toast.makeText(MainActivity.this, newsBeanList.get(0).getTitle(), Toast.LENGTH_SHORT).show();
+                                new NewsApi.Callback() {
+                                    @Override
+                                    public void onNewsReceived(List<NewsBean> newsBeanList) {
+                                        if (newsBeanList.isEmpty()) {
+                                            Toast.makeText(MainActivity.this, "莫得新闻了，等哈再来哈", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            Toast.makeText(MainActivity.this, newsBeanList.get(0).getTitle(), Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onHandleException(Exception e) {
+                                        if (e instanceof NetworkError) {
+                                            Toast.makeText(MainActivity.this, "莫得网络啦，等下再来吧", Toast.LENGTH_SHORT).show();
+                                        }
                                     }
                                 }
                         );
@@ -306,52 +317,52 @@ public class MainActivity extends DeFaultActivity
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.menu_main, menu);
+//        return true;
+//    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_settings:
-                startSettings();
-            break;
-
-//            case R.id.action_search:
-//                Toast.makeText(this, "search view open", Toast.LENGTH_SHORT).show();
-//                viewPager.setCurrentItem(SectionsPagerAdapter.SEARCH_PAGE_POS);
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()) {
+//            case R.id.action_settings:
+//                startSettings();
 //            break;
-
-            case R.id.share_test:
-                OnekeyShare oks = new OnekeyShare();
-                oks.disableSSOWhenAuthorize();
-                oks.setTitle("分享测试");
-                oks.setText("咕鸽快来写代码");
-                oks.show(this);
-            break;
-
-            case R.id.news_test:
-                NewsApi.requestNews(new NewsApi.SearchParams()
-                        .setSize(20)
-                        .setWords("咕咕")
-                        .setCategory("科技")
-                        .setStartDate(new NewsDateTime(2019, 7, 1))
-                        .setEndDate(new NewsDateTime(2019, 7, 3)),
-                    newsBeanList -> {
-                        if (newsBeanList.isEmpty()) {
-                            Toast.makeText(this, "莫得新闻了，等哈再来哈", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(this, newsBeanList.get(0).getTitle(), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                );
-            break;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
+//
+////            case R.id.action_search:
+////                Toast.makeText(this, "search view open", Toast.LENGTH_SHORT).show();
+////                viewPager.setCurrentItem(SectionsPagerAdapter.SEARCH_PAGE_POS);
+////            break;
+//
+//            case R.id.share_test:
+//                OnekeyShare oks = new OnekeyShare();
+//                oks.disableSSOWhenAuthorize();
+//                oks.setTitle("分享测试");
+//                oks.setText("咕鸽快来写代码");
+//                oks.show(this);
+//            break;
+//
+//            case R.id.news_test:
+//                NewsApi.requestNews(new NewsApi.SearchParams()
+//                        .setSize(20)
+//                        .setWords("咕咕")
+//                        .setCategory("科技")
+//                        .setStartDate(new NewsDateTime(2019, 7, 1))
+//                        .setEndDate(new NewsDateTime(2019, 7, 3)),
+//                    newsBeanList -> {
+//                        if (newsBeanList.isEmpty()) {
+//                            Toast.makeText(this, "莫得新闻了，等哈再来哈", Toast.LENGTH_SHORT).show();
+//                        } else {
+//                            Toast.makeText(this, newsBeanList.get(0).getTitle(), Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+//                );
+//            break;
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
 
     private void startSettings() {
         Intent intent = new Intent(this, SettingsActivity.class);
