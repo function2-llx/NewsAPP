@@ -53,7 +53,7 @@ MobSDK {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.appcompat:appcompat:1.1.0-rc01'
+    implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation group: 'androidx.preference', name: 'preference', version: '1.0.0' //preferences
     implementation 'androidx.legacy:legacy-preference-v14:1.0.0' //material design preferences
     implementation 'com.google.android.material:material:1.0.0'
