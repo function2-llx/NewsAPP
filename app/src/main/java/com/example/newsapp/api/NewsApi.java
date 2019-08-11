@@ -23,10 +23,6 @@ public class NewsApi {
         void onHandleException(Exception e);
     }
 
-    public static void init() {
-
-    }
-
     static class FastJsonRequest extends Request<JSONObject> {
 
         public FastJsonRequest(String url) {
@@ -41,9 +37,10 @@ public class NewsApi {
         @Override
         public JSONObject parseResponse(Headers responseHeaders, byte[] responseBody) {
             String result = StringRequest.parseResponseString(responseHeaders, responseBody);
-            return JSON.parseObject(result); // StringRequest就是少了这句话而已。
+            return JSON.parseObject(result);
         }
     }
+
     public static class SearchParams {
         private int size = 10;
         private NewsDateTime start, end;
@@ -72,9 +69,6 @@ public class NewsApi {
         new Thread(() -> {
             FastJsonRequest request = params.toFastJsonRequest();
             Response<JSONObject> response = NoHttp.startRequestSync(request);
-//            response.getException().printStackTrace();
-//            System.err.println(response.getException());
-//            response.getException()
             if (response.getException() != null) {
                 handler.post(() -> callback.onHandleException(response.getException()));
             } else {

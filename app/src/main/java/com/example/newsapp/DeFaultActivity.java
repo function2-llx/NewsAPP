@@ -3,10 +3,12 @@ package com.example.newsapp;
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.newsapp.bean.ChannelBean;
+import com.example.newsapp.database.AppDatabase;
 import com.githang.statusbar.StatusBarCompat;
 
 import java.util.ArrayList;
@@ -36,5 +38,9 @@ public class DeFaultActivity extends AppCompatActivity {
             ret.add(new ChannelBean(name, false));
         }
         return ret;
+    }
+
+    protected DataRepository getDataRepository() {
+        return DataRepository.getInstance(AppDatabase.getInstance(getApplicationContext()));
     }
 }

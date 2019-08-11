@@ -8,8 +8,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +18,6 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -35,6 +32,7 @@ import com.example.newsapp.events.NightModeChangeEvent;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.mancj.materialsearchbar.MaterialSearchBar;
+import com.mancj.materialsearchbar.adapter.SuggestionsAdapter;
 import com.ortiz.touchview.TouchImageView;
 import com.trs.channellib.channel.channel.helper.ChannelDataHelper;
 import com.wildma.pictureselector.PictureSelector;
@@ -48,7 +46,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -108,22 +105,56 @@ public class MainActivity extends DeFaultActivity
 
     void initSearchView() {
         searchBar = findViewById(R.id.search_view);
-//        searchBar.setHint("家事国事天下事");
         searchBar.inflateMenu(R.menu.menu_main);
-        List<String> list = new ArrayList<>();
-        list.add("233");
-        list.add("244");
-        list.add("3125");
-        list.add("woshiguaizong");
-        searchBar.setLastSuggestions(list);
+
+        searchBar.setOnSearchActionListener(new MaterialSearchBar.OnSearchActionListener() {
+            @Override
+            public void onSearchStateChanged(boolean enabled) {
+
+            }
+
+            @Override
+            public void onSearchConfirmed(CharSequence text) {
+                if (text != null && text.length() > 0) {
+                    getDataRepository().insertSearchRecords(text.toString());
+                }
+            }
+
+            @Override
+            public void onButtonClicked(int buttonCode) {
+                switch (buttonCode) {
+
+                }
+            }
+        });
+
+        searchBar.setSuggestionsClickListener(new SuggestionsAdapter.OnItemViewClickListener() {
+            @Override
+            public void onItemClick(int position, View v) {
+                searchBar.onItemClick(position, v);
+            }
+
+            @Override
+            public void onItemDelete(int position, View v) {
+                searchBar.onItemDelete(position, v);
+                if (v.getTag() instanceof String) {
+                    getDataRepository().deleteSearchRecords(v.getTag().toString());
+                }
+            }
+        });
+
+
+
+        getDataRepository().getAllSearchRecords(records -> searchBar.setLastSuggestions(records));
+//        searchBar.setLastSuggestions(records);
 
 //        searchBar.setSuggestionsClickListener(new SuggestionsAdapter.OnItemViewClickListener() {
 //            @Override
-//            public void OnItemClickListener(int position, View v) {
+//            public void onItemClick(int position, View v) {
 //            }
 //
 //            @Override
-//            public void OnItemDeleteListener(int position, View v) {
+//            public void onItemDelete(int position, View v) {
 ////                System.err.print(position);
 //
 //            }
@@ -131,68 +162,65 @@ public class MainActivity extends DeFaultActivity
 
 
 
-        searchBar.addTextChangeListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//        searchBar.addTextChangeListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//
+//            }
+//        });
 
-            }
+        searchBar.getMenu().setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.action_settings:
+                    startSettings();
+                break;
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                case R.id.share_test:
+                    OnekeyShare oks = new OnekeyShare();
+                    oks.disableSSOWhenAuthorize();
+                    oks.setTitle("分享测试");
+                    oks.setText("咕鸽快来写代码");
+                    oks.show(MainActivity.this);
+                break;
 
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
-        searchBar.getMenu().setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.action_settings:
-                        startSettings();
-                    break;
-
-                    case R.id.share_test:
-                        OnekeyShare oks = new OnekeyShare();
-                        oks.disableSSOWhenAuthorize();
-                        oks.setTitle("分享测试");
-                        oks.setText("咕鸽快来写代码");
-                        oks.show(MainActivity.this);
-                    break;
-
-                    case R.id.news_test:
-                        NewsApi.requestNews(new NewsApi.SearchParams()
-                                        .setSize(20)
-                                        .setWords("咕咕")
-                                        .setCategory("科技")
-                                        .setStartDate(new NewsDateTime(2019, 7, 1))
-                                        .setEndDate(new NewsDateTime(2019, 7, 3)),
-                                new NewsApi.Callback() {
-                                    @Override
-                                    public void onNewsReceived(List<NewsBean> newsBeanList) {
-                                        if (newsBeanList.isEmpty()) {
-                                            Toast.makeText(MainActivity.this, "莫得新闻了，等哈再来哈", Toast.LENGTH_SHORT).show();
-                                        } else {
-                                            Toast.makeText(MainActivity.this, newsBeanList.get(0).getTitle(), Toast.LENGTH_SHORT).show();
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onHandleException(Exception e) {
-                                        if (e instanceof NetworkError) {
-                                            Toast.makeText(MainActivity.this, "莫得网络啦，等下再来吧", Toast.LENGTH_SHORT).show();
-                                        }
+                case R.id.news_test:
+                    NewsApi.requestNews(new NewsApi.SearchParams()
+                                    .setSize(20)
+                                    .setWords("咕咕")
+                                    .setCategory("科技")
+                                    .setStartDate(new NewsDateTime(2019, 7, 1))
+                                    .setEndDate(new NewsDateTime(2019, 7, 3)),
+                            new NewsApi.Callback() {
+                                @Override
+                                public void onNewsReceived(List<NewsBean> newsBeanList) {
+                                    if (newsBeanList.isEmpty()) {
+                                        Toast.makeText(MainActivity.this, "莫得新闻了，等哈再来哈", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(MainActivity.this, newsBeanList.get(0).getTitle(), Toast.LENGTH_SHORT).show();
                                     }
                                 }
-                        );
-                        break;
-                }
-                return true;
+
+                                @Override
+                                public void onHandleException(Exception e) {
+                                    if (e instanceof NetworkError) {
+                                        Toast.makeText(MainActivity.this, "莫得网络啦，等下再来吧", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            }
+                    );
+                    break;
             }
+            return true;
         });
     }
 

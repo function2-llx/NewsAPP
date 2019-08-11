@@ -206,7 +206,6 @@ public class MaterialSearchBar extends RelativeLayout implements View.OnClickLis
         navIcon.setOnClickListener(this);
 
         postSetup();
-
     }
 
     /**
@@ -1025,14 +1024,14 @@ public class MaterialSearchBar extends RelativeLayout implements View.OnClickLis
     }
 
     @Override
-    public void OnItemClickListener(int position, View v) {
+    public void onItemClick(int position, View v) {
         if (v.getTag() instanceof String) {
             searchEdit.setText((String) v.getTag());
         }
     }
 
     @Override
-    public void OnItemDeleteListener(int position, View v) {
+    public void onItemDelete(int position, View v) {
         if (v.getTag() instanceof String) {
             /*Order of two line should't be change,
             because should calculate the height of item first*/
