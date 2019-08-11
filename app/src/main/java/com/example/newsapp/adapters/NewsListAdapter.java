@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import com.aspsine.irecyclerview.universaladapter.ViewHolderHelper;
 import com.aspsine.irecyclerview.universaladapter.recyclerview.MultiItemRecycleViewAdapter;
 import com.aspsine.irecyclerview.universaladapter.recyclerview.MultiItemTypeSupport;
+import com.example.newsapp.NewsActivity;
 import com.example.newsapp.NewsDetailActivity;
 import com.example.newsapp.NewsPhotoDetailActivity;
 import com.example.newsapp.R;
@@ -90,7 +91,7 @@ public class NewsListAdapter extends MultiItemRecycleViewAdapter<NewsSummary>
         holder.setOnClickListener(R.id.rl_root, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                NewsDetailActivity.startAction(mContext,holder.getView(R.id.news_summary_photo_iv),newsSummary.getPostid(),newsSummary.getImgsrc());
+                NewsActivity.startAction(mContext,holder.getView(R.id.news_summary_photo_iv),newsSummary.getPostid(),newsSummary.getImgsrc());
             }
         });
     }
