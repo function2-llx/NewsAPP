@@ -19,7 +19,9 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.content.ContextCompat;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.newsapp.bean.AppConstant;
+import com.example.newsapp.bean.NewsBean;
 import com.example.newsapp.bean.NewsDetail;
 import com.example.newsapp.contract.NewsDetailContract;
 import com.example.newsapp.models.NewsDetailModel;
@@ -66,16 +68,12 @@ public class NewsActivity extends DefaultSwipeBackActivity {
     private String mNewsTitle;
     private String mShareLink;
 
-    /**
-     * 入口
-     *
-     * @param mContext
-     * @param postId
-     */
-    public static void startAction(Context mContext, View view,String postId, String imgUrl) {
+
+    public static void startAction(Context mContext, View view, NewsBean newsbean, String imgUrl) {
         Intent intent = new Intent(mContext, NewsActivity.class);
-        intent.putExtra(AppConstant.NEWS_POST_ID, postId);
+//        intent.putExtra(AppConstant.NEWS_POST_ID, postId);
         intent.putExtra(AppConstant.NEWS_IMG_RES, imgUrl);
+        intent.putExtra("NewsBean", newsbean.getNewsJson().toString());
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             ActivityOptions options = ActivityOptions
@@ -96,6 +94,7 @@ public class NewsActivity extends DefaultSwipeBackActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_news_detail);
         postId = getIntent().getStringExtra(AppConstant.NEWS_POST_ID);
+        NewsBean newsBean = NewsBean.parse((JSONObject)JSONObject.parse(getIntent().getStringExtra("NewsBean")));
         toolbarLayout = findViewById(R.id.toolbar_layout);
         toolbar = findViewById(R.id.toolbar);
         appBar = findViewById(R.id.app_bar);
@@ -152,10 +151,10 @@ public class NewsActivity extends DefaultSwipeBackActivity {
         });
 
 //        mShareLink = newsDetail.getShareLink();
-        mNewsTitle = postId;
+        mNewsTitle = newsBean.getTitle();
 //        String newsSource = newsDetail.getSource();
 //        String newsTime = TimeUtil.formatDate(newsDetail.getPtime());
-        String newsBody = postId;
+        String newsBody = newsBean.getContent();
 //        String NewsImgSrc = getImgSrcs(newsDetail);
 
         setToolBarLayout(mNewsTitle);

@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 
 import com.aspsine.irecyclerview.IRecyclerView;
@@ -19,18 +20,23 @@ import com.aspsine.irecyclerview.OnRefreshListener;
 import com.aspsine.irecyclerview.animation.ScaleInAnimation;
 import com.aspsine.irecyclerview.widget.LoadMoreFooterView;
 
+import com.example.newsapp.MainActivity;
 import com.example.newsapp.R;
 import com.example.newsapp.adapters.NewsListAdapter;
 import com.example.newsapp.api.Api;
 import com.example.newsapp.api.ApiConstants;
 import com.example.newsapp.api.HostType;
+import com.example.newsapp.api.NewsApi;
 import com.example.newsapp.bean.AppConstant;
+import com.example.newsapp.bean.NewsBean;
+import com.example.newsapp.bean.NewsDateTime;
 import com.example.newsapp.bean.NewsSummary;
 import com.example.newsapp.adapters.NewListAdapter;
 
 import com.jaydenxiao.common.baserx.RxSchedulers;
 import com.jaydenxiao.common.commonutils.TimeUtil;
 import com.jaydenxiao.common.commonwidget.LoadingTip;
+import com.yanzhenjie.nohttp.error.NetworkError;
 
 
 import java.util.ArrayList;
@@ -56,7 +62,7 @@ public class NewsListFragment extends Fragment implements OnRefreshListener, OnL
     @Bind(R.id.loadedTip)
     LoadingTip loadedTip;
     private NewsListAdapter newsListAdapter;
-    private List<NewsSummary> datas = new ArrayList<>();
+    private List<NewsBean> datas = new ArrayList<>();
 
     private String mNewsId;
     private String mNewsType;
@@ -141,24 +147,49 @@ public class NewsListFragment extends Fragment implements OnRefreshListener, OnL
     }
 
     public void getNewsListDataRequest(String type, String id, int startPage, boolean isOnRefresh, boolean isOnLoadMore) {
-        List<NewsSummary> newsSummaries = new ArrayList<NewsSummary>();
-        for (int i = 0; i < 20; ++i) {
-            NewsSummary a = new NewsSummary();
-            a.setPostid("" + i);
-            String t = "";
-            if (isOnRefresh) {
-                t = " fresh";
-            }
-            if (isOnLoadMore) {
-                t = " loadMore";
-            }
-            a.setTitle("Title" + i + t);
-            newsSummaries.add(a);
-        }
-        returnNewsListData(newsSummaries);
+        NewsApi.requestNews(new NewsApi.SearchParams()
+                        .setSize(20)
+                        .setWords("")
+                        .setCategory(getChannel().equals("首页")? "" : getChannel())
+                        .setStartDate(new NewsDateTime(2019, 7, 1))
+                        .setEndDate(new NewsDateTime(2019, 7, 3)),
+                new NewsApi.Callback() {
+                    @Override
+                    public void onNewsReceived(List<NewsBean> newsBeanList) {
+                        returnNewsListData(newsBeanList);
+//                        if (newsBeanList.isEmpty()) {
+//                            Toast.makeText(MainActivity.this, "莫得新闻了，等哈再来哈", Toast.LENGTH_SHORT).show();
+//                        } else {
+//                            Toast.makeText(MainActivity.this, newsBeanList.get(0).getTitle(), Toast.LENGTH_SHORT).show();
+//                        }
+                    }
+
+                    @Override
+                    public void onHandleException(Exception e) {
+//                        if (e instanceof NetworkError) {
+//                            Toast.makeText(MainActivity.this, "莫得网络啦，等下再来吧", Toast.LENGTH_SHORT).show();
+//                        }
+                    }
+                }
+        );
+//        List<NewsSummary> newsSummaries = new ArrayList<NewsSummary>();
+//        for (int i = 0; i < 20; ++i) {
+//            NewsSummary a = new NewsSummary();
+//            a.setPostid("" + i);
+//            String t = "";
+//            if (isOnRefresh) {
+//                t = " fresh";
+//            }
+//            if (isOnLoadMore) {
+//                t = " loadMore";
+//            }
+//            a.setTitle("Title" + i + t);
+//            newsSummaries.add(a);
+//        }
+//        returnNewsListData(newsSummaries);
     }
 
-    public void returnNewsListData(List<NewsSummary> newsSummaries) {
+    public void returnNewsListData(List<NewsBean> newsSummaries) {
         if (newsSummaries != null) {
             mStartPage += 20;
             if (newsListAdapter.getPageBean().isRefresh()) {
