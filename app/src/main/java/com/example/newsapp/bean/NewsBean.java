@@ -9,7 +9,7 @@ public class NewsBean {
     private JSONObject newsJson;
 
     private NewsBean() {}
-
+    public JSONObject getNewsJson() { return newsJson; }
     public String getTitle() { return title; }
     public String getCategory() { return category; }
     public String getContent() { return content; }
