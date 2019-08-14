@@ -144,6 +144,7 @@ public class NewsListFragment extends Fragment implements OnRefreshListener, OnL
         List<NewsSummary> newsSummaries = new ArrayList<NewsSummary>();
         for (int i = 0; i < 20; ++i) {
             NewsSummary a = new NewsSummary();
+            a.setPostid("" + i);
             String t = "";
             if (isOnRefresh) {
                 t = " fresh";

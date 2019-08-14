@@ -18,7 +18,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="?attr/dayNightTwoTextColor"
             android:textSize="@dimen/font_small"
             tools:text="澎湃新闻 06-06 17:24"/>
         <!--        android:layout_below="@id/news_detail_title_tv"
