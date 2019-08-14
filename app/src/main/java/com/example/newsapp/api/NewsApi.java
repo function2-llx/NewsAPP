@@ -1,5 +1,6 @@
 package com.example.newsapp.api;
 
+import android.graphics.Bitmap;
 import android.os.Handler;
 
 import com.alibaba.fastjson.JSON;
@@ -80,6 +81,25 @@ public class NewsApi {
                 }
                 handler.post(() -> callback.onNewsReceived(newsBeanList) );
             }
+        }).start();
+    }
+
+
+    public interface ImageCallback {
+        void onReceived(Bitmap bitmap);
+        void onException(Exception e);
+    }
+
+    public static void requestImage(String url, ImageCallback callback) {
+        Handler handler = new Handler();
+        new Thread(() -> {
+            Request<Bitmap> request = NoHttp.createImageRequest(url);
+            Response<Bitmap> response = NoHttp.startRequestSync(request);
+            if (response.getException() != null) {
+                handler.post(() -> callback.onException(response.getException()));
+            }
+            Bitmap bitmap = response.get();
+            handler.post(() -> callback.onReceived(bitmap));
         }).start();
     }
 }

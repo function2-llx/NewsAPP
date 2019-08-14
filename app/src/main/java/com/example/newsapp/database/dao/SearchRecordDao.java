@@ -12,7 +12,7 @@ import java.util.List;
 import static androidx.room.OnConflictStrategy.REPLACE;
 
 @Dao
-public interface SearchHistoryDao {
+public interface SearchRecordDao {
     @Insert(onConflict = REPLACE)
     void insert(SearchRecord... records);
 

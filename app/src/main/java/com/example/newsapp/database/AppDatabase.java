@@ -6,7 +6,7 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-import com.example.newsapp.database.dao.SearchHistoryDao;
+import com.example.newsapp.database.dao.SearchRecordDao;
 import com.example.newsapp.database.entity.SearchRecord;
 
 
@@ -14,7 +14,7 @@ import com.example.newsapp.database.entity.SearchRecord;
 public abstract class AppDatabase extends RoomDatabase {
     private static volatile AppDatabase instance = null;
 
-    public abstract SearchHistoryDao searchHistoryDao();
+    public abstract SearchRecordDao searchHistoryDao();
 
     public static AppDatabase getInstance(final Context context) {
         if (instance == null) {
