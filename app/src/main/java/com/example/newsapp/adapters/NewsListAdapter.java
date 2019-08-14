@@ -1,6 +1,7 @@
 package com.example.newsapp.adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import com.example.newsapp.NewsActivity;
 import com.example.newsapp.NewsDetailActivity;
 import com.example.newsapp.NewsPhotoDetailActivity;
 import com.example.newsapp.R;
+import com.example.newsapp.api.NewsApi;
 import com.example.newsapp.bean.AppApplication;
 import com.example.newsapp.bean.NewsPhotoDetail;
 import com.example.newsapp.bean.NewsBean;
@@ -76,16 +78,29 @@ public class NewsListAdapter extends MultiItemRecycleViewAdapter<NewsBean>
         String title = newsBean.getTitle();
         String ptime = "";//newsSummary.getPtime();
 //        String digest = newsSummary.getDigest();
-//        String imgSrc = newsSummary.getImgsrc();
 
         holder.setText(R.id.news_summary_title_tv,title);
         holder.setText(R.id.news_summary_ptime_tv,ptime);
-//        holder.setText(R.id.news_summary_digest_tv,digest);
-//        holder.setImageUrl(R.id.news_summary_photo_iv,imgSrc);
+        holder.setText(R.id.news_summary_digest_tv,newsBean.getContent());
+        if (newsBean.getImageUrls().size() > 0) {
+            String url = newsBean.getImageUrls().get(0);
+            NewsApi.requestImage(newsBean.getImageUrls().get(0), new NewsApi.ImageCallback() {
+                @Override
+                public void onReceived(Bitmap bitmap) {
+                    holder.setImageBitmap(R.id.news_summary_photo_iv, bitmap);
+                }
+
+                @Override
+                public void onException(Exception e) {
+
+                }
+            });
+        }
+
         holder.setOnClickListener(R.id.rl_root, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                NewsActivity.startAction(mContext,holder.getView(R.id.news_summary_photo_iv),newsBean, "");
+                NewsActivity.startAction(mContext,holder.getView(R.id.news_summary_photo_iv),newsBean);
             }
         });
     }

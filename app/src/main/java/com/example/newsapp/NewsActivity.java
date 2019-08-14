@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.content.ContextCompat;
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.newsapp.api.NewsApi;
 import com.example.newsapp.bean.AppConstant;
 import com.example.newsapp.bean.NewsBean;
 import com.example.newsapp.bean.NewsDetail;
@@ -36,6 +38,7 @@ import com.jaydenxiao.common.commonutils.TimeUtil;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -69,10 +72,9 @@ public class NewsActivity extends DefaultSwipeBackActivity {
     private String mShareLink;
 
 
-    public static void startAction(Context mContext, View view, NewsBean newsbean, String imgUrl) {
+    public static void startAction(Context mContext, View view, NewsBean newsbean) {
         Intent intent = new Intent(mContext, NewsActivity.class);
 //        intent.putExtra(AppConstant.NEWS_POST_ID, postId);
-        intent.putExtra(AppConstant.NEWS_IMG_RES, imgUrl);
         intent.putExtra("NewsBean", newsbean.getNewsJson().toString());
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -103,6 +105,22 @@ public class NewsActivity extends DefaultSwipeBackActivity {
         progressBar = findViewById(R.id.progress_bar);
         newsDetailPhotoIv = findViewById(R.id.news_detail_photo_iv);
         maskView = findViewById(R.id.mask_view);
+        ImageView imageView = findViewById(R.id.news_detail_photo_iv);
+
+        if (newsBean.getImageUrls().size() > 0) {
+            NewsApi.requestImage(newsBean.getImageUrls().get(0), new NewsApi.ImageCallback() {
+                @Override
+                public void onReceived(Bitmap bitmap) {
+                    imageView.setImageBitmap(bitmap);
+                }
+
+                @Override
+                public void onException(Exception e) {
+
+                }
+            });
+
+        }
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -155,7 +173,7 @@ public class NewsActivity extends DefaultSwipeBackActivity {
 //        String newsSource = newsDetail.getSource();
 //        String newsTime = TimeUtil.formatDate(newsDetail.getPtime());
         String newsBody = newsBean.getContent();
-//        String NewsImgSrc = getImgSrcs(newsDetail);
+        String NewsImgSrc = newsBean.getImageUrls().size() > 0? newsBean.getImageUrls().get(0) : "";
 
         setToolBarLayout(mNewsTitle);
         //mNewsDetailTitleTv.setText(newsTitle);
@@ -269,16 +287,16 @@ public class NewsActivity extends DefaultSwipeBackActivity {
 //                }));
 //    }
 
-//    private void setBody(NewsDetail newsDetail, String newsBody) {
-//        int imgTotal = newsDetail.getImg().size();
-//        if (isShowBody(newsBody, imgTotal)) {
-////              mNewsDetailBodyTv.setMovementMethod(LinkMovementMethod.getInstance());//加这句才能让里面的超链接生效,实测经常卡机崩溃
-//            mUrlImageGetter = new URLImageGetter(newsDetailBodyTv, newsBody, imgTotal);
-//            newsDetailBodyTv.setText(Html.fromHtml(newsBody, mUrlImageGetter, null));
-//        } else {
-//            newsDetailBodyTv.setText(Html.fromHtml(newsBody));
-//        }
-//    }
+    private void setBody(NewsDetail newsDetail, String newsBody) {
+        int imgTotal = newsDetail.getImg().size();
+        if (isShowBody(newsBody, imgTotal)) {
+//              mNewsDetailBodyTv.setMovementMethod(LinkMovementMethod.getInstance());//加这句才能让里面的超链接生效,实测经常卡机崩溃
+            mUrlImageGetter = new URLImageGetter(newsDetailBodyTv, newsBody, imgTotal);
+            newsDetailBodyTv.setText(Html.fromHtml(newsBody, mUrlImageGetter, null));
+        } else {
+            newsDetailBodyTv.setText(Html.fromHtml(newsBody));
+        }
+    }
 
     private void setBody(String newsBody) {
         newsDetailBodyTv.setText(Html.fromHtml(newsBody));
