@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/dayNightBackground"
     android:orientation="vertical">
 
     <com.jaydenxiao.common.commonwidget.NormalTitleBar
@@ -15,14 +14,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ntb"
-        android:background="?attr/dayNightBackground"
         android:gravity="left|top"
         android:hint="你此刻的心情..."
 
         android:maxLines="6"
         android:minLines="5"
         android:padding="15dp"
-        android:textColor="?attr/dayNightOneTextColor"
         android:textSize="@dimen/font_normal2" />
 
     <View
@@ -53,6 +50,5 @@
         android:gravity="center"
         android:padding="13dp"
         android:text="提交"
-        android:textColor="?attr/dayNightOneTextColor"
         android:textSize="@dimen/font_normal" />
 </RelativeLayout>

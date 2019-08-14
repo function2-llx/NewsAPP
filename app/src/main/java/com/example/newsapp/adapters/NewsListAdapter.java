@@ -9,13 +9,14 @@ import android.widget.LinearLayout;
 import com.aspsine.irecyclerview.universaladapter.ViewHolderHelper;
 import com.aspsine.irecyclerview.universaladapter.recyclerview.MultiItemRecycleViewAdapter;
 import com.aspsine.irecyclerview.universaladapter.recyclerview.MultiItemTypeSupport;
+import com.example.newsapp.NewsActivity;
 import com.example.newsapp.NewsDetailActivity;
 import com.example.newsapp.NewsPhotoDetailActivity;
 import com.example.newsapp.R;
 import com.example.newsapp.bean.AppApplication;
 import com.example.newsapp.bean.NewsPhotoDetail;
 import com.example.newsapp.bean.NewsSummary;
-import com.jaydenxiao.common.commonutils.DisplayUtil;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,36 +37,39 @@ public class NewsListAdapter extends MultiItemRecycleViewAdapter<NewsSummary>
 
             @Override
             public int getLayoutId(int type) {
-               if(type==TYPE_PHOTO_ITEM){
-                   return R.layout.item_news_photo;
-               }else{
-                   return R.layout.item_news;
-               }
+                return R.layout.item_news;
+//               if(type==TYPE_PHOTO_ITEM){
+//                   return R.layout.item_news_photo;
+//               }else{
+//                   return R.layout.item_news;
+//               }
             }
 
             @Override
             public int getItemViewType(int position, NewsSummary msg)
             {
-                if (!TextUtils.isEmpty(msg.getDigest()))
-                {
-                    return TYPE_ITEM;
-                }
-                return TYPE_PHOTO_ITEM;
+                return TYPE_ITEM;
+//                if (!TextUtils.isEmpty(msg.getDigest()))
+//                {
+//                    return TYPE_ITEM;
+//                }
+//                return TYPE_PHOTO_ITEM;
             }
         });
     }
 
     @Override
     public void convert(ViewHolderHelper holder, NewsSummary newsSummary) {
-        switch (holder.getLayoutId())
-        {
-            case R.layout.item_news:
-                setItemValues(holder,newsSummary,getPosition(holder));
-                break;
-            case R.layout.item_news_photo:
-                setPhotoItemValues(holder,newsSummary,getPosition(holder));
-                break;
-        }
+        setItemValues(holder,newsSummary,getPosition(holder));
+//        switch (holder.getLayoutId())
+//        {
+//            case R.layout.item_news:
+//                setItemValues(holder,newsSummary,getPosition(holder));
+//                break;
+//            case R.layout.item_news_photo:
+//                setPhotoItemValues(holder,newsSummary,getPosition(holder));
+//                break;
+//        }
     }
 
     /**
@@ -85,12 +89,12 @@ public class NewsListAdapter extends MultiItemRecycleViewAdapter<NewsSummary>
 
         holder.setText(R.id.news_summary_title_tv,title);
         holder.setText(R.id.news_summary_ptime_tv,ptime);
-        holder.setText(R.id.news_summary_digest_tv,digest);
-        holder.setImageUrl(R.id.news_summary_photo_iv,imgSrc);
+//        holder.setText(R.id.news_summary_digest_tv,digest);
+//        holder.setImageUrl(R.id.news_summary_photo_iv,imgSrc);
         holder.setOnClickListener(R.id.rl_root, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                NewsDetailActivity.startAction(mContext,holder.getView(R.id.news_summary_photo_iv),newsSummary.getPostid(),newsSummary.getImgsrc());
+                NewsActivity.startAction(mContext,holder.getView(R.id.news_summary_photo_iv),newsSummary.getPostid(),newsSummary.getImgsrc());
             }
         });
     }
@@ -102,18 +106,18 @@ public class NewsListAdapter extends MultiItemRecycleViewAdapter<NewsSummary>
      * @param position
      */
     private void setPhotoItemValues(ViewHolderHelper holder, final NewsSummary newsSummary, int position) {
-        String title = newsSummary.getTitle();
-        String ptime = newsSummary.getPtime();
-        holder.setText(R.id.news_summary_title_tv,title);
-        holder.setText(R.id.news_summary_ptime_tv,ptime);
-        setImageView(holder, newsSummary);
-        holder.setOnClickListener(R.id.ll_root, new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                NewsPhotoDetailActivity.startAction(mContext,getPhotoDetail(newsSummary));
-            }
-        });
-    }
+            String title = newsSummary.getTitle();
+            String ptime = newsSummary.getPtime();
+            holder.setText(R.id.news_summary_title_tv,title);
+            holder.setText(R.id.news_summary_ptime_tv,ptime);
+            setImageView(holder, newsSummary);
+            holder.setOnClickListener(R.id.ll_root, new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    NewsPhotoDetailActivity.startAction(mContext,getPhotoDetail(newsSummary));
+                }
+            });
+        }
     private NewsPhotoDetail getPhotoDetail( NewsSummary newsSummary) {
         NewsPhotoDetail newsPhotoDetail = new NewsPhotoDetail();
         newsPhotoDetail.setTitle(newsSummary.getTitle());
@@ -148,9 +152,12 @@ public class NewsListAdapter extends MultiItemRecycleViewAdapter<NewsSummary>
     }
 
     private void setImageView(ViewHolderHelper holder, NewsSummary newsSummary) {
-        int PhotoThreeHeight = (int) DisplayUtil.dip2px(90);
-        int PhotoTwoHeight = (int) DisplayUtil.dip2px(120);
-        int PhotoOneHeight = (int) DisplayUtil.dip2px(150);
+//        int PhotoThreeHeight = (int) DisplayUtil.dip2px(90);
+//        int PhotoTwoHeight = (int) DisplayUtil.dip2px(120);
+//        int PhotoOneHeight = (int) DisplayUtil.dip2px(150);
+        int PhotoThreeHeight = 90;
+        int PhotoTwoHeight = 120;
+        int PhotoOneHeight = 150;
 
         String imgSrcLeft = null;
         String imgSrcMiddle = null;
