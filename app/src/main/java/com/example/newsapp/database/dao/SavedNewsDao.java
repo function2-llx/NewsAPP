@@ -3,8 +3,11 @@ package com.example.newsapp.database.dao;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
+import androidx.room.Query;
 
 import com.example.newsapp.database.entity.SavedNews;
+
+import java.util.List;
 
 @Dao
 public interface SavedNewsDao {
@@ -14,6 +17,6 @@ public interface SavedNewsDao {
     @Delete
     void delete(SavedNews... savedNews);
 
-
-//    List<SavedNews>
+    @Query("select * from saved_news where category == :category")
+    List<SavedNews> getSavedNews(String category);
 }

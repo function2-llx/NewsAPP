@@ -5,14 +5,15 @@
         <item>推荐</item>
     </string-array>
     <string-array name="unfixed_channels">
-        <item>政治</item>
+        <item>娱乐</item>
         <item>军事</item>
-        <item>体育</item>
-        <item>经济</item>
-        <item>文化</item>
-        <item>篮球</item>
         <item>教育</item>
+        <item>文化</item>
+        <item>健康</item>
+        <item>财经</item>
+        <item>体育</item>
+        <item>汽车</item>
         <item>科技</item>
-        <item>IT</item>
+        <item>社会</item>
     </string-array>
 </resources>

@@ -97,9 +97,10 @@ public class NewsApi {
             Response<Bitmap> response = NoHttp.startRequestSync(request);
             if (response.getException() != null) {
                 handler.post(() -> callback.onException(response.getException()));
+            } else {
+                Bitmap bitmap = response.get();
+                handler.post(() -> callback.onReceived(bitmap));
             }
-            Bitmap bitmap = response.get();
-            handler.post(() -> callback.onReceived(bitmap));
         }).start();
     }
 }
