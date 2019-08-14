@@ -57,7 +57,6 @@ import rx.functions.Func2;
  * on 2016.09.17:30
  */
 public class NewsListFragment extends Fragment implements OnRefreshListener, OnLoadMoreListener {
-//    @Bind(R.id.irc)
     private IRecyclerView irc;
     @Bind(R.id.loadedTip)
     LoadingTip loadedTip;
@@ -97,6 +96,7 @@ public class NewsListFragment extends Fragment implements OnRefreshListener, OnL
         //发起请求
         irc.setRefreshing(true);
         getNewsListDataRequest(mNewsType, mNewsId, mStartPage, true, false);
+        ++mStartPage;
     }
 
     @Override
@@ -105,12 +105,14 @@ public class NewsListFragment extends Fragment implements OnRefreshListener, OnL
         //发起请求
         irc.setLoadMoreStatus(LoadMoreFooterView.Status.LOADING);
         getNewsListDataRequest(mNewsType, mNewsId, mStartPage, false, true);
+        ++mStartPage;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        mStartPage = 1;
         if (getArguments() != null) {
 //            mNewsId = getArguments().getString(AppConstant.NEWS_ID);
 //            mNewsType = getArguments().getString(AppConstant.NEWS_TYPE);
@@ -140,7 +142,7 @@ public class NewsListFragment extends Fragment implements OnRefreshListener, OnL
         irc.setOnLoadMoreListener(this);
         //数据为空才重新发起请求
         if(newsListAdapter.getSize()<=0) {
-            mStartPage = 0;
+            mStartPage = 1;
             getNewsListDataRequest(mNewsType, mNewsId, mStartPage, false, false);
         }
         return view;
