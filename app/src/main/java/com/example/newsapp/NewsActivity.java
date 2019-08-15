@@ -83,8 +83,8 @@ public class NewsActivity extends DefaultSwipeBackActivity {
     void shareWechat(Platform wechat, Platform.ShareParams shareParams, NewsBean newsBean) {
         shareParams.setTitle(newsBean.getTitle());
         shareParams.setText(newsBean.getAbstract());
-        if (newsBean.getImages().size() > 0) {
-            shareParams.setImageData(newsBean.getImages().get(0));
+        if (!newsBean.getImageUrls().isEmpty()) {
+            shareParams.setImageUrl(newsBean.getImageUrls().get(0));
         }
         shareParams.setUrl(newsBean.getNewsJson().getString("url"));
         shareParams.setShareType(Platform.SHARE_WEBPAGE);
@@ -94,9 +94,12 @@ public class NewsActivity extends DefaultSwipeBackActivity {
     void shareQQ(Platform qq, Platform.ShareParams shareParams, NewsBean newsBean) {
         shareParams.setTitle(newsBean.getTitle());
         shareParams.setText(newsBean.getAbstract());
-        if (newsBean.getImages().size() > 0) {
-            shareParams.setImageData(newsBean.getImages().get(0));
+        if (!newsBean.getImageUrls().isEmpty()) {
+            shareParams.setImageUrl(newsBean.getImageUrls().get(0));
         }
+//        if (newsBean.getImages().size() > 0) {
+//            shareParams.setImageData(newsBean.getImages().get(0));
+//        }
         shareParams.setTitleUrl(newsBean.getNewsJson().getString("url"));
         shareParams.setShareType(Platform.SHARE_WEBPAGE);
         qq.share(shareParams);

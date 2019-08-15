@@ -12,6 +12,7 @@ import com.yanzhenjie.nohttp.rest.Request;
 import com.yanzhenjie.nohttp.rest.Response;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class NewsBean {
@@ -22,11 +23,12 @@ public class NewsBean {
 //    private List<String> imageUrls;
     private List<String> keywords;
     private List<Bitmap> images;
+    private List<String> imageUrls;
 //    private List<Drawable> images = new ArrayList<>();
 
     private NewsBean() {}
     public JSONObject getNewsJson() { return newsJson; }
-//    public List<String> getImageUrls() { return imageUrls; }
+    public List<String> getImageUrls() { return imageUrls; }
     public List<Bitmap> getImages() { return images; }
     public String getTitle() { return title; }
     public String getCategory() { return category; }
@@ -46,8 +48,8 @@ public class NewsBean {
         news.images = new ArrayList<>();
         if (parseImage) {
             String imageUrlsRaw = newsJson.getString("image");
-            String[] imageUrls = imageUrlsRaw.substring(1, imageUrlsRaw.length() - 1).split(", ");
-            for (String url: imageUrls) {
+            news.imageUrls = Arrays.asList(imageUrlsRaw.substring(1, imageUrlsRaw.length() - 1).split(", "));
+            for (String url: news.imageUrls) {
                 Request<Bitmap> request = NoHttp.createImageRequest(url);
                 Response<Bitmap> response = NoHttp.startRequestSync(request);
                 if (response.getException() == null) {
