@@ -89,7 +89,7 @@ public class NewsActivity extends DefaultSwipeBackActivity {
         }
         shareParams.setUrl("www.baidu.com");
         shareParams.setShareType(Platform.SHARE_WEBPAGE);
-        shareParams.setShareType(Platform.SHARE_APPS);
+//        shareParams.setShareType(Platform.SHARE_APPS);
         wechat.share(shareParams);
     }
 

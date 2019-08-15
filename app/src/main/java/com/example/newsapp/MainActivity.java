@@ -100,7 +100,7 @@ public class MainActivity extends DeFaultActivity
         tabLayout.setupWithViewPager(viewPager);
         channelDataHelper = new ChannelDataHelper<ChannelBean>(this, this, findViewById(R.id.container_main));
         channelDataHelper.setSwitchView(findViewById(R.id.subscribe));
-        viewPager.setOffscreenPageLimit(10);
+//        viewPager.setOffscreenPageLimit(10);
 
         refreshTabs();
     }
@@ -219,6 +219,7 @@ public class MainActivity extends DeFaultActivity
                                     if (e instanceof NetworkError) {
                                         Toast.makeText(MainActivity.this, "莫得网络啦，等下再来吧", Toast.LENGTH_SHORT).show();
                                     }
+
                                 }
                             }
                     );

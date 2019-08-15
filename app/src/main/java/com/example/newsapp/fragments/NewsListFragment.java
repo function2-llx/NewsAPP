@@ -149,6 +149,7 @@ public class NewsListFragment extends Fragment implements OnRefreshListener, OnL
 
                     @Override
                     public void onException(Exception e) {
+                        e.printStackTrace();
 //                        if (e instanceof NetworkError) {
 //                            Toast.makeText(MainActivity.this, "莫得网络啦，等下再来吧", Toast.LENGTH_SHORT).show();
 //                        }

@@ -65,7 +65,7 @@ public class NewsApi {
         }
     }
 
-    public static void requestNews(SearchParams params, NewsCallback callback) {
+    public static void requestNews(SearchParams params, boolean imagesRequired,NewsCallback callback) {
         Handler handler = new Handler();
         new Thread(() -> {
             FastJsonRequest request = params.toFastJsonRequest();
@@ -77,7 +77,7 @@ public class NewsApi {
                 JSONArray newsJsonArray = json.getJSONArray("data");
                 List<NewsBean> newsBeanList = new ArrayList<>();
                 for (Object newsJson: newsJsonArray) {
-                    newsBeanList.add(NewsBean.parse((JSONObject)newsJson));
+                    newsBeanList.add(NewsBean.parse((JSONObject)newsJson, imagesRequired));
                 }
                 handler.post(() -> callback.onReceived(newsBeanList) );
             }
