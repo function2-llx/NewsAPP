@@ -1,31 +1,27 @@
 package com.example.newsapp.fragments;
 
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.aspsine.irecyclerview.IRecyclerView;
 import com.aspsine.irecyclerview.OnLoadMoreListener;
 import com.aspsine.irecyclerview.OnRefreshListener;
 import com.aspsine.irecyclerview.animation.ScaleInAnimation;
 import com.aspsine.irecyclerview.widget.LoadMoreFooterView;
-
 import com.example.newsapp.R;
 import com.example.newsapp.adapters.NewsListAdapter;
 import com.example.newsapp.api.NewsApi;
 import com.example.newsapp.bean.NewsBean;
 import com.example.newsapp.bean.NewsDateTime;
-
 import com.jaydenxiao.common.commonwidget.LoadingTip;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +38,7 @@ public class NewsListFragment extends Fragment implements OnRefreshListener, OnL
     @Bind(R.id.loadedTip)
     LoadingTip loadedTip;
     private NewsListAdapter newsListAdapter;
-    private List<NewsBean> datas = new ArrayList<>();
+    private List<NewsBean> data = new ArrayList<>();
 
     private String mNewsId;
     private String mNewsType;
@@ -55,10 +51,11 @@ public class NewsListFragment extends Fragment implements OnRefreshListener, OnL
 
     public NewsListFragment() {}
 
-    public static NewsListFragment newInstance(String channel) {
+    public static NewsListFragment newInstance(String channel, String words) {
         NewsListFragment fragment = new NewsListFragment();
         Bundle bundle = new Bundle();
         bundle.putString("channel", channel);
+        bundle.putString("words", words);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -68,7 +65,10 @@ public class NewsListFragment extends Fragment implements OnRefreshListener, OnL
         return this.getArguments().getString("channel");
     }
 
-
+    private String getWords() {
+        assert this.getArguments() != null;
+        return getArguments().getString("words");
+    }
 
     @Override
     public void onRefresh() {
@@ -115,8 +115,8 @@ public class NewsListFragment extends Fragment implements OnRefreshListener, OnL
         View view = inflater.inflate(R.layout.fragment_news_list, container, false);
         irc = view.findViewById(R.id.news_irc);
         irc.setLayoutManager(new LinearLayoutManager(getContext()));
-        datas.clear();
-        newsListAdapter = new NewsListAdapter(getContext(), datas);
+        data.clear();
+        newsListAdapter = new NewsListAdapter(getContext(), data);
         newsListAdapter.openLoadAnimation(new ScaleInAnimation());
         irc.setAdapter(newsListAdapter);
         irc.setOnRefreshListener(this);
@@ -132,10 +132,10 @@ public class NewsListFragment extends Fragment implements OnRefreshListener, OnL
     public void getNewsListDataRequest(String type, String id, int startPage, boolean isOnRefresh, boolean isOnLoadMore) {
         NewsApi.requestNews(new NewsApi.SearchParams()
                         .setSize(20)
-                        .setWords("")
+                        .setWords(getWords())
                         .setCategory(getChannel().equals("首页")? "" : getChannel())
-                        .setStartDate(new NewsDateTime(2019, 7, 1))
-                        .setEndDate(new NewsDateTime(2019, 7, 3)),
+//                        .setStartDate()
+                        .setEndDate(new NewsDateTime()),
                 new NewsApi.NewsCallback() {
                     @Override
                     public void onReceived(List<NewsBean> newsBeanList) {

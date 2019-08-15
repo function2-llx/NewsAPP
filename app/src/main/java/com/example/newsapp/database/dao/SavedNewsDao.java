@@ -17,6 +17,6 @@ public interface SavedNewsDao {
     @Delete
     void delete(SavedNews... savedNews);
 
-    @Query("select * from saved_news where category == :category")
-    List<SavedNews> getSavedNews(String category);
+    @Query("select * from saved_news where channel == :channel")
+    List<SavedNews> getSavedNews(String channel);
 }

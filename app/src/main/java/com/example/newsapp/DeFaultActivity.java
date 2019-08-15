@@ -16,10 +16,14 @@ import java.util.List;
 
 @SuppressLint("Registered")
 public class DeFaultActivity extends AppCompatActivity {
-
     protected boolean isNightMode() {
         SharedPreferences preferences = getSharedPreferences(getString(R.string.preferences_name), 0);
         return preferences.getBoolean(getString(R.string.preference_night_mode), false);
+    }
+
+    protected boolean isSaveTrafficMode() {
+        SharedPreferences preferences = getSharedPreferences(getString(R.string.preferences_name), 0);
+        return preferences.getBoolean(getString(R.string.preference_save_traffic), false);
     }
 
     @Override

@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "2aba93cce6d99e20a441f5e71e1fcfa5",
+    "identityHash": "0814bc867c93c603082ded57c01e814d",
     "entities": [
       {
         "tableName": "search_records",
@@ -26,7 +26,7 @@
       },
       {
         "tableName": "saved_news",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`newsId` TEXT NOT NULL, `category` TEXT NOT NULL, `read` INTEGER NOT NULL, `content` TEXT NOT NULL, PRIMARY KEY(`newsId`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`newsId` TEXT NOT NULL, `channel` TEXT NOT NULL, `read` INTEGER NOT NULL, `content` TEXT NOT NULL, PRIMARY KEY(`newsId`))",
         "fields": [
           {
             "fieldPath": "newsId",
@@ -35,8 +35,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "category",
-            "columnName": "category",
+            "fieldPath": "channel",
+            "columnName": "channel",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -66,7 +66,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '2aba93cce6d99e20a441f5e71e1fcfa5')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '0814bc867c93c603082ded57c01e814d')"
     ]
   }
 }

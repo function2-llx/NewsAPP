@@ -100,31 +100,38 @@ public class MainActivity extends DeFaultActivity
         tabLayout.setupWithViewPager(viewPager);
         channelDataHelper = new ChannelDataHelper<ChannelBean>(this, this, findViewById(R.id.container_main));
         channelDataHelper.setSwitchView(findViewById(R.id.subscribe));
+        viewPager.setOffscreenPageLimit(10);
+
         refreshTabs();
     }
 
-    void initSearchView() {
+    void initSearchBar() {
         searchBar = findViewById(R.id.search_view);
         searchBar.inflateMenu(R.menu.menu_main);
 
         searchBar.setOnSearchActionListener(new MaterialSearchBar.OnSearchActionListener() {
             @Override
             public void onSearchStateChanged(boolean enabled) {
-
+                if (enabled) {
+                    searchBar.setHint(searchBar.getPlaceHolderText());
+                }
             }
 
             @Override
             public void onSearchConfirmed(CharSequence text) {
-                if (text != null && text.length() > 0) {
-                    getDataRepository().insertSearchRecords(text.toString());
+                if (text != null) {
+                    if (text.length() > 0) getDataRepository().insertSearchRecords(text.toString());
+                    pagerAdapter.updateWords(text.toString());
+                    searchBar.setPlaceHolder(text);
+                    searchBar.disableSearch();
+                } else {
+                    // back to default mode
                 }
             }
 
             @Override
             public void onButtonClicked(int buttonCode) {
-                switch (buttonCode) {
 
-                }
             }
         });
 
@@ -142,9 +149,6 @@ public class MainActivity extends DeFaultActivity
                 }
             }
         });
-
-
-
         getDataRepository().getAllSearchRecords(records -> searchBar.setLastSuggestions(records));
 //        searchBar.setLastSuggestions(records);
 
@@ -228,7 +232,7 @@ public class MainActivity extends DeFaultActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initSearchView();
+        initSearchBar();
 
         this.toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -337,12 +341,17 @@ public class MainActivity extends DeFaultActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        if (drawer != null && drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
+        if (searchBar.getPlaceHolderText().equals("")) {
             super.onBackPressed();
+        } else {
+            searchBar.setPlaceHolder("");
         }
+//        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+//        if (drawer != null && drawer.isDrawerOpen(GravityCompat.START)) {
+//            drawer.closeDrawer(GravityCompat.START);
+//        } else {
+//            super.onBackPressed();
+//        }
     }
 
 //    @Override

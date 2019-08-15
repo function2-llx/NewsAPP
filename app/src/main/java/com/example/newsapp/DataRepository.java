@@ -34,18 +34,7 @@ public class DataRepository {
         void onReceiveRecords(List<String> records);
     }
 
-    private abstract static class AsyncTask {
-        protected void doInBackGround() {}
-        protected void onComplete() {}
 
-        public void start() {
-            Handler handler = new Handler();
-            new Thread(() -> {
-                doInBackGround();
-                handler.post(this::onComplete);
-            });
-        }
-    };
 
     public void getAllSearchRecords(GetAllSearchRecordsCallback callback) {
         Handler handler = new Handler();
@@ -75,7 +64,7 @@ public class DataRepository {
     }
 
     public void insertSavedNews(SavedNews... savedNews) {
-        new AsyncTask() {
+        new SimpleAsyncTask() {
             @Override
             protected void doInBackGround() {
                 database.savedNewsDao().insert(savedNews);
@@ -84,7 +73,7 @@ public class DataRepository {
     }
 
     public void deleteSavedNews(SavedNews... savedNews) {
-        new AsyncTask() {
+        new SimpleAsyncTask() {
             @Override
             protected void doInBackGround() {
                 database.savedNewsDao().delete(savedNews);
@@ -96,12 +85,12 @@ public class DataRepository {
         void onReceive(List<SavedNews> savedNews);
     }
 
-    public void getSavedNews(String category, OnReceiveSavedNewsCallback callback) {
-        new AsyncTask() {
+    public void getSavedNews(String channel, OnReceiveSavedNewsCallback callback) {
+        new SimpleAsyncTask() {
             private List<SavedNews> savedNews;
             @Override
             protected void doInBackGround() {
-                savedNews = database.savedNewsDao().getSavedNews(category);
+                savedNews = database.savedNewsDao().getSavedNews(channel);
             }
 
             @Override

@@ -13,9 +13,10 @@ public class SavedNews {
     @PrimaryKey
     private String newsId;
 
+    // 也可以是收藏
     @NonNull
-    @ColumnInfo(name = "category")
-    private String category;
+    @ColumnInfo(name = "channel")
+    private String channel;
 
     @ColumnInfo(name = "read")
     private boolean read;
@@ -24,19 +25,24 @@ public class SavedNews {
     @ColumnInfo(name = "content")
     private String content;
 
-    public SavedNews(@NonNull NewsBean newsBean, @NonNull String category, boolean read) {
+    public SavedNews(@NonNull NewsBean newsBean, @NonNull String channel, boolean read) {
         this.newsId = newsBean.getNewsId();
-        this.category = category;
+        this.channel = channel;
         this.read = read;
         this.content = newsBean.getNewsJson().toString();
     }
 
-    public SavedNews(String newsId, String category, boolean read, String content) { }
+    public SavedNews(String newsId, String channel, boolean read, String content) {
+        this.newsId = newsId;
+        this.channel = channel;
+        this.read = read;
+        this.content = content;
+    }
 
     public String getNewsId() { return newsId; }
     public boolean hasRead() { return read; }
     @NonNull public String getContent() {
         return content;
     }
-    @NonNull public String getCategory() { return category; }
+    @NonNull public String getChannel() { return channel; }
 }
