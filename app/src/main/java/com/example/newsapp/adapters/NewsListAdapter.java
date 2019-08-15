@@ -2,25 +2,17 @@ package com.example.newsapp.adapters;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.text.TextUtils;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import com.aspsine.irecyclerview.universaladapter.ViewHolderHelper;
 import com.aspsine.irecyclerview.universaladapter.recyclerview.MultiItemRecycleViewAdapter;
 import com.aspsine.irecyclerview.universaladapter.recyclerview.MultiItemTypeSupport;
 import com.example.newsapp.NewsActivity;
-import com.example.newsapp.NewsDetailActivity;
-import com.example.newsapp.NewsPhotoDetailActivity;
 import com.example.newsapp.R;
 import com.example.newsapp.api.NewsApi;
-import com.example.newsapp.bean.AppApplication;
-import com.example.newsapp.bean.NewsPhotoDetail;
 import com.example.newsapp.bean.NewsBean;
 
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

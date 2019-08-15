@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Locale;
 
@@ -43,5 +44,15 @@ public class NewsDateTime {
                     .append(String.format(Locale.SIMPLIFIED_CHINESE, "%02d", time.getSecond()));
         }
         return ret.toString();
+    }
+
+    public NewsDateTime minusSeconds(int seconds) {
+        LocalDateTime dateTime = LocalDateTime.of(date, time).minusSeconds(seconds);
+        return new NewsDateTime(dateTime.toLocalDate(), dateTime.toLocalTime());
+    }
+
+    public NewsDateTime minusDays(int days) {
+        LocalDateTime dateTime = LocalDateTime.of(date, time).minusDays(days);
+        return new NewsDateTime(dateTime.toLocalDate(), dateTime.toLocalTime());
     }
 }

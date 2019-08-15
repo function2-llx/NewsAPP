@@ -5,7 +5,6 @@ import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
@@ -25,26 +24,17 @@ import com.example.newsapp.api.NewsApi;
 import com.example.newsapp.bean.AppConstant;
 import com.example.newsapp.bean.NewsBean;
 import com.example.newsapp.bean.NewsDetail;
-import com.example.newsapp.contract.NewsDetailContract;
-import com.example.newsapp.models.NewsDetailModel;
-import com.example.newsapp.presenter.NewsDetailPresenter;
 import com.example.newsapp.widget.URLImageGetter;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.jaydenxiao.common.base.BaseActivity;
-import com.jaydenxiao.common.baserx.RxSchedulers;
-import com.jaydenxiao.common.commonutils.TimeUtil;
 
-import org.greenrobot.eventbus.EventBus;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-import butterknife.Bind;
-import rx.Observable;
-import rx.Subscriber;
+import cn.sharesdk.framework.Platform;
+import cn.sharesdk.onekeyshare.OnekeyShare;
+import cn.sharesdk.onekeyshare.ShareContentCustomizeCallback;
+import cn.sharesdk.wechat.friends.Wechat;
 
 /**
  * des:普通新闻详情
@@ -89,6 +79,18 @@ public class NewsActivity extends DefaultSwipeBackActivity {
             ActivityCompat.startActivity((Activity) mContext, intent, options.toBundle());
         }
 
+    }
+
+    void shareWechat(Platform wechat, Platform.ShareParams shareParams, NewsBean newsBean) {
+        shareParams.setTitle(newsBean.getTitle());
+        shareParams.setText(newsBean.getAbstract());
+        if (!newsBean.getImageUrls().isEmpty()) {
+            shareParams.setImageUrl(newsBean.getImageUrls().get(0));
+        }
+        shareParams.setUrl("www.baidu.com");
+        shareParams.setShareType(Platform.SHARE_WEBPAGE);
+        shareParams.setShareType(Platform.SHARE_APPS);
+        wechat.share(shareParams);
     }
 
     @Override
@@ -136,18 +138,36 @@ public class NewsActivity extends DefaultSwipeBackActivity {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
-                    case R.id.action_web_view:
-                        NewsBrowserActivity.startAction(NewsActivity.this, mShareLink, mNewsTitle);
-                        break;
-                    case R.id.action_browser:
-                        Intent intent = new Intent();
-                        intent.setAction("android.intent.action.VIEW");
-                        if (canBrowse(intent)) {
-                            Uri uri = Uri.parse(mShareLink);
-                            intent.setData(uri);
-                            startActivity(intent);
-                        }
-                        break;
+                    case R.id.action_share:
+                        OnekeyShare oks = new OnekeyShare();
+                        oks.setShareContentCustomizeCallback(new ShareContentCustomizeCallback() {
+                            @Override
+                            public void onShare(Platform platform, Platform.ShareParams shareParams) {
+                                if (platform.getName().equals(Wechat.NAME)) {
+                                    shareWechat(platform, shareParams, newsBean);
+                                }
+                            }
+                        });
+//                        oks.setImageArray();
+//                        oks.setImageUrl(newsBean.getImageUrls().get(0));
+//                        oks.setSite("咕鸽时事");
+//                        oks.setTitleUrl("www.baidu.com");
+//                        oks.setImageData(ge);
+//                        oks.setUrl("http://sharesdk.cn");
+                        oks.show(NewsActivity.this);
+                    break;
+//                    case R.id.action_web_view:
+//                        NewsBrowserActivity.startAction(NewsActivity.this, mShareLink, mNewsTitle);
+//                        break;
+//                    case R.id.action_browser:
+//                        Intent intent = new Intent();
+//                        intent.setAction("android.intent.action.VIEW");
+//                        if (canBrowse(intent)) {
+//                            Uri uri = Uri.parse(mShareLink);
+//                            intent.setData(uri);
+//                            startActivity(intent);
+//                        }
+//                        break;
                 }
                 return true;
             }

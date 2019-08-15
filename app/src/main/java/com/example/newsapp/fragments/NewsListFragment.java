@@ -6,12 +6,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 
 import com.aspsine.irecyclerview.IRecyclerView;
@@ -20,36 +18,19 @@ import com.aspsine.irecyclerview.OnRefreshListener;
 import com.aspsine.irecyclerview.animation.ScaleInAnimation;
 import com.aspsine.irecyclerview.widget.LoadMoreFooterView;
 
-import com.example.newsapp.MainActivity;
 import com.example.newsapp.R;
 import com.example.newsapp.adapters.NewsListAdapter;
-import com.example.newsapp.api.Api;
-import com.example.newsapp.api.ApiConstants;
-import com.example.newsapp.api.HostType;
 import com.example.newsapp.api.NewsApi;
-import com.example.newsapp.bean.AppConstant;
 import com.example.newsapp.bean.NewsBean;
 import com.example.newsapp.bean.NewsDateTime;
-import com.example.newsapp.bean.NewsSummary;
-import com.example.newsapp.adapters.NewListAdapter;
 
-import com.jaydenxiao.common.baserx.RxSchedulers;
-import com.jaydenxiao.common.commonutils.TimeUtil;
 import com.jaydenxiao.common.commonwidget.LoadingTip;
-import com.yanzhenjie.nohttp.error.NetworkError;
 
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
 
 import butterknife.Bind;
-import rx.Observable;
-import rx.functions.Func1;
-import rx.functions.Func2;
 
 /**
  * des:新闻fragment
@@ -155,9 +136,9 @@ public class NewsListFragment extends Fragment implements OnRefreshListener, OnL
                         .setCategory(getChannel().equals("首页")? "" : getChannel())
                         .setStartDate(new NewsDateTime(2019, 7, 1))
                         .setEndDate(new NewsDateTime(2019, 7, 3)),
-                new NewsApi.Callback() {
+                new NewsApi.NewsCallback() {
                     @Override
-                    public void onNewsReceived(List<NewsBean> newsBeanList) {
+                    public void onReceived(List<NewsBean> newsBeanList) {
                         returnNewsListData(newsBeanList);
 //                        if (newsBeanList.isEmpty()) {
 //                            Toast.makeText(MainActivity.this, "莫得新闻了，等哈再来哈", Toast.LENGTH_SHORT).show();
@@ -167,7 +148,7 @@ public class NewsListFragment extends Fragment implements OnRefreshListener, OnL
                     }
 
                     @Override
-                    public void onHandleException(Exception e) {
+                    public void onException(Exception e) {
 //                        if (e instanceof NetworkError) {
 //                            Toast.makeText(MainActivity.this, "莫得网络啦，等下再来吧", Toast.LENGTH_SHORT).show();
 //                        }

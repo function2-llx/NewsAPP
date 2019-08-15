@@ -19,12 +19,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NewsApi {
-    public interface Callback {
-        void onNewsReceived(List<NewsBean> newsBeanList);
-        void onHandleException(Exception e);
+    public interface NewsCallback {
+        void onReceived(List<NewsBean> newsBeanList);
+        void onException(Exception e);
     }
 
-    static class FastJsonRequest extends Request<JSONObject> {
+    private static class FastJsonRequest extends Request<JSONObject> {
 
         public FastJsonRequest(String url) {
             this(url, RequestMethod.GET);
@@ -65,13 +65,13 @@ public class NewsApi {
         }
     }
 
-    public static void requestNews(SearchParams params, Callback callback) {
+    public static void requestNews(SearchParams params, NewsCallback callback) {
         Handler handler = new Handler();
         new Thread(() -> {
             FastJsonRequest request = params.toFastJsonRequest();
             Response<JSONObject> response = NoHttp.startRequestSync(request);
             if (response.getException() != null) {
-                handler.post(() -> callback.onHandleException(response.getException()));
+                handler.post(() -> callback.onException(response.getException()));
             } else {
                 JSONObject json = response.get();
                 JSONArray newsJsonArray = json.getJSONArray("data");
@@ -79,11 +79,10 @@ public class NewsApi {
                 for (Object newsJson: newsJsonArray) {
                     newsBeanList.add(NewsBean.parse((JSONObject)newsJson));
                 }
-                handler.post(() -> callback.onNewsReceived(newsBeanList) );
+                handler.post(() -> callback.onReceived(newsBeanList) );
             }
         }).start();
     }
-
 
     public interface ImageCallback {
         void onReceived(Bitmap bitmap);

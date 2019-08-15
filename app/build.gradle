@@ -48,6 +48,7 @@ MobSDK {
                 callbackUri "http://www.sharesdk.cn"
                 shareByAppClient true
                 Enable true
+//                BypassApproval true
             }
 
             Wechat {
@@ -55,6 +56,7 @@ MobSDK {
                 SortId 2
                 appId "wxe12f3153552d7412"
                 appSecret "27446fde797434dbadb925d3e1347fd5"
+//                BypassApproval true
             }
         }
     }

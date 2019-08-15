@@ -45,8 +45,6 @@ public class DataRepository {
                 handler.post(this::onComplete);
             });
         }
-
-
     };
 
     public void getAllSearchRecords(GetAllSearchRecordsCallback callback) {
@@ -97,6 +95,7 @@ public class DataRepository {
     public interface OnReceiveSavedNewsCallback {
         void onReceive(List<SavedNews> savedNews);
     }
+
     public void getSavedNews(String category, OnReceiveSavedNewsCallback callback) {
         new AsyncTask() {
             private List<SavedNews> savedNews;

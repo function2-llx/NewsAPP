@@ -200,9 +200,9 @@ public class MainActivity extends DeFaultActivity
                                     .setCategory("科技")
                                     .setStartDate(new NewsDateTime(2019, 7, 1))
                                     .setEndDate(new NewsDateTime(2019, 7, 3)),
-                            new NewsApi.Callback() {
+                            new NewsApi.NewsCallback() {
                                 @Override
-                                public void onNewsReceived(List<NewsBean> newsBeanList) {
+                                public void onReceived(List<NewsBean> newsBeanList) {
                                     if (newsBeanList.isEmpty()) {
                                         Toast.makeText(MainActivity.this, "莫得新闻了，等哈再来哈", Toast.LENGTH_SHORT).show();
                                     } else {
@@ -211,7 +211,7 @@ public class MainActivity extends DeFaultActivity
                                 }
 
                                 @Override
-                                public void onHandleException(Exception e) {
+                                public void onException(Exception e) {
                                     if (e instanceof NetworkError) {
                                         Toast.makeText(MainActivity.this, "莫得网络啦，等下再来吧", Toast.LENGTH_SHORT).show();
                                     }

@@ -5,31 +5,36 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.example.newsapp.bean.NewsBean;
+
 @Entity(tableName = "saved_news")
 public class SavedNews {
-    @PrimaryKey(autoGenerate = true)
-    private int id;
-
-    @ColumnInfo(name = "read")
-    private boolean read;
+    @NonNull
+    @PrimaryKey
+    private String newsId;
 
     @NonNull
     @ColumnInfo(name = "category")
     private String category;
 
+    @ColumnInfo(name = "read")
+    private boolean read;
+
     @NonNull
     @ColumnInfo(name = "content")
     private String content;
 
-    public SavedNews(int id, boolean read, @NonNull String content, @NonNull String category) {
-        this.id = id;
-        this.read = read;
-        this.content = content;
+    public SavedNews(@NonNull NewsBean newsBean, @NonNull String category, boolean read) {
+        this.newsId = newsBean.getNewsId();
         this.category = category;
+        this.read = read;
+        this.content = newsBean.getNewsJson().toString();
     }
 
-    public int getId() { return id; }
-    public boolean isRead() { return read; }
+    public SavedNews(String newsId, String category, boolean read, String content) { }
+
+    public String getNewsId() { return newsId; }
+    public boolean hasRead() { return read; }
     @NonNull public String getContent() {
         return content;
     }
