@@ -100,7 +100,7 @@ public class MainActivity extends DeFaultActivity
         tabLayout.setupWithViewPager(viewPager);
         channelDataHelper = new ChannelDataHelper<ChannelBean>(this, this, findViewById(R.id.container_main));
         channelDataHelper.setSwitchView(findViewById(R.id.subscribe));
-//        viewPager.setOffscreenPageLimit(10);
+        viewPager.setOffscreenPageLimit(100);
 
         refreshTabs();
     }

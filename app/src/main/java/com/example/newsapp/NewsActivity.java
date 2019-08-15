@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
@@ -20,7 +19,6 @@ import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.content.ContextCompat;
 
 import com.alibaba.fastjson.JSONObject;
-import com.example.newsapp.api.NewsApi;
 import com.example.newsapp.bean.AppConstant;
 import com.example.newsapp.bean.NewsBean;
 import com.example.newsapp.bean.NewsDetail;
@@ -34,6 +32,7 @@ import java.util.List;
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.onekeyshare.OnekeyShare;
 import cn.sharesdk.onekeyshare.ShareContentCustomizeCallback;
+import cn.sharesdk.tencent.qq.QQ;
 import cn.sharesdk.wechat.friends.Wechat;
 
 /**
@@ -87,10 +86,20 @@ public class NewsActivity extends DefaultSwipeBackActivity {
         if (newsBean.getImages().size() > 0) {
             shareParams.setImageData(newsBean.getImages().get(0));
         }
-        shareParams.setUrl("www.baidu.com");
+        shareParams.setUrl(newsBean.getNewsJson().getString("url"));
         shareParams.setShareType(Platform.SHARE_WEBPAGE);
-//        shareParams.setShareType(Platform.SHARE_APPS);
         wechat.share(shareParams);
+    }
+
+    void shareQQ(Platform qq, Platform.ShareParams shareParams, NewsBean newsBean) {
+        shareParams.setTitle(newsBean.getTitle());
+        shareParams.setText(newsBean.getAbstract());
+        if (newsBean.getImages().size() > 0) {
+            shareParams.setImageData(newsBean.getImages().get(0));
+        }
+        shareParams.setTitleUrl(newsBean.getNewsJson().getString("url"));
+        shareParams.setShareType(Platform.SHARE_WEBPAGE);
+        qq.share(shareParams);
     }
 
     @Override
@@ -135,15 +144,12 @@ public class NewsActivity extends DefaultSwipeBackActivity {
                             public void onShare(Platform platform, Platform.ShareParams shareParams) {
                                 if (platform.getName().equals(Wechat.NAME)) {
                                     shareWechat(platform, shareParams, newsBean);
+                                } else if (platform.getName().equals(QQ.NAME)) {
+                                    shareQQ(platform, shareParams, newsBean);
                                 }
                             }
                         });
-//                        oks.setImageArray();
-//                        oks.setImageUrl(newsBean.getImageUrls().get(0));
-//                        oks.setSite("咕鸽时事");
-//                        oks.setTitleUrl("www.baidu.com");
-//                        oks.setImageData(ge);
-//                        oks.setUrl("http://sharesdk.cn");
+                        oks.disableSSOWhenAuthorize();
                         oks.show(NewsActivity.this);
                     break;
 //                    case R.id.action_web_view:

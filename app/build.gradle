@@ -58,6 +58,12 @@ MobSDK {
                 appSecret "27446fde797434dbadb925d3e1347fd5"
 //                BypassApproval true
             }
+
+            QQ {
+                appId "101765784"
+                appKey "7311aa1e0918475d3ce9d0c4ac21e1e1"
+                shareByAppClient true
+            }
         }
     }
 
