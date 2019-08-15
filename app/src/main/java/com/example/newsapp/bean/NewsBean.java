@@ -52,6 +52,8 @@ public class NewsBean {
                 Response<Bitmap> response = NoHttp.startRequestSync(request);
                 if (response.getException() == null) {
                     news.images.add(response.get());
+                } else {
+                    response.getException().printStackTrace();
                 }
             }
         }

@@ -16,6 +16,7 @@ import com.aspsine.irecyclerview.OnLoadMoreListener;
 import com.aspsine.irecyclerview.OnRefreshListener;
 import com.aspsine.irecyclerview.animation.ScaleInAnimation;
 import com.aspsine.irecyclerview.widget.LoadMoreFooterView;
+import com.example.newsapp.DeFaultActivity;
 import com.example.newsapp.R;
 import com.example.newsapp.adapters.NewsListAdapter;
 import com.example.newsapp.api.NewsApi;
@@ -136,6 +137,7 @@ public class NewsListFragment extends Fragment implements OnRefreshListener, OnL
                         .setCategory(getChannel().equals("首页")? "" : getChannel())
 //                        .setStartDate()
                         .setEndDate(new NewsDateTime()),
+                !((DeFaultActivity)getActivity()).isSaveTrafficMode(),
                 new NewsApi.NewsCallback() {
                     @Override
                     public void onReceived(List<NewsBean> newsBeanList) {

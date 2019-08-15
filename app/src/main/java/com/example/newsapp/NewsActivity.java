@@ -84,8 +84,8 @@ public class NewsActivity extends DefaultSwipeBackActivity {
     void shareWechat(Platform wechat, Platform.ShareParams shareParams, NewsBean newsBean) {
         shareParams.setTitle(newsBean.getTitle());
         shareParams.setText(newsBean.getAbstract());
-        if (!newsBean.getImageUrls().isEmpty()) {
-            shareParams.setImageUrl(newsBean.getImageUrls().get(0));
+        if (newsBean.getImages().size() > 0) {
+            shareParams.setImageData(newsBean.getImages().get(0));
         }
         shareParams.setUrl("www.baidu.com");
         shareParams.setShareType(Platform.SHARE_WEBPAGE);
@@ -98,7 +98,7 @@ public class NewsActivity extends DefaultSwipeBackActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_news_detail);
         postId = getIntent().getStringExtra(AppConstant.NEWS_POST_ID);
-        NewsBean newsBean = NewsBean.parse((JSONObject)JSONObject.parse(getIntent().getStringExtra("NewsBean")));
+        NewsBean newsBean = NewsBean.parse((JSONObject)JSONObject.parse(getIntent().getStringExtra("NewsBean")), !isSaveTrafficMode());
         toolbarLayout = findViewById(R.id.toolbar_layout);
         toolbar = findViewById(R.id.toolbar);
         appBar = findViewById(R.id.app_bar);
@@ -109,18 +109,8 @@ public class NewsActivity extends DefaultSwipeBackActivity {
         maskView = findViewById(R.id.mask_view);
         ImageView imageView = findViewById(R.id.news_detail_photo_iv);
 
-        if (newsBean.getImageUrls().size() > 0) {
-            NewsApi.requestImage(newsBean.getImageUrls().get(0), new NewsApi.ImageCallback() {
-                @Override
-                public void onReceived(Bitmap bitmap) {
-                    imageView.setImageBitmap(bitmap);
-                }
-
-                @Override
-                public void onException(Exception e) {
-
-                }
-            });
+        if (newsBean.getImages().size() > 0) {
+            imageView.setImageBitmap(newsBean.getImages().get(0));
 
         }
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -193,7 +183,6 @@ public class NewsActivity extends DefaultSwipeBackActivity {
 //        String newsSource = newsDetail.getSource();
 //        String newsTime = TimeUtil.formatDate(newsDetail.getPtime());
         String newsBody = newsBean.getContent();
-        String NewsImgSrc = newsBean.getImageUrls().size() > 0? newsBean.getImageUrls().get(0) : "";
 
         setToolBarLayout(mNewsTitle);
         //mNewsDetailTitleTv.setText(newsTitle);

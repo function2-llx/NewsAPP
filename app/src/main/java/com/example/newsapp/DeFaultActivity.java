@@ -21,7 +21,7 @@ public class DeFaultActivity extends AppCompatActivity {
         return preferences.getBoolean(getString(R.string.preference_night_mode), false);
     }
 
-    protected boolean isSaveTrafficMode() {
+    public boolean isSaveTrafficMode() {
         SharedPreferences preferences = getSharedPreferences(getString(R.string.preferences_name), 0);
         return preferences.getBoolean(getString(R.string.preference_save_traffic), false);
     }
