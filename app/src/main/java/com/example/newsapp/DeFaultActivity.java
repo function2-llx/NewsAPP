@@ -16,6 +16,11 @@ import java.util.List;
 
 @SuppressLint("Registered")
 public class DeFaultActivity extends AppCompatActivity {
+    private static DeFaultActivity anyActivity;
+
+//    public static Context getContext() { return context; }
+    public static DeFaultActivity getAnyActivity() { return anyActivity; }
+
     protected boolean isNightMode() {
         SharedPreferences preferences = getSharedPreferences(getString(R.string.preferences_name), 0);
         return preferences.getBoolean(getString(R.string.preference_night_mode), false);
@@ -29,6 +34,7 @@ public class DeFaultActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        anyActivity = this;
         StatusBarCompat.setStatusBarColor(this, getResources().getColor(R.color.colorPrimary));
     }
 
