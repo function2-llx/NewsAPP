@@ -1,16 +1,9 @@
 package com.java.luolingxiao.bean;
 
 
-import android.graphics.Bitmap;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 
 import com.alibaba.fastjson.JSONObject;
-import com.java.luolingxiao.DeFaultActivity;
-import com.yanzhenjie.nohttp.NoHttp;
-import com.yanzhenjie.nohttp.rest.Request;
-import com.yanzhenjie.nohttp.rest.Response;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,13 +16,11 @@ public class NewsBean {
     private JSONObject newsJson;
     private String url;
     private List<String> keywords;
-    private List<Bitmap> images;
     private List<String> imageUrls;
 
     private NewsBean() {}
     public JSONObject getNewsJson() { return newsJson; }
     public List<String> getImageUrls() { return imageUrls; }
-    public List<Bitmap> getImages() { return images; }
     public String getTitle() { return title; }
     public String getCategory() { return category; }
     public String getContent() { return content; }
@@ -37,11 +28,11 @@ public class NewsBean {
     public List<String> getKeywords() { return this.keywords; }
     public NewsDateTime getPublishTime() { return publishTime; }
     public String getValue(String key) { return newsJson.getString(key); }
-    public void addImage(Bitmap bitmap) { this.images.add(bitmap); }
+//    public void addImage(Bitmap bitmap) { this.images.add(bitmap); }
 
     private static int imageCnt = 0;
 
-    public static NewsBean parse(JSONObject newsJson, boolean parseImage) {
+    public static NewsBean parse(JSONObject newsJson) {
         NewsBean news = new NewsBean();
         news.newsJson = newsJson;
         news.title = newsJson.getString("title");
@@ -55,28 +46,27 @@ public class NewsBean {
         } else {
             news.imageUrls = Collections.emptyList();
         }
-        news.images = new ArrayList<>();
-        if (parseImage) {
-            DeFaultActivity.getAnyActivity().runOnUiThread(() -> {
-                synchronized (DeFaultActivity.getAnyActivity()) {
-                    imageCnt++;
-                }
-                Toast.makeText(DeFaultActivity.getAnyActivity(), "iamge size: " + imageCnt, Toast.LENGTH_SHORT).show();
-            });
-            for (String url: news.imageUrls) {
-                Request<Bitmap> request = NoHttp.createImageRequest(url);
-                Response<Bitmap> response = NoHttp.startRequestSync(request);
-                imageCnt++;
-//                DeFaultActivity.getAnyActivity().runOnUiThread(() -> {
-//                    Toast.makeText(DeFaultActivity.getAnyActivity(), "image " + imageCnt + ", url=" + url, Toast.LENGTH_SHORT).show();
-//                });
-                if (response.getException() == null) {
-                    news.images.add(response.get());
-                } else {
-                    response.getException().printStackTrace();
-                }
-            }
-        }
+//        if (parseImage) {
+//            DeFaultActivity.getAnyActivity().runOnUiThread(() -> {
+//                synchronized (DeFaultActivity.getAnyActivity()) {
+//                    imageCnt++;
+//                }
+//                Toast.makeText(DeFaultActivity.getAnyActivity(), "iamge size: " + imageCnt, Toast.LENGTH_SHORT).show();
+//            });
+//            for (String url: news.imageUrls) {
+//                Request<Bitmap> request = NoHttp.createImageRequest(url);
+//                Response<Bitmap> response = NoHttp.startRequestSync(request);
+//                imageCnt++;
+////                DeFaultActivity.getAnyActivity().runOnUiThread(() -> {
+////                    Toast.makeText(DeFaultActivity.getAnyActivity(), "image " + imageCnt + ", url=" + url, Toast.LENGTH_SHORT).show();
+////                });
+//                if (response.getException() == null) {
+//                    news.images.add(response.get());
+//                } else {
+//                    response.getException().printStackTrace();
+//                }
+//            }
+//        }
         news.keywords = new ArrayList<>();
         for (Object object: newsJson.getJSONArray("keywords")) {
             news.keywords.add(((JSONObject)object).getString("word"));
@@ -90,8 +80,8 @@ public class NewsBean {
         return newsJson.toString();
     }
 
-    public static NewsBean parse(String jsonString, boolean parseImage) {
-        return parse((JSONObject)JSONObject.parse(jsonString), parseImage);
+    public static NewsBean parse(String jsonString) {
+        return parse((JSONObject)JSONObject.parse(jsonString));
     }
 
     public String getAbstract() {

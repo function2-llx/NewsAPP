@@ -72,9 +72,9 @@ public class NewsListAdapter extends MultiItemRecycleViewAdapter<NewsBean>
         holder.setText(R.id.news_summary_title_tv,title);
         holder.setText(R.id.news_summary_ptime_tv,ptime);
         holder.setText(R.id.news_summary_digest_tv,newsBean.getContent());
-        if (newsBean.getImages().size() > 0) {
-            holder.setImageBitmap(R.id.news_summary_photo_iv, newsBean.getImages().get(0));
-        }
+//        if (newsBean.getImages().size() > 0) {
+//            holder.setImageBitmap(R.id.news_summary_photo_iv, newsBean.getImages().get(0));
+//        }
 
         holder.setOnClickListener(R.id.rl_root, new View.OnClickListener() {
             @Override

@@ -108,7 +108,7 @@ public class NewsActivity extends DefaultSwipeBackActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_news_detail);
         postId = getIntent().getStringExtra(AppConstant.NEWS_POST_ID);
-        NewsBean newsBean = NewsBean.parse((JSONObject)JSONObject.parse(getIntent().getStringExtra("NewsBean")), !isSaveTrafficMode());
+        NewsBean newsBean = NewsBean.parse((JSONObject)JSONObject.parse(getIntent().getStringExtra("NewsBean")));
         toolbarLayout = findViewById(R.id.toolbar_layout);
         toolbar = findViewById(R.id.toolbar);
         appBar = findViewById(R.id.app_bar);
@@ -119,10 +119,9 @@ public class NewsActivity extends DefaultSwipeBackActivity {
         maskView = findViewById(R.id.mask_view);
         ImageView imageView = findViewById(R.id.news_detail_photo_iv);
 
-        if (newsBean.getImages().size() > 0) {
-            imageView.setImageBitmap(newsBean.getImages().get(0));
-
-        }
+//        if (newsBean.getImages().size() > 0) {
+//            imageView.setImageBitmap(newsBean.getImages().get(0));
+//        }
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

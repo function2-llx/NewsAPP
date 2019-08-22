@@ -95,7 +95,7 @@ public class NewsApi {
                     int id = i;
                     threads[i] = new Thread(() -> {
                         JSONObject newsJson = (JSONObject)newsJsonArray.get(id);
-                        newsBeans[id] = NewsBean.parse(newsJson, imagesRequired);
+                        newsBeans[id] = NewsBean.parse(newsJson);
                     });
                     threads[i].start();
                 }

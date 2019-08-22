@@ -29,33 +29,9 @@ app.get('/news', (req, appres) => {
             for (let news of res.body.data) {
                 if (news.newsID == data.newsID) {
                     appres.render("index.ejs", news)
-                    break
+                    return
                 }
             }
+            appres.send("<h1>fail</h1>")
         })
 })
-
-// app.get('/', (req, res, next) => {
-//     console.log('in get /', req.url)
-// })
-
-// const http =require('http')
-// const url = require('url')
-// const fs = require('fs')
-
-// http.createServer(function(req, res) {
-//   if (req.method == 'GET') {
-//     console.log(req.url)
-//     data = url.parse(req.url, true).query
-//     console.log(data)
-
-//     res.statusCode = 200
-//     res.write(fs.readFileSync('site/index.html'))
-//     res.end();
-//   }
-//   else { // POST
-//     var data = '';
-//     req.on('data', (chunk) => { data += chunk; });
-//     console.log(data)
-//   }
-// }).listen(8080);
