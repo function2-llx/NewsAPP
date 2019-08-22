@@ -39,7 +39,7 @@
             android:layout_margin="@dimen/fab_margin"
             android:src="@drawable/ic_arrow_upward"
             app:backgroundTint="@color/main_color"
-            app:layout_behavior="com.example.newsapp.widget.ScrollAwareFABBehavior" />
+            app:layout_behavior="com.example.newsapp.com.java.newsapp.widget.ScrollAwareFABBehavior" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
