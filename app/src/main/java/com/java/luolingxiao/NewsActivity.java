@@ -78,13 +78,18 @@ public class NewsActivity extends DefaultSwipeBackActivity {
 
     }
 
+
     void shareWechat(Platform wechat, Platform.ShareParams shareParams, NewsBean newsBean) {
         shareParams.setTitle(newsBean.getTitle());
         shareParams.setText(newsBean.getAbstract());
         if (!newsBean.getImageUrls().isEmpty()) {
             shareParams.setImageUrl(newsBean.getImageUrls().get(0));
         }
-        shareParams.setUrl(newsBean.getNewsJson().getString("url"));
+
+        shareParams.setUrl(newsBean.getShareUrl());
+        System.err.println(newsBean.getShareUrl());
+//        Toast.makeText(this, newsBean.getShareUrl(), Toast.LENGTH_SHORT).show();
+//        shareParams.setUrl(newsBean.getNewsJson().getString("url"));
         shareParams.setShareType(Platform.SHARE_WEBPAGE);
         wechat.share(shareParams);
     }
@@ -98,7 +103,8 @@ public class NewsActivity extends DefaultSwipeBackActivity {
 //        if (newsBean.getImages().size() > 0) {
 //            shareParams.setImageData(newsBean.getImages().get(0));
 //        }
-        shareParams.setTitleUrl(newsBean.getNewsJson().getString("url"));
+//        shareParams.setTitleUrl(newsBean.getNewsJson().getString("url"));
+        shareParams.setTitleUrl(newsBean.getShareUrl());
         shareParams.setShareType(Platform.SHARE_WEBPAGE);
         qq.share(shareParams);
     }

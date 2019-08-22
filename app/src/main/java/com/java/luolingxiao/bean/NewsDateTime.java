@@ -46,6 +46,10 @@ public class NewsDateTime {
         return ret.toString();
     }
 
+    public String toQueryValue() {
+        return String.format("%s%%20%s", date.toString(), time);
+    }
+
     public NewsDateTime minusSeconds(int seconds) {
         LocalDateTime dateTime = LocalDateTime.of(date, time).minusSeconds(seconds);
         return new NewsDateTime(dateTime.toLocalDate(), dateTime.toLocalTime());

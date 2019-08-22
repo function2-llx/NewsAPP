@@ -90,7 +90,10 @@ public class NewsBean {
         return content.substring(0, 100) + "...";
     }
 
+    private static final String shareUrl = "http://183.172.110.59:8080/news?";
+    public String getShareUrl() { return shareUrl + "publishTime=" + publishTime.toQueryValue() + "&newsID=" + getNewsId(); }
+
     public String getNewsId() {
-        return newsJson.getString("newsId");
+        return newsJson.getString("newsID");
     }
 }

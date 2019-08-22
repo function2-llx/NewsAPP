@@ -21,11 +21,11 @@ app.listen(8080, () => {
 app.get('/news', (req, appres) => {
     console.log(req.url)
     data = url.parse(req.url, true).query
-    console.log(data)
+    // console.log(data)
     superagent.get('https://api2.newsminer.net/svc/news/queryNewsList')
         .query({startDate: data.publishTime, endDate: data.publishTime})
         .end((err, res) => {
-            console.log(res.body)
+            // console.log(res.body)
             for (let news of res.body.data) {
                 if (news.newsID == data.newsID) {
                     appres.render("index.ejs", news)
