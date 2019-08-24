@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+
     <!--<TextView-->
         <!--android:id="@+id/textView2"-->
         <!--android:layout_width="145dp"-->
@@ -15,20 +16,28 @@
         <!--app:layout_constraintBottom_toBottomOf="parent"-->
         <!--app:layout_constraintEnd_toEndOf="parent"-->
         <!--app:layout_constraintStart_toStartOf="parent" />-->
-    <com.aspsine.irecyclerview.IRecyclerView
-        android:id="@+id/news_irc"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        app:loadMoreEnabled="true"
-        app:refreshHeaderLayout="@layout/layout_irecyclerview_refresh_header"
-        app:loadMoreFooterLayout="@layout/layout_irecyclerview_load_more_footer"
-        app:refreshEnabled="true" />
 
-    <com.jaydenxiao.common.commonwidget.LoadingTip
-        android:id="@+id/loadedTip"
+
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:gravity="center" />
+        android:layout_height="match_parent">
+<!--        <androidx.recyclerview.widget.RecyclerView-->
+<!--            android:id="@+id/recyclerView"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:overScrollMode="never"-->
+<!--            android:background="#fff" />-->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="?attr/actionBarSize"
+            android:clipToPadding="false"
+            android:overScrollMode="never"
+            tools:listitem="@layout/item_practice_repast"/>
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,54 +1,75 @@
 package com.java.luolingxiao.fragments;
 
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.aspsine.irecyclerview.IRecyclerView;
-import com.aspsine.irecyclerview.OnLoadMoreListener;
-import com.aspsine.irecyclerview.OnRefreshListener;
+//import com.aspsine.irecyclerview.IRecyclerView;
+//import com.aspsine.irecyclerview.OnLoadMoreListener;
+//import com.aspsine.irecyclerview.OnRefreshListener;
 import com.aspsine.irecyclerview.animation.ScaleInAnimation;
-import com.aspsine.irecyclerview.widget.LoadMoreFooterView;
+//import com.aspsine.irecyclerview.widget.LoadMoreFooterView;
 import com.java.luolingxiao.DeFaultActivity;
+import com.java.luolingxiao.NewsActivity;
 import com.java.luolingxiao.R;
+import com.java.luolingxiao.adapters.BaseRecyclerAdapter;
 import com.java.luolingxiao.adapters.NewsListAdapter;
+import com.java.luolingxiao.adapters.SmartViewHolder;
 import com.java.luolingxiao.api.NewsApi;
 import com.java.luolingxiao.bean.NewsBean;
 import com.java.luolingxiao.bean.NewsDateTime;
-import com.jaydenxiao.common.commonwidget.LoadingTip;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
 
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
+import com.scwang.smartrefresh.layout.util.SmartUtil;
+
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import butterknife.Bind;
 
-/**
- * des:新闻fragment
- * Created by xsf
- * on 2016.09.17:30
- */
-public class NewsListFragment extends Fragment implements OnRefreshListener, OnLoadMoreListener {
-    private IRecyclerView irc;
-    @Bind(R.id.loadedTip)
-    LoadingTip loadedTip;
+
+public class NewsListFragment extends Fragment {
     private NewsListAdapter newsListAdapter;
-    private List<NewsBean> data = new ArrayList<>();
+    private ArrayList<NewsBean> data = new ArrayList<>();
 
     private String mNewsId;
     private String mNewsType;
     private int mStartPage=0;
+    private boolean noMore = false;
 //    Context a;
 
     // 标志位，标志已经初始化完成。
     private boolean isPrepared;
     private boolean isVisible;
+    private NewsDateTime lastDate;
+    private class Model {
+        int imageId;
+        int avatarId;
+        int position;
+        String name;
+        String nickname;
+        String imageUrl;
+    }
+    private BaseRecyclerAdapter<Model> mAdapter;
 
     public NewsListFragment() {}
 
@@ -71,77 +92,97 @@ public class NewsListFragment extends Fragment implements OnRefreshListener, OnL
         return getArguments().getString("words");
     }
 
-    @Override
-    public void onRefresh() {
-        newsListAdapter.getPageBean().setRefresh(true);
-        mStartPage = 0;
-        //发起请求
-        irc.setRefreshing(true);
-        getNewsListDataRequest(mNewsType, mNewsId, mStartPage, true, false);
-        ++mStartPage;
-    }
-
-    @Override
-    public void onLoadMore(View loadMoreView) {
-        newsListAdapter.getPageBean().setRefresh(false);
-        //发起请求
-        irc.setLoadMoreStatus(LoadMoreFooterView.Status.LOADING);
-        getNewsListDataRequest(mNewsType, mNewsId, mStartPage, false, true);
-        ++mStartPage;
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        mStartPage = 1;
-        if (getArguments() != null) {
-//            mNewsId = getArguments().getString(AppConstant.NEWS_ID);
-//            mNewsType = getArguments().getString(AppConstant.NEWS_TYPE);
-        }
-//        Context a = getContext();
-//        System.out.println(getContext());
-
-//        //数据为空才重新发起请求
-//        if(newListAdapter.getSize()<=0) {
-//            mStartPage = 0;
-//            mPresenter.getNewsListDataRequest(mNewsType, mNewsId, mStartPage);
-//        }
-    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-//        return super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_news_list, container, false);
-        irc = view.findViewById(R.id.news_irc);
-        irc.setLayoutManager(new LinearLayoutManager(getContext()));
-        data.clear();
-        newsListAdapter = new NewsListAdapter(getContext(), data);
-        newsListAdapter.openLoadAnimation(new ScaleInAnimation());
-        irc.setAdapter(newsListAdapter);
-        irc.setOnRefreshListener(this);
-        irc.setOnLoadMoreListener(this);
-        //数据为空才重新发起请求
-        if(newsListAdapter.getSize()<=0) {
-            mStartPage = 1;
-            getNewsListDataRequest(mNewsType, mNewsId, mStartPage, false, false);
-        }
+        RefreshLayout refreshLayout = view.findViewById(R.id.refreshLayout);
+
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+
+        lastDate = new NewsDateTime();
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(mAdapter = new BaseRecyclerAdapter<Model>(R.layout.item_practice_repast) {
+            @Override
+            protected void onBindViewHolder(SmartViewHolder holder, Model model, int position) {
+                holder.text(R.id.name, model.name);
+                holder.text(R.id.nickname, model.nickname);
+                holder.image_init(R.id.image, R.mipmap.ic_care_normal);
+                holder.image(R.id.image, model.imageUrl);
+                holder.setPosition(model.position);
+//                holder.image(R.id.image, model.imageId);
+            }
+        });
+
+        mAdapter.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                NewsActivity.startAction(getContext(), data.get(position));
+
+            }
+        });
+
+        refreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
+            @Override
+            public void onRefresh(@NonNull final RefreshLayout refreshLayout) {
+                refreshLayout.getLayout().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        refreshLayout.finishRefresh();
+                        refreshLayout.resetNoMoreData();//setNoMoreData(false);//恢复上拉状态
+                    }
+                }, 2000);
+            }
+            @Override
+            public void onLoadMore(@NonNull final RefreshLayout refreshLayout) {
+                refreshLayout.getLayout().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+//                        if (mAdapter.getCount() > 100)
+                        if (noMore) {
+                            Toast.makeText(getContext(), "数据全部加载完毕", Toast.LENGTH_SHORT).show();
+                            refreshLayout.finishLoadMoreWithNoMoreData();//设置之后，将不会再触发加载事件
+                        } else {
+                            getNewsListDataRequest("", 20, lastDate, false, false);
+//                            mAdapter.loadMore(loadModels());
+                            refreshLayout.finishLoadMore();
+                        }
+                    }
+                }, 1000);
+            }
+        });
+
+//        refreshLayout.getLayout().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                refreshLayout.setHeaderInsetStart(SmartUtil.px2dp(toolbar.getHeight()));
+//            }
+//        }, 500);
+        getNewsListDataRequest("", 1, lastDate, false, false);
         return view;
     }
 
-    public void getNewsListDataRequest(String type, String id, int startPage, boolean isOnRefresh, boolean isOnLoadMore) {
+    public void getNewsListDataRequest(String type, int size, NewsDateTime endDate, boolean isOnRefresh, boolean isOnLoadMore) {
         NewsApi.requestNews(new NewsApi.SearchParams()
-                        .setSize(20)
+                        .setSize(size)
                         .setWords(getWords())
                         .setCategory(getChannel().equals("首页")? "" : getChannel())
 //                        .setStartDate()
-                        .setEndDate(new NewsDateTime()),
+                        .setEndDate(endDate),
                 !((DeFaultActivity)getActivity()).isSaveTrafficMode(),
                 new NewsApi.NewsCallback() {
                     @Override
                     public void onReceived(List<NewsBean> newsBeanList) {
-                        returnNewsListData(newsBeanList);
+                        if (newsBeanList.size() > 0) {
+                            lastDate = newsBeanList.get(newsBeanList.size() - 1).getPublishTime();
+                        } else {
+                            noMore = true;
+                        }
+                        setNewsList(newsBeanList);
+
+//                        returnNewsListData(newsBeanList);
 //                        if (newsBeanList.isEmpty()) {
 //                            Toast.makeText(MainActivity.this, "莫得新闻了，等哈再来哈", Toast.LENGTH_SHORT).show();
 //                        } else {
@@ -175,24 +216,54 @@ public class NewsListFragment extends Fragment implements OnRefreshListener, OnL
 //        returnNewsListData(newsSummaries);
     }
 
-    public void returnNewsListData(List<NewsBean> newsSummaries) {
-        if (newsSummaries != null) {
-            mStartPage += 20;
-            if (newsListAdapter.getPageBean().isRefresh()) {
-                irc.setRefreshing(false);
-                newsListAdapter.replaceAll(newsSummaries);
-            } else {
-                if (newsSummaries.size() > 0) {
-                    irc.setLoadMoreStatus(LoadMoreFooterView.Status.GONE);
-                    newsListAdapter.addAll(newsSummaries);
-                } else {
-                    irc.setLoadMoreStatus(LoadMoreFooterView.Status.THE_END);
+    public void setNewsList(List<NewsBean> newsBeanList) {
+        ArrayList<Model> newsList = new ArrayList<>();
+        for (int i = 0; i < newsBeanList.size(); ++i) {
+            int finalI = i;
+            List<String> images = newsBeanList.get(finalI).getImageUrls();
+            data.add(newsBeanList.get(finalI));
+            newsList.add(new Model() {{
+                this.name = newsBeanList.get(finalI).getTitle();
+                this.nickname = newsBeanList.get(finalI).getContent();
+                if (this.nickname.length() > 20) {
+                    this.nickname = this.nickname.substring(0, 10) + "...";
                 }
-            }
+                if (images.size() > 0) this.imageUrl = images.get(0);
+                this.position = data.size() - 1;
+            }});
         }
+        mAdapter.loadMore(newsList);
     }
 
-    public void scrolltoTop() {
-        irc.smoothScrollToPosition(0);
+    private Collection<Model> loadModels() {
+        return Arrays.asList(
+                new Model() {{
+                    this.name = "但家香酥鸭";
+                    this.nickname = "爱过那张脸";
+//                    this.imageId = R.mipmap.image_practice_repast_1;
+                }}, new Model() {{
+                    this.name = "香菇蒸鸟蛋";
+                    this.nickname = "淑女算个鸟";
+//                    this.imageId = R.mipmap.image_practice_repast_2;
+                }}, new Model() {{
+                    this.name = "花溪牛肉粉";
+                    this.nickname = "性感妩媚";
+//                    this.imageId = R.mipmap.image_practice_repast_3;
+                }}, new Model() {{
+                    this.name = "破酥包";
+                    this.nickname = "一丝丝纯真";
+//                    this.imageId = R.mipmap.image_practice_repast_4;
+                }}, new Model() {{
+                    this.name = "盐菜饭";
+                    this.nickname = "等着你回来";
+//                    this.imageId = R.mipmap.image_practice_repast_5;
+                }}, new Model() {{
+                    this.name = "米豆腐";
+                    this.nickname = "宝宝树人";
+//                    this.imageId = R.mipmap.image_practice_repast_6;
+                }});
     }
+//    public void scrolltoTop() {
+//        irc.smoothScrollToPosition(0);
+//    }
 }
