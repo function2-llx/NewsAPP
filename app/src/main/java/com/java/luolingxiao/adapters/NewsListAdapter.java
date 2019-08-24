@@ -79,7 +79,7 @@ public class NewsListAdapter extends MultiItemRecycleViewAdapter<NewsBean>
         holder.setOnClickListener(R.id.rl_root, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                NewsActivity.startAction(mContext,holder.getView(R.id.news_summary_photo_iv),newsBean);
+//                NewsActivity.startAction(mContext,holder.getView(R.id.news_summary_photo_iv),newsBean);
             }
         });
     }

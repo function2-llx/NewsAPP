@@ -34,11 +34,6 @@ import cn.sharesdk.onekeyshare.ShareContentCustomizeCallback;
 import cn.sharesdk.tencent.qq.QQ;
 import cn.sharesdk.wechat.friends.Wechat;
 
-/**
- * des:普通新闻详情
- * Created by xsf
- * on 2016.09.16:57
- */
 public class NewsActivity extends DefaultSwipeBackActivity {
 
 
@@ -58,25 +53,29 @@ public class NewsActivity extends DefaultSwipeBackActivity {
     private String mNewsTitle;
     private String mShareLink;
 
-
-    public static void startAction(Context mContext, View view, NewsBean newsbean) {
+    public static void startAction(Context mContext, NewsBean newsbean) {
         Intent intent = new Intent(mContext, NewsActivity.class);
 //        intent.putExtra(AppConstant.NEWS_POST_ID, postId);
         intent.putExtra("NewsBean", newsbean.getNewsJson().toString());
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            ActivityOptions options = ActivityOptions
-                    .makeSceneTransitionAnimation((Activity) mContext,view, AppConstant.TRANSITION_ANIMATION_NEWS_PHOTOS);
-            mContext.startActivity(intent, options.toBundle());
-        } else {
-
-            //让新的Activity从一个小的范围扩大到全屏
-            ActivityOptionsCompat options = ActivityOptionsCompat
-                    .makeScaleUpAnimation(view, view.getWidth() / 2, view.getHeight() / 2, 0, 0);
-            ActivityCompat.startActivity((Activity) mContext, intent, options.toBundle());
-        }
-
+        mContext.startActivity(intent, null);
     }
+//    public static void startAction(Context mContext, View view, NewsBean newsbean) {
+//        Intent intent = new Intent(mContext, NewsActivity.class);
+////        intent.putExtra(AppConstant.NEWS_POST_ID, postId);
+//        intent.putExtra("NewsBean", newsbean.getNewsJson().toString());
+//
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            ActivityOptions options = ActivityOptions
+//                    .makeSceneTransitionAnimation((Activity) mContext,view, AppConstant.TRANSITION_ANIMATION_NEWS_PHOTOS);
+//            mContext.startActivity(intent, options.toBundle());
+//        } else {
+//
+//            //让新的Activity从一个小的范围扩大到全屏
+//            ActivityOptionsCompat options = ActivityOptionsCompat
+//                    .makeScaleUpAnimation(view, view.getWidth() / 2, view.getHeight() / 2, 0, 0);
+//            ActivityCompat.startActivity((Activity) mContext, intent, options.toBundle());
+//        }
+//    }
 
     void shareWechat(Platform wechat, Platform.ShareParams shareParams, NewsBean newsBean) {
         shareParams.setTitle(newsBean.getTitle());
