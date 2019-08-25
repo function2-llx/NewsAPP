@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <com.stx.xhb.xbanner.XBanner
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/xbanner"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            app:AutoPlayTime="3000"
+            app:pointsContainerBackground="#44aaaaaa"
+            app:pointNormal="@drawable/ic_arrow_back"
+            app:pointSelect="@drawable/ic_arrow_back"
+            app:pointsPosition="RIGHT"
+            app:tipTextSize="12sp"
+            app:isShowNumberIndicator="true"
+            app:isShowIndicatorOnlyOne="true"
+            app:pageChangeDuration="800"/>
+        <include layout="@layout/item_content_news_detail"/>
+    </LinearLayout>
+
+    <!--            <ImageView-->
+<!--                android:id="@+id/news_detail_photo_iv"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:fitsSystemWindows="true"-->
+<!--                android:scaleType="centerCrop"-->
+<!--                android:transitionName="@string/transition_photos"-->
+<!--                app:layout_collapseMode="parallax"-->
+<!--                app:layout_collapseParallaxMultiplier="0.7"-->
+<!--                tools:targetApi="lollipop"/>-->
+
+<!--    <include layout="@layout/item_content_news_detail"/>-->
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

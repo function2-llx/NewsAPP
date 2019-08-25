@@ -6,7 +6,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
-
+    <com.stx.xhb.xbanner.XBanner
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/xbanner"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        app:AutoPlayTime="3000"
+        app:pointsContainerBackground="#44aaaaaa"
+        app:pointNormal="@drawable/ic_arrow_back"
+        app:pointSelect="@drawable/ic_arrow_back"
+        app:pointsPosition="RIGHT"
+        app:tipTextSize="12sp"
+        app:isShowNumberIndicator="true"
+        app:isShowIndicatorOnlyOne="true"
+        app:pageChangeDuration="800"/>
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
@@ -26,6 +39,7 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
             <!--app:expandedTitleGravity="bottom"-->
 
+
 <!--            <ImageView-->
 <!--                android:id="@+id/news_detail_photo_iv"-->
 <!--                android:layout_width="match_parent"-->
@@ -37,14 +51,16 @@
 <!--                app:layout_collapseParallaxMultiplier="0.7"-->
 <!--                tools:targetApi="lollipop"/>-->
 
-            <View
-                android:id="@+id/mask_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/mask_news_detail_photo"
-                android:fitsSystemWindows="true"
-                tools:visibility="visible"
-                />
+
+
+<!--            <View-->
+<!--                android:id="@+id/mask_view"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:background="@drawable/mask_news_detail_photo"-->
+<!--                android:fitsSystemWindows="true"-->
+<!--                tools:visibility="visible"-->
+<!--                />-->
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -56,6 +72,9 @@
                 />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+
+
     </com.google.android.material.appbar.AppBarLayout>
 
     <include layout="@layout/item_content_news_detail"/>

@@ -1,9 +1,8 @@
 package com.java.luolingxiao;
 
-import android.app.Activity;
-import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
@@ -14,18 +13,20 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.content.ContextCompat;
 
 import com.alibaba.fastjson.JSONObject;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.java.luolingxiao.api.NewsApi;
 import com.java.luolingxiao.bean.AppConstant;
 import com.java.luolingxiao.bean.NewsBean;
 import com.java.luolingxiao.bean.NewsDetail;
+import com.stx.xhb.xbanner.XBanner;
+import com.stx.xhb.xbanner.entity.LocalImageInfo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.sharesdk.framework.Platform;
@@ -48,7 +49,9 @@ public class NewsActivity extends DefaultSwipeBackActivity {
     TextView newsDetailBodyTv;
     ProgressBar progressBar;
 
+
     FloatingActionButton fab;
+    XBanner mXBanner;
     private String postId;
     private String mNewsTitle;
     private String mShareLink;
@@ -118,6 +121,37 @@ public class NewsActivity extends DefaultSwipeBackActivity {
         maskView = findViewById(R.id.mask_view);
         ImageView imageView = findViewById(R.id.news_detail_photo_iv);
 
+        mXBanner = (XBanner) findViewById(R.id.xbanner);
+//        mXBanner.setBannerData(null);
+
+        List<String> images = newsBean.getImageUrls();
+        List<LocalImageInfo> data = new ArrayList<>();
+        for (int i = 0; i < images.size(); ++i) {
+            data.add(new LocalImageInfo(R.mipmap.ic_care_normal));
+        }
+        mXBanner.setBannerData(data);
+        mXBanner.setAutoPlayAble(true);
+
+        //加载广告图片
+        mXBanner.loadImage(new XBanner.XBannerAdapter() {
+            @Override
+            public void loadBanner(XBanner banner, Object model, View view, int position) {
+                ImageView imageView = (ImageView)view;
+                imageView.setImageResource(R.mipmap.ic_care_normal);
+//                NewsApi.requestImage(images.get(position), new NewsApi.ImageCallback() {
+//                    @Override
+//                    public void onReceived(Bitmap bitmap) {
+//                        imageView.setImageBitmap(bitmap);
+//                    }
+//
+//                    @Override
+//                    public void onException(Exception e) {
+//
+//                    }
+//                });
+            }
+        });
+
 //        if (newsBean.getImages().size() > 0) {
 //            imageView.setImageBitmap(newsBean.getImages().get(0));
 //        }
@@ -150,7 +184,7 @@ public class NewsActivity extends DefaultSwipeBackActivity {
                         });
                         oks.disableSSOWhenAuthorize();
                         oks.show(NewsActivity.this);
-                    break;
+                        break;
 //                    case R.id.action_web_view:
 //                        NewsBrowserActivity.startAction(NewsActivity.this, mShareLink, mNewsTitle);
 //                        break;
