@@ -123,10 +123,12 @@ public class NewsListFragment extends Fragment {
                 refreshLayout.getLayout().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        refreshLayout.finishRefresh();
+//                        recyclerView.set
+                        getNewsListDataRequest("", 6, lastDate, true, false);
+//                        refreshLayout.finishRefresh();
                         refreshLayout.resetNoMoreData();//setNoMoreData(false);//恢复上拉状态
                     }
-                }, 2000);
+                }, 100);
             }
             @Override
             public void onLoadMore(@NonNull final RefreshLayout refreshLayout) {
@@ -138,9 +140,8 @@ public class NewsListFragment extends Fragment {
                             Toast.makeText(getContext(), "数据全部加载完毕", Toast.LENGTH_SHORT).show();
                             refreshLayout.finishLoadMoreWithNoMoreData();//设置之后，将不会再触发加载事件
                         } else {
-                            getNewsListDataRequest("", 6, lastDate, false, false);
+                            getNewsListDataRequest("", 6, lastDate, false, true);
 //                            mAdapter.loadMore(loadModels());
-
                         }
                     }
                 }, 100);
@@ -176,9 +177,10 @@ public class NewsListFragment extends Fragment {
                         } else {
                             noMore = true;
                         }
-                        setNewsList(newsBeanList);
+                        setNewsList(newsBeanList, isOnRefresh, isOnLoadMore);
 
                         refreshLayout.finishLoadMore();
+                        refreshLayout.finishRefresh();
 //                        returnNewsListData(newsBeanList);
 //                        if (newsBeanList.isEmpty()) {
 //                            Toast.makeText(MainActivity.this, "莫得新闻了，等哈再来哈", Toast.LENGTH_SHORT).show();
@@ -196,25 +198,13 @@ public class NewsListFragment extends Fragment {
                     }
                 }
         );
-//        List<NewsSummary> newsSummaries = new ArrayList<NewsSummary>();
-//        for (int i = 0; i < 20; ++i) {
-//            NewsSummary a = new NewsSummary();
-//            a.setPostid("" + i);
-//            String t = "";
-//            if (isOnRefresh) {
-//                t = " fresh";
-//            }
-//            if (isOnLoadMore) {
-//                t = " loadMore";
-//            }
-//            a.setTitle("Title" + i + t);
-//            newsSummaries.add(a);
-//        }
-//        returnNewsListData(newsSummaries);
     }
 
-    public void setNewsList(List<NewsBean> newsBeanList) {
+    public void setNewsList(List<NewsBean> newsBeanList, boolean isOnRefresh, boolean isOnLoadMore) {
         ArrayList<Model> newsList = new ArrayList<>();
+        if (isOnRefresh) {
+            data.clear();
+        }
         for (int i = 0; i < newsBeanList.size(); ++i) {
             int finalI = i;
             List<String> images = newsBeanList.get(finalI).getImageUrls();
@@ -229,7 +219,9 @@ public class NewsListFragment extends Fragment {
                 this.position = data.size() - 1;
             }});
         }
-        mAdapter.loadMore(newsList);
+        if (isOnRefresh) {
+            mAdapter.refresh(newsList);
+        } else mAdapter.loadMore(newsList);
     }
 
     private Collection<Model> loadModels() {
