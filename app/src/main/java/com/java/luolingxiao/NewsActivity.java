@@ -22,7 +22,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.java.luolingxiao.bean.AppConstant;
 import com.java.luolingxiao.bean.NewsBean;
 import com.java.luolingxiao.bean.NewsDetail;
 
@@ -112,7 +111,6 @@ public class NewsActivity extends DefaultSwipeBackActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_news_detail);
-        postId = getIntent().getStringExtra(AppConstant.NEWS_POST_ID);
         NewsBean newsBean = NewsBean.parse((JSONObject)JSONObject.parse(getIntent().getStringExtra("NewsBean")));
         toolbarLayout = findViewById(R.id.toolbar_layout);
         toolbar = findViewById(R.id.toolbar);
@@ -315,16 +313,16 @@ public class NewsActivity extends DefaultSwipeBackActivity {
         return imgTotal >= 2 && newsBody != null;
     }
 
-    private String getImgSrcs(NewsDetail newsDetail) {
-        List<NewsDetail.ImgBean> imgSrcs = newsDetail.getImg();
-        String imgSrc;
-        if (imgSrcs != null && imgSrcs.size() > 0) {
-            imgSrc = imgSrcs.get(0).getSrc();
-        } else {
-            imgSrc = getIntent().getStringExtra(AppConstant.NEWS_IMG_RES);
-        }
-        return imgSrc;
-    }
+//    private String getImgSrcs(NewsDetail newsDetail) {
+//        List<NewsDetail.ImgBean> imgSrcs = newsDetail.getImg();
+//        String imgSrc;
+//        if (imgSrcs != null && imgSrcs.size() > 0) {
+//            imgSrc = imgSrcs.get(0).getSrc();
+//        } else {
+//            imgSrc = getIntent().getStringExtra(AppConstant.NEWS_IMG_RES);
+//        }
+//        return imgSrc;
+//    }
 
     private boolean canBrowse(Intent intent) {
         return intent.resolveActivity(getPackageManager()) != null && mShareLink != null;

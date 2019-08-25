@@ -17,16 +17,10 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-//import com.aspsine.irecyclerview.IRecyclerView;
-//import com.aspsine.irecyclerview.OnLoadMoreListener;
-//import com.aspsine.irecyclerview.OnRefreshListener;
-import com.aspsine.irecyclerview.animation.ScaleInAnimation;
-//import com.aspsine.irecyclerview.widget.LoadMoreFooterView;
 import com.java.luolingxiao.DeFaultActivity;
 import com.java.luolingxiao.NewsActivity;
 import com.java.luolingxiao.R;
 import com.java.luolingxiao.adapters.BaseRecyclerAdapter;
-import com.java.luolingxiao.adapters.NewsListAdapter;
 import com.java.luolingxiao.adapters.SmartViewHolder;
 import com.java.luolingxiao.api.NewsApi;
 import com.java.luolingxiao.bean.NewsBean;
@@ -44,11 +38,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import butterknife.Bind;
 
 
 public class NewsListFragment extends Fragment {
-    private NewsListAdapter newsListAdapter;
     private ArrayList<NewsBean> data = new ArrayList<>();
 
     private String mNewsId;
@@ -58,6 +50,7 @@ public class NewsListFragment extends Fragment {
 //    Context a;
 
     // 标志位，标志已经初始化完成。
+    RefreshLayout refreshLayout;
     private boolean isPrepared;
     private boolean isVisible;
     private NewsDateTime lastDate;
@@ -97,7 +90,7 @@ public class NewsListFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_news_list, container, false);
-        RefreshLayout refreshLayout = view.findViewById(R.id.refreshLayout);
+        refreshLayout = view.findViewById(R.id.refreshLayout);
 
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
 
@@ -145,12 +138,12 @@ public class NewsListFragment extends Fragment {
                             Toast.makeText(getContext(), "数据全部加载完毕", Toast.LENGTH_SHORT).show();
                             refreshLayout.finishLoadMoreWithNoMoreData();//设置之后，将不会再触发加载事件
                         } else {
-                            getNewsListDataRequest("", 20, lastDate, false, false);
+                            getNewsListDataRequest("", 6, lastDate, false, false);
 //                            mAdapter.loadMore(loadModels());
-                            refreshLayout.finishLoadMore();
+
                         }
                     }
-                }, 1000);
+                }, 100);
             }
         });
 
@@ -165,6 +158,9 @@ public class NewsListFragment extends Fragment {
     }
 
     public void getNewsListDataRequest(String type, int size, NewsDateTime endDate, boolean isOnRefresh, boolean isOnLoadMore) {
+        if (endDate != null) {
+            endDate = endDate.minusSeconds(1);
+        }
         NewsApi.requestNews(new NewsApi.SearchParams()
                         .setSize(size)
                         .setWords(getWords())
@@ -182,6 +178,7 @@ public class NewsListFragment extends Fragment {
                         }
                         setNewsList(newsBeanList);
 
+                        refreshLayout.finishLoadMore();
 //                        returnNewsListData(newsBeanList);
 //                        if (newsBeanList.isEmpty()) {
 //                            Toast.makeText(MainActivity.this, "莫得新闻了，等哈再来哈", Toast.LENGTH_SHORT).show();

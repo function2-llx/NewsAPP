@@ -13,7 +13,7 @@ public class NewsDateTime {
     private LocalDate date;
     private  LocalTime time;
 
-    public NewsDateTime() { this(LocalDate.now()); }
+    public NewsDateTime() { this(LocalDate.now(), LocalTime.now()); }
     public NewsDateTime(@NonNull LocalDate date) { this(date, null); }
     public NewsDateTime(@NonNull LocalDate date, @Nullable LocalTime time) {
         this.date = date;

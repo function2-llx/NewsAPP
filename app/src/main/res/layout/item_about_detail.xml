@@ -25,7 +25,6 @@
             android:layout_below="@+id/news_detail_from_tv"
             android:layout_width="match_parent"
             android:layout_marginTop="15dp"
-            android:textColor="?attr/dayNightTwoTextColor"
             android:textSize="@dimen/font_normal"
             android:text="@string/care_about_wechat"
             android:layout_height="wrap_content" />

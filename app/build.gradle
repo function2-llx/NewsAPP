@@ -88,11 +88,6 @@ dependencies {
     implementation 'org.greenrobot:eventbus:3.0.0'
     implementation 'com.marshalchen.ultimaterecyclerview:library:0.9.0'
 
-    api project(':library:photoPicker')//图片选择
-    api project(':library:irecyclerview')//万能适配器和recyclerview
-//    api project(':library:oneKeyShareSDK')//分享
-    api project(':library:jcvideoplayer')//视频播放
-    api project(':library:selectordialog')//常用提示框
 
     implementation 'com.yanzhenjie.nohttp:nohttp:1.1.11'
     implementation 'com.yanzhenjie.nohttp:okhttp:1.1.11'
@@ -108,4 +103,6 @@ dependencies {
     testImplementation "androidx.room:room-testing:$room_version"
 
     implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0'  //1.0.5及以前版本的老用户升级需谨慎，API改动过大
+    implementation 'com.alibaba:fastjson:1.2.8'//json解析封装框架
+    implementation 'com.flyco.tablayout:FlycoTabLayout_Lib:2.0.8@aar'
 }
