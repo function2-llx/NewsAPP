@@ -11,7 +11,7 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="256dp"
+        android:layout_height="100dp"
         android:fitsSystemWindows="true"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
@@ -20,6 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
+            app:title="牛批"
             app:contentScrim="?attr/colorPrimary"
             app:expandedTitleMarginEnd="@dimen/title_margin"
             app:expandedTitleMarginStart="@dimen/title_margin"
@@ -53,7 +54,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:AutoPlayTime="3000"
-                app:isShowIndicatorOnlyOne="false"
+                app:isShowIndicatorOnlyOne="true"
                 app:layout_anchor="@+id/include"
                 app:layout_anchorGravity="top|center"
                 app:pageChangeDuration="800"

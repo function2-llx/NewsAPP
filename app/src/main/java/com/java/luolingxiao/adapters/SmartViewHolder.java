@@ -2,6 +2,7 @@ package com.java.luolingxiao.adapters;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.AdapterView;
@@ -68,6 +69,17 @@ public class SmartViewHolder extends RecyclerView.ViewHolder implements View.OnC
         }
         return this;
     }
+
+    public SmartViewHolder myText(int id, CharSequence sequence) {
+        View view = findViewById(id);
+        if (view instanceof TextView) {
+            ((TextView) view).setText(sequence);
+            ((TextView) view).setTextColor(Color.BLACK);
+        }
+        return this;
+    }
+
+
 
     public SmartViewHolder text(int id,@StringRes int stringRes) {
         View view = findViewById(id);

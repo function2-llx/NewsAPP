@@ -1,13 +1,17 @@
 package com.java.luolingxiao.fragments;
 
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -97,23 +101,59 @@ public class NewsListFragment extends Fragment {
         lastDate = new NewsDateTime();
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+//        recyclerView.setBackgroundColor(getResources().getColor(R.color.gray, null));
         recyclerView.setAdapter(mAdapter = new BaseRecyclerAdapter<Model>(R.layout.item_practice_repast) {
             @Override
             protected void onBindViewHolder(SmartViewHolder holder, Model model, int position) {
-                holder.text(R.id.name, model.name);
-                holder.text(R.id.nickname, model.nickname);
-                holder.image_init(R.id.image, R.mipmap.ic_care_normal);
-                holder.image(R.id.image, model.imageUrl);
-                holder.setPosition(model.position);
+                NewsBean newsBean = data.get(position);
+                holder.myText(R.id.name, model.name);
+                holder.myText(R.id.nickname, model.nickname);
+                if (newsBean.getImageUrls().size() > 0) {
+//                    holder.image_init(R.id.image, R.drawable.);
+                    holder.image(R.id.image, model.imageUrl);
+                }
+//                holder.setPosition(model.position);
 //                holder.image(R.id.image, model.imageId);
             }
+
+
+            @Override
+            public int getItemViewType(int position) {
+                NewsBean newsBean = data.get(position);
+                if (newsBean.getImageUrls().size() == 0) {
+                    return 0;
+//                    return R.layout.item_news_no_picture;
+                } else {
+                    return 1;
+//                    return R.layout.item_practice_repast;
+                }
+            }
+
+            @Override
+            public SmartViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+                if (viewType == 0) {
+                    return new SmartViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_news_no_picture, parent, false),mListener);
+                } else {
+                    return new SmartViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_practice_repast, parent, false),mListener);
+                }
+            }
+
+            //            @Override
+//            public int getViewTypeCount() {
+//                return super.getViewTypeCount();
+//            }
         });
 
         mAdapter.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                LinearLayout subView = view.findViewById(R.id.linearLayout);
+//                subView.setBackgroundColor(Color.parseColor("#FFF0F0F0"));
                 NewsActivity.startAction(getContext(), data.get(position));
-
+                TextView subView = view.findViewById(R.id.name);
+                subView.setTextColor(getResources().getColor(R.color.toast_stroke_gray));
+                subView = view.findViewById(R.id.nickname);
+                subView.setTextColor(getResources().getColor(R.color.toast_stroke_gray));
             }
         });
 
@@ -213,7 +253,7 @@ public class NewsListFragment extends Fragment {
                 this.name = newsBeanList.get(finalI).getTitle();
                 this.nickname = newsBeanList.get(finalI).getContent();
                 if (this.nickname.length() > 20) {
-                    this.nickname = this.nickname.substring(0, 10) + "...";
+                    this.nickname = this.nickname.substring(0, 20) + "...";
                 }
                 if (images.size() > 0) this.imageUrl = images.get(0);
                 this.position = data.size() - 1;

@@ -2,24 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="150dp"
+    android:layout_height="120dp"
     android:paddingTop="10dp">
-
-    <com.java.luolingxiao.widget.RoundImageView
-        android:id="@+id/image"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="match_parent"
-        android:layout_marginHorizontal="10dp"
-        android:layout_marginVertical="10dp"
-        android:scaleType="centerCrop"
-        android:contentDescription="@string/app_name"
-        android:src="@mipmap/ic_care_normal"
-        android:background="#ddd"/>
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="220dp"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/white"
         android:orientation="vertical"

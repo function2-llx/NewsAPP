@@ -10,11 +10,13 @@ import android.os.Bundle;
 import android.text.Html;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.content.ContextCompat;
@@ -116,8 +118,15 @@ public class NewsActivity extends DefaultSwipeBackActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_news_detail);
         NewsBean newsBean = NewsBean.parse((JSONObject)JSONObject.parse(getIntent().getStringExtra("NewsBean")));
+        List<String> images = newsBean.getImageUrls();
+        if (images.size() == 0) {
+            setContentView(R.layout.act_news_detail_no_picture);
+        } else {
+            setContentView(R.layout.act_news_detail);
+        }
+
+        AppBarLayout appBarLayout = findViewById(R.id.app_bar);
         toolbarLayout = findViewById(R.id.toolbar_layout);
         toolbar = findViewById(R.id.toolbar);
         appBar = findViewById(R.id.app_bar);
@@ -131,7 +140,11 @@ public class NewsActivity extends DefaultSwipeBackActivity {
         mXBanner = (XBanner) findViewById(R.id.xbanner);
 //        mXBanner.setBannerData(null);
 
-        List<String> images = newsBean.getImageUrls();
+
+//        if (images.size() == 0) {
+//            //must be CoordinatorLayout.LayoutParams
+//            appBarLayout.setLayoutParams(new CoordinatorLayout.LayoutParams(appBarLayout.getLayoutParams().width, 56));
+//        }
         List<LocalImageInfo> data = new ArrayList<>();
         for (int i = 0; i < images.size(); ++i) {
             data.add(new LocalImageInfo(R.mipmap.ic_care_normal));
