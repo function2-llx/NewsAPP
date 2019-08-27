@@ -6,6 +6,7 @@ import androidx.annotation.Nullable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 public class NewsDateTime {
@@ -47,7 +48,7 @@ public class NewsDateTime {
     }
 
     public String toQueryValue() {
-        return String.format("%s%%20%s", date.toString(), time);
+        return String.format("%s%%20%s", date.toString(), time.format(DateTimeFormatter.ofPattern("HH:mm:ss")));
     }
 
     public NewsDateTime minusSeconds(int seconds) {

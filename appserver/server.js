@@ -25,7 +25,7 @@ app.get('/news', (req, appres) => {
     superagent.get('https://api2.newsminer.net/svc/news/queryNewsList')
         .query({startDate: data.publishTime, endDate: data.publishTime})
         .end((err, res) => {
-            // console.log(res.body)
+            console.log(res.body)
             for (let news of res.body.data) {
                 if (news.newsID == data.newsID) {
                     appres.render("index.ejs", news)
