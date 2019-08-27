@@ -90,7 +90,7 @@ public class NewsBean {
         return content.substring(0, 100) + "...";
     }
 
-    private static final String ip = "183.172.104.191";
+    private static final String ip = "149.28.67.105";
     private static final String port = "8080";
     private static final String shareUrl = "http://" + ip + ":" + port + "/news?";
     public String getShareUrl() { return shareUrl + "publishTime=" + publishTime.toQueryValue() + "&newsID=" + getNewsId(); }

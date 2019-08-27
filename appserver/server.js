@@ -14,8 +14,10 @@ app.use(bodyParser.urlencoded({//处理以form表单的提交
     extended: true
 }))
 
-app.listen(8080, () => {
-    console.log('App listening at port 8080')
+port = 8080
+
+app.listen(port, () => {
+    console.log('App listening at port', port)
 })
 
 app.get('/news', (req, appres) => {
@@ -25,7 +27,7 @@ app.get('/news', (req, appres) => {
     superagent.get('https://api2.newsminer.net/svc/news/queryNewsList')
         .query({startDate: data.publishTime, endDate: data.publishTime})
         .end((err, res) => {
-            console.log(res.body)
+            // console.log(res.body)
             for (let news of res.body.data) {
                 if (news.newsID == data.newsID) {
                     appres.render("index.ejs", news)
