@@ -30,6 +30,16 @@ app.get('/news', (req, appres) => {
             // console.log(res.body)
             for (let news of res.body.data) {
                 if (news.newsID == data.newsID) {
+                    if (news.image.length == 2) {
+                        news.image = []
+                    } else {
+                        news.image = news.image.substring(1, news.image.length - 1).split(', ')
+                    }
+                    
+                    console.log(news.image)
+                    // for (let e of news.image) {
+                    //     console.log(e)
+                    // }
                     appres.render("index.ejs", news)
                     return
                 }
