@@ -2,7 +2,9 @@ package com.java.luolingxiao.adapters;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.AdapterView;
@@ -13,6 +15,7 @@ import androidx.annotation.StringRes;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.java.luolingxiao.R;
 import com.java.luolingxiao.api.NewsApi;
 
 public class SmartViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -70,11 +73,13 @@ public class SmartViewHolder extends RecyclerView.ViewHolder implements View.OnC
         return this;
     }
 
-    public SmartViewHolder myText(int id, CharSequence sequence) {
+    public SmartViewHolder myText(int id, CharSequence sequence, boolean read) {
         View view = findViewById(id);
         if (view instanceof TextView) {
             ((TextView) view).setText(sequence);
-            ((TextView) view).setTextColor(Color.BLACK);
+            if (read) {
+                ((TextView) view).setTextColor(Color.parseColor("#1A000000"));
+            } else ((TextView) view).setTextColor(Color.BLACK);
         }
         return this;
     }
@@ -112,6 +117,12 @@ public class SmartViewHolder extends RecyclerView.ViewHolder implements View.OnC
 
         if (view instanceof ImageView) {
             ImageView imageView = (ImageView)view;
+
+            Bitmap bitmap = Bitmap.createBitmap(100,100,Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(bitmap);
+            canvas.drawColor(Color.parseColor("#FFF0F0F0"));
+
+            imageView.setImageBitmap(bitmap);
             NewsApi.requestImage(url, new NewsApi.ImageCallback() {
                 @Override
                 public void onReceived(Bitmap bitmap) {

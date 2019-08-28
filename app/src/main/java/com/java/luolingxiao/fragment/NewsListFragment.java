@@ -29,19 +29,21 @@ import com.java.luolingxiao.bean.NewsDateTime;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 
+import java.net.URL;
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
 
-
 public class NewsListFragment extends Fragment {
     private ArrayList<NewsBean> data = new ArrayList<>();
+    private ArrayList<Boolean> data_read = new ArrayList<>();
 
     private String mNewsId;
     private String mNewsType;
-    private int mStartPage=0;
+    private int mStartPage = 0;
     private boolean noMore = false;
 //    Context a;
 
@@ -50,6 +52,7 @@ public class NewsListFragment extends Fragment {
     private boolean isPrepared;
     private boolean isVisible;
     private NewsDateTime lastDate;
+
     private class Model {
         int imageId;
         int avatarId;
@@ -58,6 +61,7 @@ public class NewsListFragment extends Fragment {
         String nickname;
         String imageUrl;
     }
+
     private BaseRecyclerAdapter<Model> mAdapter;
 
     private DataRepository getDataRepository() {
@@ -102,12 +106,21 @@ public class NewsListFragment extends Fragment {
             @Override
             protected void onBindViewHolder(SmartViewHolder holder, Model model, int position) {
                 NewsBean newsBean = data.get(position);
-                holder.myText(R.id.name, model.name);
-                holder.myText(R.id.nickname, model.nickname);
-                if (newsBean.getImageUrls().size() > 0) {
+                holder.myText(R.id.name, model.name, data_read.get(position));
+                if (holder.getItemViewType() < 2) holder.myText(R.id.nickname, model.nickname, data_read.get(position));
+
+                List<String> imageUrls = data.get(model.position).getImageUrls();
+
+                if (newsBean.getImageUrls().size() >= 3) {
+                    holder.image(R.id.image1, imageUrls.get(0));
+                    holder.image(R.id.image2, imageUrls.get(1));
+                    holder.image(R.id.image3, imageUrls.get(2));
+                } else if (newsBean.getImageUrls().size() > 0) {
 //                    holder.image_init(R.id.image, R.drawable.);
                     holder.image(R.id.image, model.imageUrl);
                 }
+
+                holder.text(R.id.time, data.get(model.position).getPublisher() + " " + data.get(model.position).getPublishTime().toString());
 //                holder.setPosition(model.position);
 //                holder.image(R.id.image, model.imageId);
             }
@@ -119,18 +132,23 @@ public class NewsListFragment extends Fragment {
                 if (newsBean.getImageUrls().size() == 0) {
                     return 0;
 //                    return R.layout.item_news_no_picture;
-                } else {
+                } else if (newsBean.getImageUrls().size() < 3) {
                     return 1;
 //                    return R.layout.item_practice_repast;
+                } else {
+                    return 2;
                 }
             }
 
             @Override
             public SmartViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
                 if (viewType == 0) {
-                    return new SmartViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_news_no_picture, parent, false),mListener);
+                    return new SmartViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_news_no_picture, parent, false), mListener);
+                } else if (viewType == 1) {
+                    return new SmartViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_practice_repast, parent, false), mListener);
                 } else {
-                    return new SmartViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_practice_repast, parent, false),mListener);
+                    return new SmartViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_news_3_picture, parent, false), mListener);
+
                 }
             }
 
@@ -151,11 +169,16 @@ public class NewsListFragment extends Fragment {
                 NewsActivity.startAction(getContext(), newsBean);
 //                NewsActivity.startAction(getContext(), data.get(position));
                 TextView subView = view.findViewById(R.id.name);
-                subView.setTextColor(getResources().getColor(R.color.toast_stroke_gray));
+                subView.setTextColor(Color.parseColor("#1A000000"));
                 subView = view.findViewById(R.id.nickname);
-                subView.setTextColor(getResources().getColor(R.color.toast_stroke_gray));
+                if (subView != null) {
+                    subView.setTextColor(Color.parseColor("#1A000000"));
+                }
+                data_read.set(position, true);
+
             }
         });
+
 
         refreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
@@ -170,6 +193,7 @@ public class NewsListFragment extends Fragment {
                     }
                 }, 100);
             }
+
             @Override
             public void onLoadMore(@NonNull final RefreshLayout refreshLayout) {
                 refreshLayout.getLayout().postDelayed(new Runnable() {
@@ -223,7 +247,7 @@ public class NewsListFragment extends Fragment {
         NewsApi.requestNews(new NewsApi.SearchParams()
                         .setSize(size)
                         .setWords(getWords())
-                        .setCategory(getChannel().equals("首页")? "" : getChannel())
+                        .setCategory(getChannel().equals("首页") ? "" : getChannel())
 //                        .setStartDate()
                         .setEndDate(endDate),
                 new NewsApi.NewsCallback() {
@@ -262,11 +286,13 @@ public class NewsListFragment extends Fragment {
         ArrayList<Model> newsList = new ArrayList<>();
         if (isOnRefresh) {
             data.clear();
+            data_read.clear();
         }
         for (int i = 0; i < newsBeanList.size(); ++i) {
             int finalI = i;
             List<String> images = newsBeanList.get(finalI).getImageUrls();
             data.add(newsBeanList.get(finalI));
+            data_read.add(false);
             newsList.add(new Model() {{
                 this.name = newsBeanList.get(finalI).getTitle();
                 this.nickname = newsBeanList.get(finalI).getContent();
