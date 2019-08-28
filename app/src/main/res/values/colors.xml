@@ -33,7 +33,7 @@
     <color name="red">#FFFF0000</color>
     <color name="green">#FF00FF00</color>
     <color name="white_alpha_half">#99FFFFFF</color>
-    <color name="gray">#FFF0F0F0</color>
+    <color name="gray">#FFFFFF</color>
     <color name="gray_deep">#c9000000</color>
     <color name="transparent">#00000000</color>
     <color name="role_right_gray">#929292</color>

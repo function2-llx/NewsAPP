@@ -30,6 +30,7 @@ import com.java.luolingxiao.bean.NewsBean;
 import com.java.luolingxiao.bean.NewsDetail;
 import com.stx.xhb.xbanner.XBanner;
 import com.stx.xhb.xbanner.entity.LocalImageInfo;
+import com.stx.xhb.xbanner.entity.SimpleBannerInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -145,6 +146,7 @@ public class NewsActivity extends DefaultSwipeBackActivity {
 //            //must be CoordinatorLayout.LayoutParams
 //            appBarLayout.setLayoutParams(new CoordinatorLayout.LayoutParams(appBarLayout.getLayoutParams().width, 56));
 //        }
+
         List<LocalImageInfo> data = new ArrayList<>();
         for (int i = 0; i < images.size(); ++i) {
             data.add(new LocalImageInfo(R.mipmap.ic_care_normal));
@@ -157,7 +159,7 @@ public class NewsActivity extends DefaultSwipeBackActivity {
             @Override
             public void loadBanner(XBanner banner, Object model, View view, int position) {
                 ImageView imageView = (ImageView)view;
-                imageView.setImageResource(R.mipmap.ic_care_normal);
+//                imageView.setImageResource(R.mipmap.ic_care_normal);
                 NewsApi.requestImage(images.get(position), new NewsApi.ImageCallback() {
                     @Override
                     public void onReceived(Bitmap bitmap) {

@@ -1,49 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="150dp"
-    android:paddingTop="10dp">
-
-    <com.java.luolingxiao.widget.RoundImageView
-        android:id="@+id/image"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="match_parent"
-        android:layout_marginHorizontal="10dp"
-        android:layout_marginVertical="10dp"
-        android:scaleType="centerCrop"
-        android:contentDescription="@string/app_name"
-        android:src="@mipmap/ic_care_normal"
-        android:background="#ddd"/>
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    android:elevation="2dp">
 
     <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="220dp"
-        android:layout_height="match_parent"
-        android:background="@android:color/white"
         android:orientation="vertical"
-        android:gravity="center"
-        android:padding="10dp">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="140dp">
+
+            <com.java.luolingxiao.widget.RoundImageView
+                android:id="@+id/image"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginVertical="10dp"
+                android:layout_weight="1"
+                android:background="#ddd"
+                android:contentDescription="@string/app_name"
+                android:scaleType="centerCrop" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="220dp"
+                android:layout_height="match_parent"
+                android:background="@android:color/white"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    tools:text="我是占位符我是占位符我是占位符我是占位符我是占位符..." />
+
+                <TextView
+                    android:id="@+id/nickname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                    tools:text="我是占位符我是占位符我是占位符我是占位符我是占位符..." />
+
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="0dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            tools:text="香煎蛋果儿"/>
-
-        <TextView
-            android:id="@+id/nickname"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:id="@+id/time"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:paddingLeft="10dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            tools:text="小花"/>
-
-
+            android:textSize="@dimen/font_small"
+            android:textColor="@color/alpha_30_black"
+            tools:text="我是占位符我是占位符我是占位符我是占位符..." />
 
     </LinearLayout>
-
-</LinearLayout>
+</androidx.cardview.widget.CardView>
