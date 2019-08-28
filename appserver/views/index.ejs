@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html lang="zh-CN"><head>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<html lang="zh-CN">
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -21,111 +23,157 @@
     <link rel="stylesheet" href="dist/css/swiper.min.css">
 
     <style>
-    
-    html, body {
-      position: relative;
-      height: 100%;
-    }
-    body {
-      background: #eee;
-      font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-      font-size: 14px;
-      color:#000;
-      margin: 0;
-      padding: 0;
-    }
-    .swiper-container {
-      width: 100%;
-      height: 50%;
-    }
-    .swiper-slide {
-      text-align: center;
-      font-size: 18px;
-      background: #fff;
+        html,
+        body {
+            position: relative;
+            height: 100%;
+        }
 
-      /* Center slide text vertically */
-      display: -webkit-box;
-      display: -ms-flexbox;
-      display: -webkit-flex;
-      display: flex;
-      -webkit-box-pack: center;
-      -ms-flex-pack: center;
-      -webkit-justify-content: center;
-      justify-content: center;
-      -webkit-box-align: center;
-      -ms-flex-align: center;
-      -webkit-align-items: center;
-      align-items: center;
-    }
-  
+        body {
+            background: #eee;
+            font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+            font-size: 14px;
+            color: #000;
+            margin: 0;
+            padding: 0;
+        }
+
+        .swiper-container {
+            width: 100%;
+            height: 70%;
+            margin: 50px 15px;
+        }
+
+        .swiper-slide {
+            text-align: center;
+            font-size: 18px;
+            background: #fff;
+
+            /* Center slide text vertically */
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            -webkit-justify-content: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            -webkit-align-items: center;
+            align-items: center;
+        }
     </style>
-  </head>
+</head>
 
-  <body>
-      <script src="dist/js/swiper.min.js"></script>
+<body>
+    <script src="dist/js/swiper.min.js"></script>
 
     <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">咕鸽时事</a>
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">咕鸽时事</a>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="#">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+            <!--/.nav-collapse -->
         </div>
-        <div id="navbar" class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
     </nav>
 
-    <% if (image.length > 0) { %>
+<%  if (news.image.length == 2) { %>
+<%        news.image = [] %>
+<%  } else { %>
+<%      news.image = news.image.substring(1, news.image.length - 1).split(', ') %>
+<%  } %>
+<%  news.content = news.content.split("\n") %>
+
+<%  if (news.image.length > 0) { %>
     <div class="swiper-container swiper-container-horizontal">
         <div class="swiper-wrapper">
-            <% for (let url of image) { %>
-              <div class="swiper-slide"> <img src="<%= url %>" class="img-responsive"> </div>
-            <%} %>
+<%          for (let url of news.image) { %>
+            <div class="swiper-slide"> <img src="<%= url %>" class="img-responsive"> </div>
+<%          } %>
         </div>
         <div class="swiper-pagination swiper-pagination-bullets"></div>
         <div class="swiper-button-prev"></div>
         <div class="swiper-button-next"></div>
     </div>
-    <% } %>
+<% } %>
 
     <div class="container">
-      <div class="starter-template">
-        <h1><%=title%></h1>
-        <% for (let p of content) { %>
-          <p class="lead"><%- p %></p>
-        <%} %>
-      </div>
+        <div class="starter-template">
+            <h1><%=news.title%></h1>
+
+            <!-- <a href="gugenews://gugenews.com:80/path?test=true">点我打开</a> -->
+
+<%          for (let p of news.content) { %>
+            <p class="lead"><%- p %></p>
+<%          } %>
+        </div>
 
     </div><!-- /.container -->
+
+
+    
+    <script type="text/javascript" src="//aled.t4m.cn/applink.js"></script>
+    <script type="text/javascript"> 
+
+        /*
+        * MobLink 支持数组=>MobLink([...]) 和对象=>MobLink({...})
+        * 页面上有多个元素需要跳转时使用数组方式,仅单个元素时可以使用对象的方式进行初始化
+        * el: 表示网页上Element的id值,该字段为空或者不写则表示MobLink默认浮层上的打开按钮(注意:必须为元素id,以#开头)
+        * path: 对应App里的路径
+        * params: 网页需要带给客户端的参数
+        */
+        MobLink([
+            {
+                el: "",
+                path: "demo/a",
+                params: {
+                    key1: "value1",
+                    key2: "value2",
+                    // targetAction_And: "com.java.luolingxiao.NewsActivity",
+                    news: <%- JSON.stringify(news) %>
+                }
+            }, 
+            // {
+            //     el: "#openAppBtn",
+            //     path: "demo/b",
+            //     params: {
+            //         targetAction_And: "com.java.luolingxiao.SplashActivity",
+            //         key1: "value1",
+            //         key2: "value2",
+            //     }
+            // },
+        
+        ]);
+
+
+    </script>
 
     <script src="index_files/jquery.js"></script>
     <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
     <script src="index_files/bootstrap.js"></script>
     <script src="index_files/ie10-viewport-bug-workaround.js"></script>
-  
-    <script>        
-      var swiper = new Swiper('.swiper-container', {
-        pagination: {
-          el: '.swiper-pagination',
-        },
 
-        navigation: {
-          prevEl: '.swiper-button-prev',
-          nextEl: '.swiper-button-next',
-        },
-        autoplay: {
-          stopOnLastSlide: false,
-        },
-      });
+    <script>
+        // 强行修改 query 字段
+        $("#mobLink_btn_0").attr("href", "gugenews://com.java.luolingxiao/path?news=" + "<%= JSON.stringify(news) %>")
     </script>
-</body></html>
+
+       
+</body>
+
+</html>

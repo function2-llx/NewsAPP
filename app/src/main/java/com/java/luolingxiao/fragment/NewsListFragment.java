@@ -1,6 +1,7 @@
 package com.java.luolingxiao.fragment;
 
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,8 +30,6 @@ import com.java.luolingxiao.bean.NewsDateTime;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 
-import java.net.URL;
-import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -175,7 +174,6 @@ public class NewsListFragment extends Fragment {
                     subView.setTextColor(Color.parseColor("#1A000000"));
                 }
                 data_read.set(position, true);
-
             }
         });
 

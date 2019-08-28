@@ -3,17 +3,15 @@ package com.java.luolingxiao.database.entity;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
-import androidx.room.PrimaryKey;
 
 import com.java.luolingxiao.bean.NewsBean;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity(tableName = "saved_news")
+@Entity(tableName = "saved_news", primaryKeys = {"newsId", "channel"})
 public class SavedNews {
     @NonNull
-    @PrimaryKey
     private String newsId;
 
     // 也可以是收藏
@@ -28,8 +26,12 @@ public class SavedNews {
     @ColumnInfo(name = "content")
     private String content;
 
+//    public String[] primaryKeys() {
+//        return new String[]{newsId, channel};
+//    }
+
     private SavedNews(@NonNull NewsBean newsBean, @NonNull String channel) {
-        this.newsId = newsBean.getNewsId();
+        this.newsId = newsBean.getNewsId() ;
         this.channel = channel;
         this.read = newsBean.isRead();
         this.content = newsBean.getNewsJson().toString();

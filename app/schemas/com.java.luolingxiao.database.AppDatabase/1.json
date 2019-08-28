@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "0814bc867c93c603082ded57c01e814d",
+    "identityHash": "a2740b78dc40000de70221e38be4b995",
     "entities": [
       {
         "tableName": "search_records",
@@ -26,7 +26,7 @@
       },
       {
         "tableName": "saved_news",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`newsId` TEXT NOT NULL, `channel` TEXT NOT NULL, `read` INTEGER NOT NULL, `content` TEXT NOT NULL, PRIMARY KEY(`newsId`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`newsId` TEXT NOT NULL, `channel` TEXT NOT NULL, `read` INTEGER NOT NULL, `content` TEXT NOT NULL, PRIMARY KEY(`newsId`, `channel`))",
         "fields": [
           {
             "fieldPath": "newsId",
@@ -55,7 +55,8 @@
         ],
         "primaryKey": {
           "columnNames": [
-            "newsId"
+            "newsId",
+            "channel"
           ],
           "autoGenerate": false
         },
@@ -66,7 +67,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '0814bc867c93c603082ded57c01e814d')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a2740b78dc40000de70221e38be4b995')"
     ]
   }
 }

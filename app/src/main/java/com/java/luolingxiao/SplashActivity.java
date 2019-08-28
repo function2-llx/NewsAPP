@@ -13,6 +13,10 @@ import com.yanzhenjie.nohttp.InitializationConfig;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yanzhenjie.nohttp.OkHttpNetworkExecutor;
 
+import java.util.HashMap;
+
+import cn.sharesdk.framework.ShareSDK;
+
 public class SplashActivity extends DeFaultActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -33,13 +37,13 @@ public class SplashActivity extends DeFaultActivity {
 
         setContentView(R.layout.activity_splash);
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
+        HashMap<String, Object> customDataMap = ShareSDK.getCustomDataFromLoopShare();
+
+
+        new Handler().postDelayed(() -> {
+            Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
         }, 1500);
     }
 }
