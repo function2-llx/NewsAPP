@@ -97,12 +97,12 @@ public class DataRepository {
         void onReceive(List<NewsBean> savedNews);
     }
 
-    public void getSavedNews(String channel, OnReceiveSavedNewsCallback callback) {
+    public void getSavedNews(String channel, int limit, int offset, OnReceiveSavedNewsCallback callback) {
         new SimpleAsyncTask() {
             private List<NewsBean> newsBeans;
             @Override
             protected void doInBackGround() {
-                newsBeans = NewsBean.decode(database.savedNewsDao().getSavedNews(channel));
+                newsBeans = NewsBean.decode(database.savedNewsDao().getSavedNews(channel, limit, offset));
             }
 
             @Override

@@ -234,7 +234,6 @@ public class MainActivity extends DeFaultActivity
                                     .setCategory("科技")
                                     .setStartDate(new NewsDateTime(2019, 7, 1))
                                     .setEndDate(new NewsDateTime(2019, 7, 3)),
-                            true,
                             new NewsApi.NewsCallback() {
                                 @Override
                                 public void onReceived(List<NewsBean> newsBeanList) {

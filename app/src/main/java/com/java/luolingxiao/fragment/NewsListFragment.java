@@ -16,10 +16,13 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.java.luolingxiao.DataRepository;
+import com.java.luolingxiao.DeFaultActivity;
 import com.java.luolingxiao.NewsActivity;
 import com.java.luolingxiao.R;
 import com.java.luolingxiao.adapters.BaseRecyclerAdapter;
 import com.java.luolingxiao.adapters.SmartViewHolder;
+import com.java.luolingxiao.api.NetworkChecker;
 import com.java.luolingxiao.api.NewsApi;
 import com.java.luolingxiao.bean.NewsBean;
 import com.java.luolingxiao.bean.NewsDateTime;
@@ -56,6 +59,10 @@ public class NewsListFragment extends Fragment {
         String imageUrl;
     }
     private BaseRecyclerAdapter<Model> mAdapter;
+
+    private DataRepository getDataRepository() {
+        return ((DeFaultActivity)getActivity()).getDataRepository();
+    }
 
     public NewsListFragment() {}
 
@@ -138,7 +145,11 @@ public class NewsListFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 //                LinearLayout subView = view.findViewById(R.id.linearLayout);
 //                subView.setBackgroundColor(Color.parseColor("#FFF0F0F0"));
-                NewsActivity.startAction(getContext(), data.get(position));
+                NewsBean newsBean = data.get(position);
+                newsBean.setRead(true);
+                getDataRepository().insertNews(getChannel(), newsBean);
+                NewsActivity.startAction(getContext(), newsBean);
+//                NewsActivity.startAction(getContext(), data.get(position));
                 TextView subView = view.findViewById(R.id.name);
                 subView.setTextColor(getResources().getColor(R.color.toast_stroke_gray));
                 subView = view.findViewById(R.id.nickname);
@@ -183,7 +194,25 @@ public class NewsListFragment extends Fragment {
 //                refreshLayout.setHeaderInsetStart(SmartUtil.px2dp(toolbar.getHeight()));
 //            }
 //        }, 500);
-        getNewsListDataRequest("", 1, lastDate, false, false);
+
+        if (NetworkChecker.isNetworkConnected(getContext())) {
+            getNewsListDataRequest("", 1, lastDate, false, false);
+        } else {
+            Toast.makeText(getContext(), "离线模式", Toast.LENGTH_SHORT).show();
+            getDataRepository().getSavedNews(getChannel(), 6, 0, new DataRepository.OnReceiveSavedNewsCallback() {
+                @Override
+                public void onReceive(List<NewsBean> savedNews) {
+                    setNewsList(savedNews, false, false);
+                }
+            });
+//            setNewsList(getDataRepository().getSavedNews(getChannel(), new DataRepository.OnReceiveSavedNewsCallback() {
+//                @Override
+//                public void onReceive(List<NewsBean> savedNews) {
+//
+//                }
+//            }), false, false);
+//            Toast.makeText(getContext(), getChannel() + ":没网", Toast.LENGTH_SHORT).show();
+        }
         return view;
     }
 
@@ -205,6 +234,7 @@ public class NewsListFragment extends Fragment {
                         } else {
                             noMore = true;
                         }
+                        getDataRepository().insertNews(getChannel(), newsBeanList);
                         setNewsList(newsBeanList, isOnRefresh, isOnLoadMore);
 
                         refreshLayout.finishLoadMore();
