@@ -126,12 +126,12 @@ public class NewsApi {
 
                 @Override
                 public void onSucceed(int what, Response<Bitmap> response) {
-                    callback.onReceived(response.get());
+                    handler.post(() -> callback.onReceived(response.get()));
                 }
 
                 @Override
                 public void onFailed(int what, Response<Bitmap> response) {
-                    callback.onException(response.getException());
+                    handler.post(() -> callback.onException(response.getException()));
                 }
 
                 @Override
@@ -139,13 +139,6 @@ public class NewsApi {
 
                 }
             });
-//            Response<Bitmap> response = NoHttp.startRequestSync(request);
-//            if (response.getException() != null) {
-//                handler.post(() -> callback.onException(response.getException()));
-//            } else {
-//                Bitmap bitmap = response.get();
-//                handler.post(() -> callback.onReceived(bitmap));
-//            }
         }).start();
     }
 }

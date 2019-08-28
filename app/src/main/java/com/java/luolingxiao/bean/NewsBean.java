@@ -41,14 +41,13 @@ public class NewsBean {
         news.content = newsJson.getString("content");
         news.publisher = newsJson.getString("publisher");
         news.publishTime = NewsDateTime.parse(newsJson.getString("publishTime"));
-        String imageUrlsRaw = newsJson.getString("image");
         news.read = false;
+        String imageUrlsRaw = newsJson.getString("image");
         if (imageUrlsRaw.length() > 2) {
             news.imageUrls = Arrays.asList(imageUrlsRaw.substring(1, imageUrlsRaw.length() - 1).split(", "));
         } else {
             news.imageUrls = Collections.emptyList();
         }
-
         news.keywords = new ArrayList<>();
         for (Object object: newsJson.getJSONArray("keywords")) {
             news.keywords.add(((JSONObject)object).getString("word"));
