@@ -1,16 +1,11 @@
-package com.java.luolingxiao.fragments;
+package com.java.luolingxiao.fragment;
 
 
-import android.annotation.SuppressLint;
-import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,20 +16,18 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.java.luolingxiao.DataRepository;
 import com.java.luolingxiao.DeFaultActivity;
 import com.java.luolingxiao.NewsActivity;
 import com.java.luolingxiao.R;
 import com.java.luolingxiao.adapters.BaseRecyclerAdapter;
 import com.java.luolingxiao.adapters.SmartViewHolder;
+import com.java.luolingxiao.api.NetworkChecker;
 import com.java.luolingxiao.api.NewsApi;
 import com.java.luolingxiao.bean.NewsBean;
 import com.java.luolingxiao.bean.NewsDateTime;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-
-import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
-import com.scwang.smartrefresh.layout.util.SmartUtil;
 
 import java.net.URL;
 import java.util.AbstractList;
@@ -71,8 +64,11 @@ public class NewsListFragment extends Fragment {
 
     private BaseRecyclerAdapter<Model> mAdapter;
 
-    public NewsListFragment() {
+    private DataRepository getDataRepository() {
+        return ((DeFaultActivity)getActivity()).getDataRepository();
     }
+
+    public NewsListFragment() {}
 
     public static NewsListFragment newInstance(String channel, String words) {
         NewsListFragment fragment = new NewsListFragment();
@@ -167,7 +163,11 @@ public class NewsListFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 //                LinearLayout subView = view.findViewById(R.id.linearLayout);
 //                subView.setBackgroundColor(Color.parseColor("#FFF0F0F0"));
-                NewsActivity.startAction(getContext(), data.get(position));
+                NewsBean newsBean = data.get(position);
+                newsBean.setRead(true);
+                getDataRepository().insertNews(getChannel(), newsBean);
+                NewsActivity.startAction(getContext(), newsBean);
+//                NewsActivity.startAction(getContext(), data.get(position));
                 TextView subView = view.findViewById(R.id.name);
                 subView.setTextColor(Color.parseColor("#1A000000"));
                 subView = view.findViewById(R.id.nickname);
@@ -218,7 +218,25 @@ public class NewsListFragment extends Fragment {
 //                refreshLayout.setHeaderInsetStart(SmartUtil.px2dp(toolbar.getHeight()));
 //            }
 //        }, 500);
-        getNewsListDataRequest("", 1, lastDate, false, false);
+
+        if (NetworkChecker.isNetworkConnected(getContext())) {
+            getNewsListDataRequest("", 1, lastDate, false, false);
+        } else {
+            Toast.makeText(getContext(), "离线模式", Toast.LENGTH_SHORT).show();
+            getDataRepository().getSavedNews(getChannel(), 6, 0, new DataRepository.OnReceiveSavedNewsCallback() {
+                @Override
+                public void onReceive(List<NewsBean> savedNews) {
+                    setNewsList(savedNews, false, false);
+                }
+            });
+//            setNewsList(getDataRepository().getSavedNews(getChannel(), new DataRepository.OnReceiveSavedNewsCallback() {
+//                @Override
+//                public void onReceive(List<NewsBean> savedNews) {
+//
+//                }
+//            }), false, false);
+//            Toast.makeText(getContext(), getChannel() + ":没网", Toast.LENGTH_SHORT).show();
+        }
         return view;
     }
 
@@ -232,7 +250,6 @@ public class NewsListFragment extends Fragment {
                         .setCategory(getChannel().equals("首页") ? "" : getChannel())
 //                        .setStartDate()
                         .setEndDate(endDate),
-                !((DeFaultActivity) getActivity()).isSaveTrafficMode(),
                 new NewsApi.NewsCallback() {
                     @Override
                     public void onReceived(List<NewsBean> newsBeanList) {
@@ -241,6 +258,7 @@ public class NewsListFragment extends Fragment {
                         } else {
                             noMore = true;
                         }
+                        getDataRepository().insertNews(getChannel(), newsBeanList);
                         setNewsList(newsBeanList, isOnRefresh, isOnLoadMore);
 
                         refreshLayout.finishLoadMore();

@@ -4,6 +4,7 @@ import android.os.Handler;
 
 import androidx.annotation.NonNull;
 
+import com.java.luolingxiao.bean.NewsBean;
 import com.java.luolingxiao.database.AppDatabase;
 import com.java.luolingxiao.database.entity.SavedNews;
 import com.java.luolingxiao.database.entity.SearchRecord;
@@ -34,8 +35,6 @@ public class DataRepository {
         void onReceiveRecords(List<String> records);
     }
 
-
-
     public void getAllSearchRecords(GetAllSearchRecordsCallback callback) {
         Handler handler = new Handler();
         new Thread(() -> {
@@ -63,39 +62,52 @@ public class DataRepository {
         }).start();
     }
 
-    public void insertSavedNews(SavedNews... savedNews) {
+    public void insertNews(String channel, NewsBean... newsBeans) {
         new SimpleAsyncTask() {
             @Override
             protected void doInBackGround() {
+                List<SavedNews> savedNews = new ArrayList<>();
+                for (NewsBean newsBean: newsBeans) {
+                    savedNews.add(SavedNews.encode(channel, newsBean));
+                }
                 database.savedNewsDao().insert(savedNews);
             }
         }.start();
     }
 
-    public void deleteSavedNews(SavedNews... savedNews) {
+    public void insertNews(String channel, List<NewsBean> newsBeans) {
+        insertNews(channel, newsBeans.toArray(new NewsBean[0]));
+    }
+
+    public void deleteNews(String channel, NewsBean... newsBeans) {
         new SimpleAsyncTask() {
             @Override
             protected void doInBackGround() {
-                database.savedNewsDao().delete(savedNews);
+                List<SavedNews> newsBeanList = SavedNews.encode(channel, newsBeans);
+                database.savedNewsDao().delete(newsBeanList);
             }
         }.start();
     }
 
-    public interface OnReceiveSavedNewsCallback {
-        void onReceive(List<SavedNews> savedNews);
+    public void deleteNews(String channel, List<NewsBean> newsBeans) {
+        deleteNews(channel, newsBeans.toArray(new NewsBean[0]));
     }
 
-    public void getSavedNews(String channel, OnReceiveSavedNewsCallback callback) {
+    public interface OnReceiveSavedNewsCallback {
+        void onReceive(List<NewsBean> savedNews);
+    }
+
+    public void getSavedNews(String channel, int limit, int offset, OnReceiveSavedNewsCallback callback) {
         new SimpleAsyncTask() {
-            private List<SavedNews> savedNews;
+            private List<NewsBean> newsBeans;
             @Override
             protected void doInBackGround() {
-                savedNews = database.savedNewsDao().getSavedNews(channel);
+                newsBeans = NewsBean.decode(database.savedNewsDao().getSavedNews(channel, limit, offset));
             }
 
             @Override
             protected void onComplete() {
-                callback.onReceive(savedNews);
+                callback.onReceive(newsBeans);
             }
         }.start();
     }

@@ -7,21 +7,52 @@
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="https://v3.bootcss.com/favicon.ico">
+    <link rel="icon" href="assets/icon.bmp" />
 
-    <title>Starter Template for Bootstrap</title>
+    <title>咕鸽时事</title>
 
     <!-- Bootstrap core CSS -->
     <link href="index_files/bootstrap.css" rel="stylesheet">
 
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <link href="index_files/ie10-viewport-bug-workaround.css" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
     <link href="index_files/starter-template.css" rel="stylesheet">
+
+    <!-- swiper  -->
+    <link rel="stylesheet" href="dist/css/swiper.min.css">
   </head>
 
   <body>
+    <style>
+      .swiper-container {
+        width: 600px;
+        height: 300px;
+      }    
+    </style>
+      <script src="dist/js/swiper.min.js"></script>
+      <script>        
+          var mySwiper = new Swiper ('.swiper-container', {
+            direction: 'vertical', // 垂直切换选项
+            loop: true, // 循环模式选项
+            
+            // 如果需要分页器
+            pagination: {
+              el: '.swiper-pagination',
+            },
+            
+            // 如果需要前进后退按钮
+            navigation: {
+              nextEl: '.swiper-button-next',
+              prevEl: '.swiper-button-prev',
+            },
+            
+            // 如果需要滚动条
+            scrollbar: {
+              el: '.swiper-scrollbar',
+            },
+          })
+          
+          
+          </script>
 
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
@@ -32,7 +63,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Project name</a>
+          <a class="navbar-brand" href="#">咕鸽时事</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
@@ -44,15 +75,25 @@
       </div>
     </nav>
 
+
+
     <div class="container">
 
       <div class="starter-template">
-        <h1>Bootstrap starter template</h1>
-        <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>
+        <h1><%=title%></h1>
+        <p class="lead"><%=content%></p>
       </div>
 
     </div><!-- /.container -->
 
+
+    <div class="swiper-container">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide">Slide 1</div>
+            <div class="swiper-slide">Slide 2</div>
+            <div class="swiper-slide">Slide 3</div>
+        </div>
+    </div>
 
     <!-- Bootstrap core JavaScript
     ================================================== -->

@@ -4,6 +4,7 @@ package com.java.luolingxiao.bean;
 import androidx.annotation.NonNull;
 
 import com.alibaba.fastjson.JSONObject;
+import com.java.luolingxiao.database.entity.SavedNews;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,6 +18,7 @@ public class NewsBean {
     private String url;
     private List<String> keywords;
     private List<String> imageUrls;
+    private boolean read;
 
     private NewsBean() {}
     public JSONObject getNewsJson() { return newsJson; }
@@ -34,7 +36,6 @@ public class NewsBean {
     }
     //    public void addImage(Bitmap bitmap) { this.images.add(bitmap); }
 
-    private static int imageCnt = 0;
 
     public static NewsBean parse(JSONObject newsJson) {
         NewsBean news = new NewsBean();
@@ -44,39 +45,36 @@ public class NewsBean {
         news.content = newsJson.getString("content");
         news.publisher = newsJson.getString("publisher");
         news.publishTime = NewsDateTime.parse(newsJson.getString("publishTime"));
+        news.read = false;
         String imageUrlsRaw = newsJson.getString("image");
         if (imageUrlsRaw.length() > 2) {
             news.imageUrls = Arrays.asList(imageUrlsRaw.substring(1, imageUrlsRaw.length() - 1).split(", "));
         } else {
             news.imageUrls = Collections.emptyList();
         }
-//        if (parseImage) {
-//            DeFaultActivity.getAnyActivity().runOnUiThread(() -> {
-//                synchronized (DeFaultActivity.getAnyActivity()) {
-//                    imageCnt++;
-//                }
-//                Toast.makeText(DeFaultActivity.getAnyActivity(), "iamge size: " + imageCnt, Toast.LENGTH_SHORT).show();
-//            });
-//            for (String url: news.imageUrls) {
-//                Request<Bitmap> request = NoHttp.createImageRequest(url);
-//                Response<Bitmap> response = NoHttp.startRequestSync(request);
-//                imageCnt++;
-////                DeFaultActivity.getAnyActivity().runOnUiThread(() -> {
-////                    Toast.makeText(DeFaultActivity.getAnyActivity(), "image " + imageCnt + ", url=" + url, Toast.LENGTH_SHORT).show();
-////                });
-//                if (response.getException() == null) {
-//                    news.images.add(response.get());
-//                } else {
-//                    response.getException().printStackTrace();
-//                }
-//            }
-//        }
         news.keywords = new ArrayList<>();
         for (Object object: newsJson.getJSONArray("keywords")) {
             news.keywords.add(((JSONObject)object).getString("word"));
         }
         return news;
     }
+
+    public static NewsBean decode(SavedNews savedNews) {
+        NewsBean newsBean = parse(savedNews.getContent());
+        newsBean.read = savedNews.isRead();
+        return newsBean;
+    }
+
+    public static List<NewsBean> decode(List<SavedNews> savedNews) {
+        List<NewsBean> ret = new ArrayList<>();
+        for (SavedNews news: savedNews) {
+            ret.add(decode(news));
+        }
+        return ret;
+    }
+
+    public boolean isRead() { return read; }
+    public boolean setRead(boolean read) { return this.read = read; }
 
     @NonNull
     @Override
@@ -94,7 +92,9 @@ public class NewsBean {
         return content.substring(0, 100) + "...";
     }
 
-    private static final String shareUrl = "http://183.172.110.59:8080/news?";
+    private static final String ip = "149.28.67.105";
+    private static final String port = "8080";
+    private static final String shareUrl = "http://" + ip + ":" + port + "/news?";
     public String getShareUrl() { return shareUrl + "publishTime=" + publishTime.toQueryValue() + "&newsID=" + getNewsId(); }
 
     public String getNewsId() {

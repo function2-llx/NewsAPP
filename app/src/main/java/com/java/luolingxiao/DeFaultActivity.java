@@ -50,7 +50,7 @@ public class DeFaultActivity extends AppCompatActivity {
         return ret;
     }
 
-    protected DataRepository getDataRepository() {
+    public DataRepository getDataRepository() {
         return DataRepository.getInstance(AppDatabase.getInstance(getApplicationContext()));
     }
 }

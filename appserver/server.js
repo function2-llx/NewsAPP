@@ -14,8 +14,10 @@ app.use(bodyParser.urlencoded({//处理以form表单的提交
     extended: true
 }))
 
-app.listen(8080, () => {
-    console.log('App listening at port 8080')
+port = 8080
+
+app.listen(port, () => {
+    console.log('App listening at port', port)
 })
 
 app.get('/news', (req, appres) => {
@@ -28,6 +30,18 @@ app.get('/news', (req, appres) => {
             // console.log(res.body)
             for (let news of res.body.data) {
                 if (news.newsID == data.newsID) {
+                    if (news.image.length == 2) {
+                        news.image = []
+                    } else {
+                        news.image = news.image.substring(1, news.image.length - 1).split(', ')
+                    }
+
+                    news.content = news.content.split("\n")
+                    
+                    console.log(news.image)
+                    // for (let e of news.image) {
+                    //     console.log(e)
+                    // }
                     appres.render("index.ejs", news)
                     return
                 }
