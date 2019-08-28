@@ -30,6 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_marginVertical="5dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:maxLines="1"
             tools:text="我是占位符我是占位符我是占位符我是占位符我是占位符..."/>
 
         <TextView

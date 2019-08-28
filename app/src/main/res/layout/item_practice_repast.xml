@@ -41,6 +41,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="0dp"
+                    android:maxLines="3"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title"
                     tools:text="我是占位符我是占位符我是占位符我是占位符我是占位符..." />
 
@@ -50,6 +51,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                    android:maxLines="2"
                     tools:text="我是占位符我是占位符我是占位符我是占位符我是占位符..." />
 
 

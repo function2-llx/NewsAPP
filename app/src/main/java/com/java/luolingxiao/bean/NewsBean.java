@@ -28,7 +28,11 @@ public class NewsBean {
     public List<String> getKeywords() { return this.keywords; }
     public NewsDateTime getPublishTime() { return publishTime; }
     public String getValue(String key) { return newsJson.getString(key); }
-//    public void addImage(Bitmap bitmap) { this.images.add(bitmap); }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+    //    public void addImage(Bitmap bitmap) { this.images.add(bitmap); }
 
     private static int imageCnt = 0;
 

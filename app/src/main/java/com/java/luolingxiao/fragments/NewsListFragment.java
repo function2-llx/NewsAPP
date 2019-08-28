@@ -276,10 +276,15 @@ public class NewsListFragment extends Fragment {
             data.add(newsBeanList.get(finalI));
             data_read.add(false);
             newsList.add(new Model() {{
+
                 this.name = newsBeanList.get(finalI).getTitle();
                 this.nickname = newsBeanList.get(finalI).getContent();
-                if (this.nickname.length() > 20) {
-                    this.nickname = this.nickname.substring(0, 20) + "...";
+                for (int i = 0; i < this.nickname.length() - 1; ++i) {
+                    if (this.nickname.charAt(i) != '\n' && this.nickname.charAt(i) != '　' && this.nickname.charAt(i) != ' ') {
+                        this.nickname = this.nickname.substring(i);
+                        newsBeanList.get(finalI).setContent(this.nickname);
+                        break;
+                    }
                 }
                 if (images.size() > 0) this.imageUrl = images.get(0);
                 this.position = data.size() - 1;
