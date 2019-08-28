@@ -1,16 +1,11 @@
-package com.java.luolingxiao.fragments;
+package com.java.luolingxiao.fragment;
 
 
-import android.annotation.SuppressLint;
-import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,7 +16,6 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.java.luolingxiao.DeFaultActivity;
 import com.java.luolingxiao.NewsActivity;
 import com.java.luolingxiao.R;
 import com.java.luolingxiao.adapters.BaseRecyclerAdapter;
@@ -30,13 +24,8 @@ import com.java.luolingxiao.api.NewsApi;
 import com.java.luolingxiao.bean.NewsBean;
 import com.java.luolingxiao.bean.NewsDateTime;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-
-import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
-import com.scwang.smartrefresh.layout.util.SmartUtil;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -208,7 +197,6 @@ public class NewsListFragment extends Fragment {
                         .setCategory(getChannel().equals("首页")? "" : getChannel())
 //                        .setStartDate()
                         .setEndDate(endDate),
-                !((DeFaultActivity)getActivity()).isSaveTrafficMode(),
                 new NewsApi.NewsCallback() {
                     @Override
                     public void onReceived(List<NewsBean> newsBeanList) {

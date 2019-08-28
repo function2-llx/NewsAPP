@@ -7,7 +7,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.java.luolingxiao.bean.ChannelBean;
-import com.java.luolingxiao.fragments.NewsListFragment;
+import com.java.luolingxiao.fragment.NewsListFragment;
 
 import java.util.ArrayList;
 import java.util.List;

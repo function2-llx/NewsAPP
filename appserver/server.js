@@ -35,6 +35,8 @@ app.get('/news', (req, appres) => {
                     } else {
                         news.image = news.image.substring(1, news.image.length - 1).split(', ')
                     }
+
+                    news.content = news.content.split("\n")
                     
                     console.log(news.image)
                     // for (let e of news.image) {

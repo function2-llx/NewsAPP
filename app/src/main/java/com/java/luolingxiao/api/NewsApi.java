@@ -79,7 +79,7 @@ public class NewsApi {
         }
     }
 
-    public static void requestNews(SearchParams params, boolean imagesRequired,NewsCallback callback) {
+    public static void requestNews(SearchParams params, NewsCallback callback) {
         Handler handler = new Handler();
         new Thread(() -> {
             FastJsonRequest request = params.toFastJsonRequest();

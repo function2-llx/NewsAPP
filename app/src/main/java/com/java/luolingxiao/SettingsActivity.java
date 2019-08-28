@@ -5,7 +5,7 @@ import android.view.MenuItem;
 
 import androidx.appcompat.widget.Toolbar;
 
-import com.java.luolingxiao.fragments.SettingsFragment;
+import com.java.luolingxiao.fragment.SettingsFragment;
 
 import java.util.Objects;
 

@@ -1,4 +1,4 @@
-package com.java.luolingxiao.fragments;
+package com.java.luolingxiao.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
