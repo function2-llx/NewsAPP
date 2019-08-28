@@ -244,7 +244,7 @@ public class NewsActivity extends DefaultSwipeBackActivity {
         mNewsTitle = newsBean.getTitle();
 //        String newsSource = newsDetail.getSource();
 //        String newsTime = TimeUtil.formatDate(newsDetail.getPtime());
-        String newsBody = newsBean.getContent();
+        String newsBody = newsBean.getContent().replace("\\n", "\n");
 
         setToolBarLayout(mNewsTitle);
         //mNewsDetailTitleTv.setText(newsTitle);
@@ -359,7 +359,8 @@ public class NewsActivity extends DefaultSwipeBackActivity {
 //    }
 
     private void setBody(String newsBody) {
-        newsDetailBodyTv.setText(Html.fromHtml(newsBody));
+        newsDetailBodyTv.setText(newsBody);
+//        newsDetailBodyTv.setText(Html.fromHtml(newsBody));
     }
 
     private boolean isShowBody(String newsBody, int imgTotal) {
