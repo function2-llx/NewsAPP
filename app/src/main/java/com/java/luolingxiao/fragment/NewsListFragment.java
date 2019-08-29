@@ -29,6 +29,7 @@ import com.java.luolingxiao.bean.NewsBean;
 import com.java.luolingxiao.bean.NewsDateTime;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
+import com.yanzhenjie.nohttp.error.NetworkError;
 
 import java.net.URL;
 import java.util.AbstractList;
@@ -46,6 +47,7 @@ public class NewsListFragment extends Fragment {
     private String mNewsType;
     private int mStartPage = 0;
     private boolean noMore = false;
+    private boolean offline = false;
 //    Context a;
 
     // 标志位，标志已经初始化完成。
@@ -53,6 +55,7 @@ public class NewsListFragment extends Fragment {
     private boolean isPrepared;
     private boolean isVisible;
     private NewsDateTime lastDate;
+    private int offset;
 
     private class Model {
         int imageId;
@@ -66,10 +69,11 @@ public class NewsListFragment extends Fragment {
     private BaseRecyclerAdapter<Model> mAdapter;
 
     private DataRepository getDataRepository() {
-        return ((DeFaultActivity)getActivity()).getDataRepository();
+        return ((DeFaultActivity) getActivity()).getDataRepository();
     }
 
-    public NewsListFragment() {}
+    public NewsListFragment() {
+    }
 
     public static NewsListFragment newInstance(String channel, String words) {
         NewsListFragment fragment = new NewsListFragment();
@@ -108,7 +112,8 @@ public class NewsListFragment extends Fragment {
             protected void onBindViewHolder(SmartViewHolder holder, Model model, int position) {
                 NewsBean newsBean = data.get(position);
                 holder.myText(R.id.name, model.name, data_read.get(position));
-                if (holder.getItemViewType() < 2) holder.myText(R.id.nickname, model.nickname, data_read.get(position));
+                if (holder.getItemViewType() < 2)
+                    holder.myText(R.id.nickname, model.nickname, data_read.get(position));
 
                 List<String> imageUrls = data.get(model.position).getImageUrls();
 
@@ -159,6 +164,7 @@ public class NewsListFragment extends Fragment {
 //            }
         });
 
+
         mAdapter.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -181,6 +187,7 @@ public class NewsListFragment extends Fragment {
         });
 
 
+
         refreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onRefresh(@NonNull final RefreshLayout refreshLayout) {
@@ -189,9 +196,14 @@ public class NewsListFragment extends Fragment {
                     public void run() {
 //                        recyclerView.set
                         getNewsListDataRequest("", 6, lastDate, true, false);
+
 //                        refreshLayout.finishRefresh();
                         refreshLayout.resetNoMoreData();//setNoMoreData(false);//恢复上拉状态
+
+
                     }
+
+
                 }, 100);
             }
 
@@ -200,7 +212,6 @@ public class NewsListFragment extends Fragment {
                 refreshLayout.getLayout().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-//                        if (mAdapter.getCount() > 100)
                         if (noMore) {
                             Toast.makeText(getContext(), "数据全部加载完毕", Toast.LENGTH_SHORT).show();
                             refreshLayout.finishLoadMoreWithNoMoreData();//设置之后，将不会再触发加载事件
@@ -220,24 +231,8 @@ public class NewsListFragment extends Fragment {
 //            }
 //        }, 500);
 
-        if (NetworkChecker.isNetworkConnected(getContext())) {
-            getNewsListDataRequest("", 1, lastDate, false, false);
-        } else {
-            Toast.makeText(getContext(), "离线模式", Toast.LENGTH_SHORT).show();
-            getDataRepository().getSavedNews(getChannel(), 6, 0, new DataRepository.OnReceiveSavedNewsCallback() {
-                @Override
-                public void onReceive(List<NewsBean> savedNews) {
-                    setNewsList(savedNews, false, false);
-                }
-            });
-//            setNewsList(getDataRepository().getSavedNews(getChannel(), new DataRepository.OnReceiveSavedNewsCallback() {
-//                @Override
-//                public void onReceive(List<NewsBean> savedNews) {
-//
-//                }
-//            }), false, false);
-//            Toast.makeText(getContext(), getChannel() + ":没网", Toast.LENGTH_SHORT).show();
-        }
+        getNewsListDataRequest("", 1, lastDate, false, false);
+
         return view;
     }
 
@@ -245,42 +240,65 @@ public class NewsListFragment extends Fragment {
         if (endDate != null) {
             endDate = endDate.minusSeconds(1);
         }
-        NewsApi.requestNews(new NewsApi.SearchParams()
-                        .setSize(size)
-                        .setWords(getWords())
-                        .setCategory(getChannel().equals("首页") ? "" : getChannel())
-//                        .setStartDate()
-                        .setEndDate(endDate),
-                new NewsApi.NewsCallback() {
-                    @Override
-                    public void onReceived(List<NewsBean> newsBeanList) {
-                        if (newsBeanList.size() > 0) {
-                            lastDate = newsBeanList.get(newsBeanList.size() - 1).getPublishTime();
-                        } else {
-                            noMore = true;
-                        }
-                        getDataRepository().insertNews(getChannel(), newsBeanList);
-                        setNewsList(newsBeanList, isOnRefresh, isOnLoadMore);
 
-                        refreshLayout.finishLoadMore();
-                        refreshLayout.finishRefresh();
+        if (NetworkChecker.isNetworkConnected(getContext())) {
+
+            if (offline == true) Toast.makeText(getContext(), "进入在线模式", Toast.LENGTH_SHORT).show();
+            offline = false;
+            NewsApi.requestNews(new NewsApi.SearchParams()
+                            .setSize(size)
+                            .setWords(getWords())
+                            .setCategory(getChannel().equals("首页") ? "" : getChannel())
+//                        .setStartDate()
+                            .setEndDate(endDate),
+                    new NewsApi.NewsCallback() {
+                        @Override
+                        public void onReceived(List<NewsBean> newsBeanList) {
+                            if (newsBeanList.size() > 0) {
+                                lastDate = newsBeanList.get(newsBeanList.size() - 1).getPublishTime();
+                            } else {
+                                noMore = true;
+                            }
+                            getDataRepository().insertNews(getChannel(), newsBeanList);
+                            setNewsList(newsBeanList, isOnRefresh, isOnLoadMore);
+
+                            refreshLayout.finishLoadMore();
+                            refreshLayout.finishRefresh();
 //                        returnNewsListData(newsBeanList);
 //                        if (newsBeanList.isEmpty()) {
 //                            Toast.makeText(MainActivity.this, "莫得新闻了，等哈再来哈", Toast.LENGTH_SHORT).show();
 //                        } else {
 //                            Toast.makeText(MainActivity.this, newsBeanList.get(0).getTitle(), Toast.LENGTH_SHORT).show();
 //                        }
-                    }
+                        }
 
-                    @Override
-                    public void onException(Exception e) {
-                        e.printStackTrace();
-//                        if (e instanceof NetworkError) {
-//                            Toast.makeText(MainActivity.this, "莫得网络啦，等下再来吧", Toast.LENGTH_SHORT).show();
-//                        }
+                        @Override
+                        public void onException(Exception e) {
+                            e.printStackTrace();
+                            if (e instanceof NetworkError) {
+                                Toast.makeText(getContext(), "莫得网络啦，等下再来吧", Toast.LENGTH_SHORT).show();
+                            }
+                            refreshLayout.finishLoadMore();
+                            refreshLayout.finishRefresh();
+                        }
                     }
+            );
+        } else {
+//            if (")getChannel().equals("首页)
+//            if (getUserVisibleHint())
+            if (offline == false) Toast.makeText(getContext(), "离线模式", Toast.LENGTH_SHORT).show();
+            offline = true;
+            getDataRepository().getSavedNews(getChannel(), size, offset, new DataRepository.OnReceiveSavedNewsCallback() {
+                @Override
+                public void onReceive(List<NewsBean> savedNews) {
+                    offset += savedNews.size();
+                    setNewsList(savedNews, isOnRefresh, isOnLoadMore);
+                    refreshLayout.finishLoadMore();
+                    refreshLayout.finishRefresh();
                 }
-        );
+            });
+        }
+
     }
 
     public void setNewsList(List<NewsBean> newsBeanList, boolean isOnRefresh, boolean isOnLoadMore) {

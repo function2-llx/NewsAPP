@@ -27,6 +27,10 @@
 <!--            android:layout_height="match_parent"-->
 <!--            android:overScrollMode="never"-->
 <!--            android:background="#fff" />-->
+        <com.scwang.smartrefresh.layout.header.BezierRadarHeader
+            android:layout_width="match_parent"
+            app:srlPrimaryColor="@color/colorPrimary"
+            android:layout_height="wrap_content"/>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
@@ -34,6 +38,9 @@
             android:clipToPadding="false"
             android:overScrollMode="never"
             tools:listitem="@layout/item_practice_repast"/>
+        <com.scwang.smartrefresh.layout.footer.BallPulseFooter
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
 
