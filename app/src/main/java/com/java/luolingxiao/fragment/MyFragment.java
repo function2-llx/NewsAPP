@@ -7,11 +7,10 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import com.java.luolingxiao.R;
 
-public class MyFragment extends Fragment {
+public class MyFragment extends DefaultFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -20,7 +19,7 @@ public class MyFragment extends Fragment {
     }
     public MyFragment() {}
 
-    public static MyFragment newInstacne() {
+    public static MyFragment newInstance() {
         MyFragment fragment = new MyFragment();
         return fragment;
     }

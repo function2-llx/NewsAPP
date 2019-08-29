@@ -38,7 +38,7 @@ public class DeFaultActivity extends AppCompatActivity {
         StatusBarCompat.setStatusBarColor(this, getResources().getColor(R.color.colorPrimary));
     }
 
-    protected List<ChannelBean> getAllChannels() {
+    public List<ChannelBean> getAllChannels() {
         List<ChannelBean> ret = new ArrayList<>();
         String[] fixedChannels = getResources().getStringArray(R.array.fixed_channels), unfixedChannels = getResources().getStringArray(R.array.unfixed_channels);
         for (String name: fixedChannels) {

@@ -26,7 +26,7 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
             case 0:
                 return MainFragment.newInstance();
             case 1:
-                return MyFragment.newInstacne();
+                return MyFragment.newInstance();
             default:
                 return MainFragment.newInstance();
         }
