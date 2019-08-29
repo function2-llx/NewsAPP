@@ -55,10 +55,15 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
+import cn.sharesdk.framework.Platform;
+import cn.sharesdk.framework.PlatformActionListener;
+import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.onekeyshare.OnekeyShare;
+import cn.sharesdk.tencent.qq.QQ;
 
 public class MainActivity extends DeFaultActivity
     implements NavigationView.OnNavigationItemSelectedListener,
@@ -253,7 +258,37 @@ public class MainActivity extends DeFaultActivity
                                 }
                             }
                     );
-                    break;
+                break;
+
+                case R.id.login:
+                    Platform platform = ShareSDK.getPlatform(QQ.NAME);
+                    if (!platform.isAuthValid()) {
+                        Toast.makeText(this, "登陆过了", Toast.LENGTH_SHORT).show();
+                    }
+                    Toast.makeText(this, "userid: " + platform.getDb().getUserId(), Toast.LENGTH_SHORT).show();
+//                    System.err.print();
+//                    platform.SSOSetting(false);
+                    ShareSDK.setActivity(this);
+                    platform.setPlatformActionListener(new PlatformActionListener() {
+                        @Override
+                        public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
+//                            Toast.makeText(MainActivity.this, "", Toast.LENGTH_SHORT).show();
+                            runOnUiThread(() -> Toast.makeText(MainActivity.this, "登录成功啦" + hashMap.toString(), Toast.LENGTH_SHORT).show());
+                        }
+
+                        @Override
+                        public void onError(Platform platform, int i, Throwable throwable) {
+                            Toast.makeText(MainActivity.this, "登录失败", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onCancel(Platform platform, int i) {
+                            Toast.makeText(MainActivity.this, "取消登录", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+//                    platform.authorize();
+                    platform.showUser(null);
+                break;
             }
             return true;
         });

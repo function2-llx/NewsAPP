@@ -45,20 +45,20 @@ MobSDK {
 
     ShareSDK {
         devInfo {
-            SinaWeibo {
-                Id 1
-                SortId 1
-                appKey "1906685492"
-                appSecret "1554b4e88050d86be98f81086550b0dc"
-                callbackUri "http://www.sharesdk.cn"
-                shareByAppClient true
-                Enable true
-//                BypassApproval true
-            }
+//            SinaWeibo {
+//                Id 1
+//                SortId 1
+//                appKey "1906685492"
+//                appSecret "1554b4e88050d86be98f81086550b0dc"
+//                callbackUri "http://www.sharesdk.cn"
+//                shareByAppClient true
+//                Enable true
+////                BypassApproval true
+//            }
 
             Wechat {
-                Id 2
-                SortId 2
+//                Id 2
+//                SortId 2
                 appId "wxe12f3153552d7412"
                 appSecret "27446fde797434dbadb925d3e1347fd5"
 //                BypassApproval true

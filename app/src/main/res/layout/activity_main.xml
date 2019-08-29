@@ -46,6 +46,18 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_gravity="bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.google.android.material.tabs.TabLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabMode="fixed"
+            android:id="@+id/bottom_tab_layout" />
+
+    </LinearLayout>
+
     <com.mancj.materialsearchbar.MaterialSearchBar
         style="@style/CustomMaterialSearchBarTheme"
         app:mt_hint="家事国事天下事"
