@@ -1,4 +1,4 @@
-package com.java.luolingxiao.adapters;
+package com.java.luolingxiao.adapter;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -27,9 +27,8 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
                 return MainFragment.newInstance();
             case 1:
                 return MyFragment.newInstance();
-            default:
-                return MainFragment.newInstance();
         }
+        return MainFragment.newInstance();
     }
 
     @Override

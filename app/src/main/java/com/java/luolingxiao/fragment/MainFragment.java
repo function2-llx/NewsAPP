@@ -15,7 +15,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.java.luolingxiao.DeFaultActivity;
 import com.java.luolingxiao.MainActivity;
 import com.java.luolingxiao.R;
-import com.java.luolingxiao.adapters.SectionsPagerAdapter;
+import com.java.luolingxiao.adapter.SectionsPagerAdapter;
 import com.java.luolingxiao.api.NewsApi;
 import com.java.luolingxiao.bean.ChannelBean;
 import com.java.luolingxiao.bean.NewsBean;

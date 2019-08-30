@@ -1,4 +1,4 @@
-package com.java.luolingxiao.adapters;
+package com.java.luolingxiao.adapter;
 
 import android.database.DataSetObservable;
 import android.database.DataSetObserver;

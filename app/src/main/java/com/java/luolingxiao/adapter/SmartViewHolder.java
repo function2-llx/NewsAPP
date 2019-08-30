@@ -1,10 +1,9 @@
-package com.java.luolingxiao.adapters;
+package com.java.luolingxiao.adapter;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,7 +14,6 @@ import androidx.annotation.StringRes;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.java.luolingxiao.R;
 import com.java.luolingxiao.api.NewsApi;
 
 public class SmartViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

@@ -1,5 +1,6 @@
 package com.java.luolingxiao;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,13 +10,12 @@ import android.view.WindowManager;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
 
+import com.mob.moblink.MobLink;
+import com.mob.moblink.RestoreSceneListener;
+import com.mob.moblink.Scene;
 import com.yanzhenjie.nohttp.InitializationConfig;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yanzhenjie.nohttp.OkHttpNetworkExecutor;
-
-import java.util.HashMap;
-
-import cn.sharesdk.framework.ShareSDK;
 
 public class SplashActivity extends DeFaultActivity {
     @Override
@@ -28,17 +28,29 @@ public class SplashActivity extends DeFaultActivity {
         NoHttp.initialize(
                 InitializationConfig.newBuilder(this).
                 networkExecutor(new OkHttpNetworkExecutor())
-                .connectionTimeout(10 * 1000)
-                .readTimeout(10 * 1000)
+                .connectionTimeout(5 * 1000)
+                .readTimeout(5 * 1000)
                 .build()
             );
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-
         setContentView(R.layout.activity_splash);
+        MobLink.setRestoreSceneListener(new RestoreSceneListener() {
+            @Override
+            public Class<? extends Activity> willRestoreScene(Scene scene) {
+                return NewsActivity.class;
+            }
 
-        HashMap<String, Object> customDataMap = ShareSDK.getCustomDataFromLoopShare();
+            @Override
+            public void completeRestore(Scene scene) {
 
+            }
+
+            @Override
+            public void notFoundScene(Scene scene) {
+
+            }
+        });
 
         new Handler().postDelayed(() -> {
             Intent intent = new Intent(SplashActivity.this, MainActivity.class);

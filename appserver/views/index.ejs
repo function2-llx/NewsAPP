@@ -92,18 +92,27 @@
         </div>
     </nav>
 
-<%  if (news.image.length == 2) { %>
+<%  let dummy = JSON.parse(JSON.stringify(news)); %>
+<%  if (news.image.length <= 2) { %>
 <%        news.image = [] %>
 <%  } else { %>
 <%      news.image = news.image.substring(1, news.image.length - 1).split(', ') %>
 <%  } %>
 <%  news.content = news.content.split("\n") %>
 
-<%  if (news.image.length > 0) { %>
+<%  if (news.image.length > 0 || news.video.length > 2) { %>
     <div class="swiper-container swiper-container-horizontal">
         <div class="swiper-wrapper">
-<%          for (let url of news.image) { %>
-            <div class="swiper-slide"> <img src="<%= url %>" class="img-responsive"> </div>
+<%          if (news.video.length > 2) { %>
+            <div class="swiper-slide"> <video controls="controls">
+                <source src="<%= news.video %>">
+            </video></div>
+<%          } %>
+
+<%          if (news.image.length > 0) { %>  
+<%              for (let url of news.image) { %>
+                    <div class="swiper-slide"> <img src="<%= url %>" class="img-responsive"> </div>
+<%              } %>
 <%          } %>
         </div>
         <div class="swiper-pagination swiper-pagination-bullets"></div>
@@ -115,9 +124,6 @@
     <div class="container">
         <div class="starter-template">
             <h1><%=news.title%></h1>
-
-            <!-- <a href="gugenews://gugenews.com:80/path?test=true">点我打开</a> -->
-
 <%          for (let p of news.content) { %>
             <p class="lead"><%- p %></p>
 <%          } %>
@@ -129,23 +135,20 @@
     
     <script type="text/javascript" src="//aled.t4m.cn/applink.js"></script>
     <script type="text/javascript"> 
-
         /*
         * MobLink 支持数组=>MobLink([...]) 和对象=>MobLink({...})
         * 页面上有多个元素需要跳转时使用数组方式,仅单个元素时可以使用对象的方式进行初始化
         * el: 表示网页上Element的id值,该字段为空或者不写则表示MobLink默认浮层上的打开按钮(注意:必须为元素id,以#开头)
         * path: 对应App里的路径
-        * params: 网页需要带给客户端的参数
+        * params: 网页需要带给客户端的参数 
         */
+        
         MobLink([
             {
                 el: "",
                 path: "demo/a",
                 params: {
-                    key1: "value1",
-                    key2: "value2",
-                    // targetAction_And: "com.java.luolingxiao.NewsActivity",
-                    news: <%- JSON.stringify(news) %>
+                    news: <%- JSON.stringify(dummy) %>
                 }
             }, 
             // {
@@ -157,7 +160,6 @@
             //         key2: "value2",
             //     }
             // },
-        
         ]);
 
 
@@ -168,10 +170,28 @@
     <script src="index_files/bootstrap.js"></script>
     <script src="index_files/ie10-viewport-bug-workaround.js"></script>
 
-    <script>
+    <script type="text/javascript">
         // 强行修改 query 字段
         $("#mobLink_btn_0").attr("href", "gugenews://com.java.luolingxiao/path?news=" + "<%= JSON.stringify(news) %>")
     </script>
+
+    <script type="text/javascript">
+        var swiper = new Swiper('.swiper-container', {
+            pagination: {
+                el: '.swiper-pagination',
+                // type: 'fraction',
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            autoplay: {
+                delay: 3000,
+                stopOnLastSlide: false,
+                disableOnInteraction: true
+            }
+        });
+  </script>
 
        
 </body>

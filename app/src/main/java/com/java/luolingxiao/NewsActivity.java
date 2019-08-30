@@ -3,7 +3,6 @@ package com.java.luolingxiao;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,18 +16,20 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 
 import com.alibaba.fastjson.JSONObject;
-import com.bumptech.glide.util.Util;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.java.luolingxiao.api.NewsApi;
 import com.java.luolingxiao.bean.NewsBean;
-import com.java.luolingxiao.bean.NewsDetail;
 import com.java.luolingxiao.widget.Utils;
+import com.mob.moblink.MobLink;
+import com.mob.moblink.Scene;
+import com.mob.moblink.SceneRestorable;
 import com.stx.xhb.xbanner.XBanner;
 import com.stx.xhb.xbanner.entity.LocalImageInfo;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -39,9 +40,8 @@ import cn.sharesdk.tencent.qq.QQ;
 import cn.sharesdk.wechat.friends.Wechat;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class NewsActivity extends DefaultSwipeBackActivity {
-
-
+public class NewsActivity extends DefaultSwipeBackActivity
+    implements SceneRestorable {
     ImageView newsDetailPhotoIv;
     View maskView;
 
@@ -59,6 +59,25 @@ public class NewsActivity extends DefaultSwipeBackActivity {
     private String mNewsTitle;
     private String mShareLink;
     XBanner mXBanner;
+
+    @Override
+    public void onReturnSceneData(Scene scene) {
+        HashMap<String, Object> params = scene.getParams();
+        HashMap<String, Object> news = (HashMap<String, Object>) Objects.requireNonNull(Objects.requireNonNull(params.get("news")));
+        sharedJson = new JSONObject(news);
+//        JSON.parseObject(news, HashMap.class);
+//        int a = 1;
+//        sharedJonString = ((HashMap<String, String>) Objects.requireNonNull(params.get("news"))).get("value");
+//        System.err.println(params);
+    }
+
+    // 必须重写该方法，防止MobLink在某些情景下无法还原
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        MobLink.updateNewIntent(getIntent(), this);
+    }
 
     public static void startAction(Context mContext, NewsBean newsbean) {
         Intent intent = new Intent(mContext, NewsActivity.class);
@@ -115,10 +134,18 @@ public class NewsActivity extends DefaultSwipeBackActivity {
         qq.share(shareParams);
     }
 
+    private JSONObject sharedJson;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        NewsBean newsBean = NewsBean.parse((JSONObject) JSONObject.parse(getIntent().getStringExtra("NewsBean")));
+
+        NewsBean newsBean;
+        if (getIntent().getStringExtra("NewsBean") != null) {
+            newsBean = NewsBean.parse((JSONObject) Objects.requireNonNull(JSONObject.parse(getIntent().getStringExtra("NewsBean"))));
+        } else {
+            newsBean = NewsBean.parse(sharedJson);
+        }
         List<String> images = newsBean.getImageUrls();
         if (images.size() == 0) {
             setContentView(R.layout.act_news_detail_no_picture);

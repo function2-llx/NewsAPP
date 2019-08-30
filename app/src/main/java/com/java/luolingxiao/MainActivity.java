@@ -13,7 +13,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
-import com.java.luolingxiao.adapters.MainPagerAdapter;
+import com.java.luolingxiao.adapter.MainPagerAdapter;
 import com.java.luolingxiao.events.NightModeChangeEvent;
 import com.wildma.pictureselector.PictureSelector;
 
@@ -27,9 +27,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class MainActivity extends DeFaultActivity {
-
-
-
     private View navigationHeader;
     private Toolbar toolbar;
 

@@ -9,7 +9,9 @@ import com.java.luolingxiao.database.entity.SavedNews;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 public class NewsBean {
     private String title, category, content, publisher;
@@ -19,6 +21,11 @@ public class NewsBean {
     private List<String> keywords;
     private List<String> imageUrls;
     private boolean read;
+
+    private class Keyword {
+        private String word;
+        private double score;
+    }
 
     private NewsBean() {}
     public JSONObject getNewsJson() { return newsJson; }
@@ -84,6 +91,14 @@ public class NewsBean {
 
     public static NewsBean parse(String jsonString) {
         return parse((JSONObject)JSONObject.parse(jsonString));
+    }
+
+    public static NewsBean parse(HashMap<String, Object> map) {
+        NewsBean newsBean = new NewsBean();
+        newsBean.imageUrls = (List<String>)map.get("image");
+        newsBean.publishTime = NewsDateTime.parse(Objects.requireNonNull(map.get("publishTime")).toString());
+
+        return newsBean;
     }
 
     public String getAbstract() {
