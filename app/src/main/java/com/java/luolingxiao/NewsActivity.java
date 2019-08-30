@@ -65,6 +65,8 @@ public class NewsActivity extends DefaultSwipeBackActivity
         HashMap<String, Object> params = scene.getParams();
         HashMap<String, Object> news = (HashMap<String, Object>) Objects.requireNonNull(Objects.requireNonNull(params.get("news")));
         sharedJson = new JSONObject(news);
+//        onBackPressed();
+//        System.err.println(sharedJson.toJSONString());
 //        JSON.parseObject(news, HashMap.class);
 //        int a = 1;
 //        sharedJonString = ((HashMap<String, String>) Objects.requireNonNull(params.get("news"))).get("value");
@@ -137,6 +139,26 @@ public class NewsActivity extends DefaultSwipeBackActivity
     private JSONObject sharedJson;
 
     @Override
+    protected void onRestart() {
+        super.onRestart();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (sharedJson != null) {
+            NewsBean newsBean = NewsBean.parse(sharedJson);
+            sharedJson = null;
+            startAction(this, newsBean);
+        }
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -145,6 +167,7 @@ public class NewsActivity extends DefaultSwipeBackActivity
             newsBean = NewsBean.parse((JSONObject) Objects.requireNonNull(JSONObject.parse(getIntent().getStringExtra("NewsBean"))));
         } else {
             newsBean = NewsBean.parse(sharedJson);
+            sharedJson = null;
         }
         List<String> images = newsBean.getImageUrls();
         if (images.size() == 0) {

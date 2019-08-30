@@ -45,6 +45,7 @@ app.get('/news', (req, appres) => {
                     return
                 }
             }
-            appres.send("<h1>fail</h1>")
+            appres.redirect('/notfound.html')
+            // appres.send("<h1>fail</h1>")
         })
 })
