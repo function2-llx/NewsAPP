@@ -7,7 +7,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Locale;
 
 public class NewsDateTime {
 //    private LocalDateTime localDateTime;
@@ -40,9 +39,7 @@ public class NewsDateTime {
     public String toString() {
         StringBuilder ret = new StringBuilder(date.toString());
         if (time != null) {
-            ret.append(" ").append(String.format(Locale.SIMPLIFIED_CHINESE, "%02d", time.getHour())).append(":")
-                    .append(String.format(Locale.SIMPLIFIED_CHINESE, "%02d", time.getMinute())).append(":")
-                    .append(String.format(Locale.SIMPLIFIED_CHINESE, "%02d", time.getSecond()));
+            ret.append(" ").append(time.format(DateTimeFormatter.ofPattern("HH:mm:ss")));
         }
         return ret.toString();
     }

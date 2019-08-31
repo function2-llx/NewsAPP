@@ -33,15 +33,10 @@ import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.trs.channellib.channel.channel.helper.ChannelDataHelper;
 import com.yanzhenjie.nohttp.error.NetworkError;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
-import cn.sharesdk.framework.Platform;
-import cn.sharesdk.framework.PlatformActionListener;
-import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.onekeyshare.OnekeyShare;
-import cn.sharesdk.tencent.qq.QQ;
 
 public class MainFragment extends DefaultFragment
     implements ChannelDataHelper.ChannelDataRefreshListenter {
@@ -218,35 +213,35 @@ public class MainFragment extends DefaultFragment
                     );
                     break;
 
-                case R.id.login:
-                    Platform platform = ShareSDK.getPlatform(QQ.NAME);
-                    if (!platform.isAuthValid()) {
-                        Toast.makeText(getActivity(), "登陆过了", Toast.LENGTH_SHORT).show();
-                    }
-                    Toast.makeText(getActivity(), "userid: " + platform.getDb().getUserId(), Toast.LENGTH_SHORT).show();
-//                    System.err.print();
-//                    platform.SSOSetting(false);
-                    ShareSDK.setActivity(getActivity());
-                    platform.setPlatformActionListener(new PlatformActionListener() {
-                        @Override
-                        public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
-//                            Toast.makeText(MainActivity.this, "", Toast.LENGTH_SHORT).show();
-                            getActivity().runOnUiThread(() -> Toast.makeText(getActivity(), "登录成功啦" + hashMap.toString(), Toast.LENGTH_SHORT).show());
-                        }
-
-                        @Override
-                        public void onError(Platform platform, int i, Throwable throwable) {
-                            Toast.makeText(getActivity(), "登录失败", Toast.LENGTH_SHORT).show();
-                        }
-
-                        @Override
-                        public void onCancel(Platform platform, int i) {
-                            Toast.makeText(getActivity(), "取消登录", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-//                    platform.authorize();
-                    platform.showUser(null);
-                    break;
+//                case R.id.login:
+//                    Platform platform = ShareSDK.getPlatform(QQ.NAME);
+//                    if (!platform.isAuthValid()) {
+//                        Toast.makeText(getActivity(), "登陆过了", Toast.LENGTH_SHORT).show();
+//                    }
+//                    Toast.makeText(getActivity(), "userid: " + platform.getDb().getUserId(), Toast.LENGTH_SHORT).show();
+////                    System.err.print();
+////                    platform.SSOSetting(false);
+//                    ShareSDK.setActivity(getActivity());
+//                    platform.setPlatformActionListener(new PlatformActionListener() {
+//                        @Override
+//                        public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
+////                            Toast.makeText(MainActivity.this, "", Toast.LENGTH_SHORT).show();
+//                            getActivity().runOnUiThread(() -> Toast.makeText(getActivity(), "登录成功啦" + hashMap.toString(), Toast.LENGTH_SHORT).show());
+//                        }
+//
+//                        @Override
+//                        public void onError(Platform platform, int i, Throwable throwable) {
+//                            Toast.makeText(getActivity(), "登录失败", Toast.LENGTH_SHORT).show();
+//                        }
+//
+//                        @Override
+//                        public void onCancel(Platform platform, int i) {
+//                            Toast.makeText(getActivity(), "取消登录", Toast.LENGTH_SHORT).show();
+//                        }
+//                    });
+////                    platform.authorize();
+//                    platform.showUser(null);
+//                    break;
             }
             return true;
         });

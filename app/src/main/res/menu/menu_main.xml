@@ -24,7 +24,7 @@
         android:id="@+id/news_test"
         android:title="来点新闻" />
 
-    <item
-        android:id="@+id/login"
-        android:title="登录惹" />
+<!--    <item-->
+<!--        android:id="@+id/login"-->
+<!--        android:title="登录惹" />-->
 </menu>

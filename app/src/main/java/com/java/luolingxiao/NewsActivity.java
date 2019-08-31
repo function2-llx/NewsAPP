@@ -18,7 +18,6 @@ import androidx.core.content.ContextCompat;
 import com.alibaba.fastjson.JSONObject;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.java.luolingxiao.api.NewsApi;
 import com.java.luolingxiao.bean.NewsBean;
 import com.java.luolingxiao.widget.Utils;
@@ -42,7 +41,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class NewsActivity extends DefaultSwipeBackActivity
     implements SceneRestorable {
-    ImageView newsDetailPhotoIv;
+//    ImageView newsDetailPhotoIv;
     View maskView;
 
     Toolbar toolbar;
@@ -54,10 +53,7 @@ public class NewsActivity extends DefaultSwipeBackActivity
     ProgressBar progressBar;
     CircleImageView circleImageView;
 
-    FloatingActionButton fab;
-    private String postId;
     private String mNewsTitle;
-    private String mShareLink;
     XBanner mXBanner;
 
     @Override
@@ -206,11 +202,11 @@ public class NewsActivity extends DefaultSwipeBackActivity
         circleImageView.setImageBitmap(bitmap);
         newsDetailBodyTv = findViewById(R.id.news_detail_body_tv);
         progressBar = findViewById(R.id.progress_bar);
-        newsDetailPhotoIv = findViewById(R.id.news_detail_photo_iv);
-        maskView = findViewById(R.id.mask_view);
-        ImageView imageView = findViewById(R.id.news_detail_photo_iv);
+//        newsDetailPhotoIv = findViewById(R.id.news_detail_photo_iv);
+//        maskView = findViewById(R.id.mask_view);
+//        ImageView imageView = findViewById(R.id.news_detail_photo_iv);
 
-        mXBanner = (XBanner) findViewById(R.id.xbanner);
+        mXBanner = findViewById(R.id.xbanner);
 //        mXBanner.setBannerData(null);
 
 
@@ -296,21 +292,21 @@ public class NewsActivity extends DefaultSwipeBackActivity
                 return true;
             }
         });
-        fab = findViewById(R.id.fab);
-        //分享
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mShareLink == null) {
-                    mShareLink = "";
-                }
-                Intent intent = new Intent(Intent.ACTION_SEND);
-                intent.setType("text/plain");
-                intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share));
-                intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_contents, mNewsTitle, mShareLink));
-                startActivity(Intent.createChooser(intent, getTitle()));
-            }
-        });
+//        fab = findViewById(R.id.fab);
+//        //分享
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (mShareLink == null) {
+//                    mShareLink = "";
+//                }
+//                Intent intent = new Intent(Intent.ACTION_SEND);
+//                intent.setType("text/plain");
+//                intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share));
+//                intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_contents, mNewsTitle, mShareLink));
+//                startActivity(Intent.createChooser(intent, getTitle()));
+//            }
+//        });
 
 //        mShareLink = newsDetail.getShareLink();
         mNewsTitle = newsBean.getTitle();
@@ -337,14 +333,6 @@ public class NewsActivity extends DefaultSwipeBackActivity
 //        newsDetailBodyTv.setText(Html.fromHtml(newsBody));
     }
 
-    private boolean isShowBody(String newsBody, int imgTotal) {
-        return imgTotal >= 2 && newsBody != null;
-    }
-
-
-    private boolean canBrowse(Intent intent) {
-        return intent.resolveActivity(getPackageManager()) != null && mShareLink != null;
-    }
 
     public void onCompleted() {
         progressBar.setVisibility(View.GONE);

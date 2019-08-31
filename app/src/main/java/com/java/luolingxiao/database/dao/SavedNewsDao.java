@@ -25,6 +25,12 @@ public interface SavedNewsDao {
     @Delete
     void delete(List<SavedNews> savedNews);
 
-    @Query("select * from saved_news where channel == :channel limit :limit offset :offset")
-    List<SavedNews> getSavedNews(String channel, int limit, int offset);
+    @Query("select * from saved_news where category == :category limit :limit offset :offset")
+    List<SavedNews> getSavedNewsByCategory(String category, int limit, int offset);
+
+    @Query("select * from saved_news limit :limit offset :offset")
+    List<SavedNews> getSavedNews(int limit, int offset);
+
+    @Query("select * from saved_news where favorite == 1 limit :limit offset :offset")
+    List<SavedNews> getFavoriteSavedNews(int limit, int offset);
 }

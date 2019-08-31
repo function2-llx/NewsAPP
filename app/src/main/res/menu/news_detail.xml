@@ -7,6 +7,13 @@
         android:title="分享"
         app:showAsAction="always"
         android:icon="@drawable/menu_share" />
+
+    <item
+        android:id="@+id/action_favorite"
+        app:showAsAction="always"
+        android:title="收藏"
+        />
+<!--        android:icon="@drawable/ic_action_favorite"-->
     <!--<item-->
         <!--android:id="@+id/action_web_view"-->
         <!--android:orderInCategory="100"-->

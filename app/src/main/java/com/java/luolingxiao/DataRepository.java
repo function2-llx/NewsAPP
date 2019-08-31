@@ -68,7 +68,7 @@ public class DataRepository {
             protected void doInBackGround() {
                 List<SavedNews> savedNews = new ArrayList<>();
                 for (NewsBean newsBean: newsBeans) {
-                    savedNews.add(SavedNews.encode(channel, newsBean));
+                    savedNews.add(SavedNews.encode(newsBean));
                 }
                 database.savedNewsDao().insert(savedNews);
             }
@@ -83,7 +83,7 @@ public class DataRepository {
         new SimpleAsyncTask() {
             @Override
             protected void doInBackGround() {
-                List<SavedNews> newsBeanList = SavedNews.encode(channel, newsBeans);
+                List<SavedNews> newsBeanList = SavedNews.encode(newsBeans);
                 database.savedNewsDao().delete(newsBeanList);
             }
         }.start();
@@ -97,17 +97,48 @@ public class DataRepository {
         void onReceive(List<NewsBean> savedNews);
     }
 
-    public void getSavedNews(String channel, int limit, int offset, OnReceiveSavedNewsCallback callback) {
-        new SimpleAsyncTask() {
-            private List<NewsBean> newsBeans;
+    private static abstract class GetNewsAsyncTask extends SimpleAsyncTask{
+        List<NewsBean> newsBeans;
+        private OnReceiveSavedNewsCallback callback;
+
+        GetNewsAsyncTask(OnReceiveSavedNewsCallback callback) {
+            this.callback = callback;
+        }
+
+        @Override
+        protected void onComplete() {
+            callback.onReceive(newsBeans);
+        }
+    }
+
+    public void getSavedNews(int limit, int offset, OnReceiveSavedNewsCallback callback) {
+        new GetNewsAsyncTask(callback) {
             @Override
             protected void doInBackGround() {
-                newsBeans = NewsBean.decode(database.savedNewsDao().getSavedNews(channel, limit, offset));
+                newsBeans = NewsBean.decode(database.savedNewsDao().getSavedNews(limit, offset));
             }
+        }.start();
+    }
 
+    public void getSavedNewsByCategory(String category, int limit, int offset, OnReceiveSavedNewsCallback callback) {
+        if (category.equals("首页")) {
+            getSavedNews(limit, offset, callback);
+        } else {
+            new GetNewsAsyncTask(callback) {
+                @Override
+                protected void doInBackGround() {
+                    newsBeans = NewsBean.decode(database.savedNewsDao().getSavedNewsByCategory(category, limit, offset));
+                }
+            }.start();
+        }
+    }
+
+
+    public void getFavoriteSavedNews(int limit, int offset, OnReceiveSavedNewsCallback callback) {
+        new GetNewsAsyncTask(callback) {
             @Override
-            protected void onComplete() {
-                callback.onReceive(newsBeans);
+            protected void doInBackGround() {
+                newsBeans = NewsBean.decode(database.savedNewsDao().getFavoriteSavedNews(limit, offset));
             }
         }.start();
     }

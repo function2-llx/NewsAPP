@@ -868,7 +868,7 @@ public class MaterialSearchBar extends RelativeLayout implements View.OnClickLis
     /**
      * Enable capsule shaped SearchBar (API 21+)
      *
-     * @param roundedSearchBarEnabled capsule shape enabled
+     * @param roundedSearchBarEnabled capsule border enabled
      * @
      */
     public void setRoundedSearchBarEnabled(boolean roundedSearchBarEnabled) {

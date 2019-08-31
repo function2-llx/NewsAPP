@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "a2740b78dc40000de70221e38be4b995",
+    "identityHash": "4be98d58c0d5777be5b0cbe42c35a04a",
     "entities": [
       {
         "tableName": "search_records",
@@ -26,18 +26,24 @@
       },
       {
         "tableName": "saved_news",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`newsId` TEXT NOT NULL, `channel` TEXT NOT NULL, `read` INTEGER NOT NULL, `content` TEXT NOT NULL, PRIMARY KEY(`newsId`, `channel`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`news_id` TEXT NOT NULL, `category` TEXT NOT NULL, `favorite` INTEGER NOT NULL, `read` INTEGER NOT NULL, `content` TEXT NOT NULL, PRIMARY KEY(`news_id`))",
         "fields": [
           {
             "fieldPath": "newsId",
-            "columnName": "newsId",
+            "columnName": "news_id",
             "affinity": "TEXT",
             "notNull": true
           },
           {
-            "fieldPath": "channel",
-            "columnName": "channel",
+            "fieldPath": "category",
+            "columnName": "category",
             "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "favorite",
+            "columnName": "favorite",
+            "affinity": "INTEGER",
             "notNull": true
           },
           {
@@ -55,8 +61,7 @@
         ],
         "primaryKey": {
           "columnNames": [
-            "newsId",
-            "channel"
+            "news_id"
           ],
           "autoGenerate": false
         },
@@ -67,7 +72,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a2740b78dc40000de70221e38be4b995')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4be98d58c0d5777be5b0cbe42c35a04a')"
     ]
   }
 }

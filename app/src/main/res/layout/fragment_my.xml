@@ -1,19 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="来撞壁吧！"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.483" />
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.Toolbar
+            app:title="我的"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize" />
+    </com.google.android.material.appbar.AppBarLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        style="@style/selection_wrapper"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/user_container">
+        <LinearLayout
+            style="@style/single_layout">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:src="@drawable/unknown"
+                android:id="@+id/user_portrait"
+                android:layout_width="100dp"
+                android:layout_height="100dp" />
+
+            <TextView
+                android:paddingLeft="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/username"
+                android:text="@string/unauthorized"
+                android:gravity="center_vertical" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/selection_wrapper"
+        android:id="@+id/container_authorized">
+        <LinearLayout
+            android:id="@+id/my_favorite"
+            style="@style/top_layout">
+            <TextView
+                style="@style/selection_text"
+                android:text="我的收藏" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/logout"
+            style="@style/bottom_layout">
+            <TextView
+                style="@style/selection_text"
+                android:text="退出当前账号" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/selection_wrapper"
+        android:id="@+id/container_unauthorized">
+        <LinearLayout
+            android:id="@+id/login"
+            style="@style/single_layout">
+            <TextView
+                style="@style/selection_text"
+                android:text="登录账号"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

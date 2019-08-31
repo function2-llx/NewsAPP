@@ -25,7 +25,7 @@ app.get('/news', (req, appres) => {
     data = url.parse(req.url, true).query
     // console.log(data)
     superagent.get('https://api2.newsminer.net/svc/news/queryNewsList')
-        .query({startDate: data.publishTime, endDate: data.publishTime})
+        .query({startDate: data.publishTime, endDate: data.publishTime, size: 50})
         .end((err, res) => {
             // console.log(res.body)
             for (let news of res.body.data) {

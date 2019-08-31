@@ -21,6 +21,7 @@ public class NewsBean {
     private List<String> keywords;
     private List<String> imageUrls;
     private boolean read;
+    private boolean favorite;
 
     private class Keyword {
         private String word;
@@ -41,7 +42,7 @@ public class NewsBean {
     public void setContent(String content) {
         this.content = content;
     }
-    //    public void addImage(Bitmap bitmap) { this.images.add(bitmap); }
+
 
 
     public static NewsBean parse(JSONObject newsJson) {
@@ -82,6 +83,9 @@ public class NewsBean {
 
     public boolean isRead() { return read; }
     public boolean setRead(boolean read) { return this.read = read; }
+
+    public boolean isFavorite() { return favorite; }
+    public void setFavorite(boolean favorite) { this.favorite = favorite; }
 
     @NonNull
     @Override

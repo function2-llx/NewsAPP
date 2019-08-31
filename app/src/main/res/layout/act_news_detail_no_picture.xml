@@ -83,16 +83,16 @@
         android:id="@+id/include"
         layout="@layout/item_content_news_detail" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/ic_share"
-        android:visibility="gone"
-        app:layout_anchor="@id/app_bar"
-        app:backgroundTint="@color/red"
-        app:layout_anchorGravity="bottom|end"/>
+<!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--        android:id="@+id/fab"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_margin="@dimen/fab_margin"-->
+<!--        android:src="@drawable/ic_share"-->
+<!--        android:visibility="gone"-->
+<!--        app:layout_anchor="@id/app_bar"-->
+<!--        app:backgroundTint="@color/red"-->
+<!--        app:layout_anchorGravity="bottom|end"/>-->
     <!--app:backgroundTint="?attr/fabColor"-->
 
 

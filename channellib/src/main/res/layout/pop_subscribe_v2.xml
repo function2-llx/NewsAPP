@@ -6,7 +6,7 @@
     android:background="@android:color/white"
     android:orientation="vertical">
 
-    <com.trs.channellib.channel.channel.ChannelManagerView
+    <com.trs.channellib.category.category.ChannelManagerView
         android:id="@+id/cmv"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" />

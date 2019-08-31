@@ -33,6 +33,7 @@ public class MainActivity extends DeFaultActivity {
     private ViewPager viewPager;
     private TabLayout tabLayout;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -193,14 +193,9 @@ public class NewsListFragment extends Fragment {
                     public void run() {
 //                        recyclerView.set
                         getNewsListDataRequest("", 6, lastDate, true, false);
-
 //                        refreshLayout.finishRefresh();
                         refreshLayout.resetNoMoreData();//setNoMoreData(false);//恢复上拉状态
-
-
                     }
-
-
                 }, 100);
             }
 
@@ -239,8 +234,7 @@ public class NewsListFragment extends Fragment {
         }
 
         if (NetworkChecker.isNetworkConnected(getContext())) {
-
-            if (offline == true) Toast.makeText(getContext(), "进入在线模式", Toast.LENGTH_SHORT).show();
+            if (offline) Toast.makeText(getContext(), "进入在线模式", Toast.LENGTH_SHORT).show();
             offline = false;
             NewsApi.requestNews(new NewsApi.SearchParams()
                             .setSize(size)
@@ -281,11 +275,11 @@ public class NewsListFragment extends Fragment {
                     }
             );
         } else {
-//            if (")getChannel().equals("首页)
+//            if (")getCategory().equals("首页)
 //            if (getUserVisibleHint())
-            if (offline == false) Toast.makeText(getContext(), "离线模式", Toast.LENGTH_SHORT).show();
+            if (!offline) Toast.makeText(getContext(), "离线模式", Toast.LENGTH_SHORT).show();
             offline = true;
-            getDataRepository().getSavedNews(getChannel(), size, offset, new DataRepository.OnReceiveSavedNewsCallback() {
+            getDataRepository().getSavedNewsByCategory(getChannel(), size, offset, new DataRepository.OnReceiveSavedNewsCallback() {
                 @Override
                 public void onReceive(List<NewsBean> savedNews) {
                     offset += savedNews.size();

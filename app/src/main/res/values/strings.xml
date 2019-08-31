@@ -71,4 +71,5 @@
     <string name="friend_zone_about">关于</string>
     <string name="care_main_title">我关注的</string>
     <string name="care_about_wechat">更多精彩文章请关注微信公众号"Android经验分享"：这里将长期为您分享Android高手经验、中外开源项目、源码解析、框架设计和Android好文推荐！</string>
+    <string name="unauthorized">还没有登录</string>
 </resources>
