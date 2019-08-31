@@ -14,7 +14,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.java.luolingxiao.adapter.MainPagerAdapter;
-import com.java.luolingxiao.events.NightModeChangeEvent;
+import com.java.luolingxiao.event.NightModeChangeEvent;
 import com.wildma.pictureselector.PictureSelector;
 
 import org.greenrobot.eventbus.EventBus;
@@ -38,6 +38,7 @@ public class MainActivity extends DeFaultActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+//        initSearchBar();
 //        initSearchBar();
 
         this.toolbar = findViewById(R.id.toolbar);

@@ -1,34 +1,21 @@
 package com.java.luolingxiao.fragment;
 
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.java.luolingxiao.DataRepository;
-import com.java.luolingxiao.DeFaultActivity;
-import com.java.luolingxiao.NewsActivity;
-import com.java.luolingxiao.R;
-import com.java.luolingxiao.adapter.BaseRecyclerAdapter;
-import com.java.luolingxiao.adapter.SmartViewHolder;
 import com.java.luolingxiao.api.NetworkChecker;
 import com.java.luolingxiao.api.NewsApi;
 import com.java.luolingxiao.bean.NewsBean;
 import com.java.luolingxiao.bean.NewsDateTime;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.yanzhenjie.nohttp.error.NetworkError;
 
 import java.util.ArrayList;
@@ -37,41 +24,33 @@ import java.util.Collection;
 import java.util.List;
 
 
-public class NewsListFragment extends Fragment {
-    private ArrayList<NewsBean> data = new ArrayList<>();
+public class NewsListFragment extends SimpleNewsListFragment {
+//    private ArrayList<NewsBean> data = new ArrayList<>();
     private ArrayList<Boolean> data_read = new ArrayList<>();
-
     private String mNewsId;
     private String mNewsType;
     private int mStartPage = 0;
-    private boolean noMore = false;
     private boolean offline = false;
+    private boolean isPrepared;
+    private boolean isVisible;
+    private int offset;
+
+
+
+//    private String mNewsId;
+//    private String mNewsType;
+//    private int mStartPage = 0;
+//    private boolean noMore = false;
+//    private boolean offline = false;
 //    Context a;
 
     // 标志位，标志已经初始化完成。
-    RefreshLayout refreshLayout;
-    private boolean isPrepared;
-    private boolean isVisible;
+//    RefreshLayout refreshLayout;
+//    private boolean isPrepared;
+//    private boolean isVisible;
     private NewsDateTime lastDate;
-    private int offset;
 
-    private class Model {
-        int imageId;
-        int avatarId;
-        int position;
-        String name;
-        String nickname;
-        String imageUrl;
-    }
-
-    private BaseRecyclerAdapter<Model> mAdapter;
-
-    private DataRepository getDataRepository() {
-        return ((DeFaultActivity) getActivity()).getDataRepository();
-    }
-
-    public NewsListFragment() {
-    }
+    public NewsListFragment() {}
 
     public static NewsListFragment newInstance(String channel, String words) {
         NewsListFragment fragment = new NewsListFragment();
@@ -92,140 +71,34 @@ public class NewsListFragment extends Fragment {
         return getArguments().getString("words");
     }
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_news_list, container, false);
-        refreshLayout = view.findViewById(R.id.refreshLayout);
-
-        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
-
+        View view = super.onCreateView(inflater, container, savedInstanceState);
         lastDate = new NewsDateTime();
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-//        recyclerView.setBackgroundColor(getResources().getColor(R.color.gray, null));
-        recyclerView.setAdapter(mAdapter = new BaseRecyclerAdapter<Model>(R.layout.item_practice_repast) {
-            @Override
-            protected void onBindViewHolder(SmartViewHolder holder, Model model, int position) {
-                NewsBean newsBean = data.get(position);
-                holder.myText(R.id.name, model.name, data_read.get(position));
-                if (holder.getItemViewType() < 2)
-                    holder.myText(R.id.nickname, model.nickname, data_read.get(position));
-
-                List<String> imageUrls = data.get(model.position).getImageUrls();
-
-                if (newsBean.getImageUrls().size() >= 3) {
-                    holder.image(R.id.image1, imageUrls.get(0));
-                    holder.image(R.id.image2, imageUrls.get(1));
-                    holder.image(R.id.image3, imageUrls.get(2));
-                } else if (newsBean.getImageUrls().size() > 0) {
-//                    holder.image_init(R.id.image, R.drawable.);
-                    holder.image(R.id.image, model.imageUrl);
-                }
-
-                holder.text(R.id.time, data.get(model.position).getPublisher() + " " + data.get(model.position).getPublishTime().toString());
-//                holder.setPosition(model.position);
-//                holder.image(R.id.image, model.imageId);
-            }
-
-
-            @Override
-            public int getItemViewType(int position) {
-                NewsBean newsBean = data.get(position);
-                if (newsBean.getImageUrls().size() == 0) {
-                    return 0;
-//                    return R.layout.item_news_no_picture;
-                } else if (newsBean.getImageUrls().size() < 3) {
-                    return 1;
-//                    return R.layout.item_practice_repast;
-                } else {
-                    return 2;
-                }
-            }
-
-            @Override
-            public SmartViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-                if (viewType == 0) {
-                    return new SmartViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_news_no_picture, parent, false), mListener);
-                } else if (viewType == 1) {
-                    return new SmartViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_practice_repast, parent, false), mListener);
-                } else {
-                    return new SmartViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_news_3_picture, parent, false), mListener);
-
-                }
-            }
-
-            //            @Override
-//            public int getViewTypeCount() {
-//                return super.getViewTypeCount();
-//            }
-        });
-
-
-        mAdapter.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                LinearLayout subView = view.findViewById(R.id.linearLayout);
-//                subView.setBackgroundColor(Color.parseColor("#FFF0F0F0"));
-                NewsBean newsBean = data.get(position);
-                newsBean.setRead(true);
-                getDataRepository().insertNews(getChannel(), newsBean);
-                NewsActivity.startAction(getContext(), newsBean);
-//                NewsActivity.startAction(getContext(), data.get(position));
-                TextView subView = view.findViewById(R.id.name);
-                subView.setTextColor(Color.parseColor("#1A000000"));
-                subView = view.findViewById(R.id.nickname);
-                if (subView != null) {
-                    subView.setTextColor(Color.parseColor("#1A000000"));
-                }
-                data_read.set(position, true);
-            }
-        });
-
-
-
-        refreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
-            @Override
-            public void onRefresh(@NonNull final RefreshLayout refreshLayout) {
-                refreshLayout.getLayout().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-//                        recyclerView.set
-                        getNewsListDataRequest("", 6, lastDate, true, false);
-//                        refreshLayout.finishRefresh();
-                        refreshLayout.resetNoMoreData();//setNoMoreData(false);//恢复上拉状态
-                    }
-                }, 100);
-            }
-
-            @Override
-            public void onLoadMore(@NonNull final RefreshLayout refreshLayout) {
-                refreshLayout.getLayout().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (noMore) {
-                            Toast.makeText(getContext(), "数据全部加载完毕", Toast.LENGTH_SHORT).show();
-                            refreshLayout.finishLoadMoreWithNoMoreData();//设置之后，将不会再触发加载事件
-                        } else {
-                            getNewsListDataRequest("", 6, lastDate, false, true);
-//                            mAdapter.loadMore(loadModels());
-                        }
-                    }
-                }, 100);
-            }
-        });
-
-//        refreshLayout.getLayout().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                refreshLayout.setHeaderInsetStart(SmartUtil.px2dp(toolbar.getHeight()));
-//            }
-//        }, 500);
-
         getNewsListDataRequest("", 1, lastDate, false, false);
-
         return view;
+    }
+
+    @Override
+    public void onRefresh(@NonNull final RefreshLayout refreshLayout) {
+        refreshLayout.getLayout().postDelayed(() -> {
+            getNewsListDataRequest("", 6, lastDate, true, false);
+            refreshLayout.resetNoMoreData();//setNoMoreData(false);//恢复上拉状态
+        }, 100);
+    }
+
+    @Override
+    public void onLoadMore(@NonNull final RefreshLayout refreshLayout) {
+        refreshLayout.getLayout().postDelayed(() -> {
+            if (noMore) {
+                Toast.makeText(getContext(), "数据全部加载完毕", Toast.LENGTH_SHORT).show();
+                refreshLayout.finishLoadMoreWithNoMoreData();//设置之后，将不会再触发加载事件
+            } else {
+                getNewsListDataRequest("", 6, lastDate, false, true);
+//                mAdapter.loadMore(loadModels());
+            }
+        }, 100);
     }
 
     public void getNewsListDataRequest(String type, int size, NewsDateTime endDate, boolean isOnRefresh, boolean isOnLoadMore) {
@@ -250,7 +123,7 @@ public class NewsListFragment extends Fragment {
                             } else {
                                 noMore = true;
                             }
-                            getDataRepository().insertNews(getChannel(), newsBeanList);
+                            getDataRepository().insertNews(newsBeanList);
                             setNewsList(newsBeanList, isOnRefresh, isOnLoadMore);
 
                             refreshLayout.finishLoadMore();

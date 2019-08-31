@@ -3,19 +3,15 @@ package com.java.luolingxiao.api;
 import android.graphics.Bitmap;
 import android.os.Handler;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.java.luolingxiao.bean.NewsBean;
 import com.java.luolingxiao.bean.NewsDateTime;
-import com.yanzhenjie.nohttp.Headers;
 import com.yanzhenjie.nohttp.NoHttp;
-import com.yanzhenjie.nohttp.RequestMethod;
 import com.yanzhenjie.nohttp.rest.OnResponseListener;
 import com.yanzhenjie.nohttp.rest.Request;
 import com.yanzhenjie.nohttp.rest.RequestQueue;
 import com.yanzhenjie.nohttp.rest.Response;
-import com.yanzhenjie.nohttp.rest.StringRequest;
 
 import java.util.Arrays;
 import java.util.List;
@@ -38,23 +34,23 @@ public class NewsApi {
         return imageRequestQueue;
     }
 
-    private static class FastJsonRequest extends Request<JSONObject> {
-
-        public FastJsonRequest(String url) {
-            this(url, RequestMethod.GET);
-        }
-
-        public FastJsonRequest(String url, RequestMethod requestMethod) {
-            super(url, requestMethod);
-            setAccept(Headers.HEAD_VALUE_CONTENT_TYPE_JSON);
-        }
-
-        @Override
-        public JSONObject parseResponse(Headers responseHeaders, byte[] responseBody) {
-            String result = StringRequest.parseResponseString(responseHeaders, responseBody);
-            return JSON.parseObject(result);
-        }
-    }
+//    private static class FastJsonRequest extends Request<JSONObject> {
+//
+//        public FastJsonRequest(String url) {
+//            this(url, RequestMethod.GET);
+//        }
+//
+//        public FastJsonRequest(String url, RequestMethod requestMethod) {
+//            super(url, requestMethod);
+//            setAccept(Headers.HEAD_VALUE_CONTENT_TYPE_JSON);
+//        }
+//
+//        @Override
+//        public JSONObject parseResponse(Headers responseHeaders, byte[] responseBody) {
+//            String result = StringRequest.parseResponseString(responseHeaders, responseBody);
+//            return JSON.parseObject(result);
+//        }
+//    }
 
     public static class SearchParams {
         private int size = 10;
@@ -94,7 +90,7 @@ public class NewsApi {
                 for (int i = 0; i < threads.length; i++) {
                     int id = i;
                     threads[i] = new Thread(() -> {
-                        JSONObject newsJson = (JSONObject)newsJsonArray.get(id);
+                        JSONObject newsJson = newsJsonArray.getJSONObject(id);
                         newsBeans[id] = NewsBean.parse(newsJson);
                     });
                     threads[i].start();

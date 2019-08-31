@@ -1,4 +1,4 @@
-package com.java.luolingxiao.events;
+package com.java.luolingxiao.event;
 
 public class NightModeChangeEvent extends EventBase {
 

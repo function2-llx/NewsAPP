@@ -52,6 +52,9 @@ public class SplashActivity extends DeFaultActivity {
             }
         });
 
+        // init
+        getDataRepository();
+
         new Handler().postDelayed(() -> {
             Intent intent = new Intent(SplashActivity.this, MainActivity.class);
             startActivity(intent);

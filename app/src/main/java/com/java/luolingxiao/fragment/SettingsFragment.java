@@ -9,7 +9,7 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import com.java.luolingxiao.R;
 import com.java.luolingxiao.SettingsActivity;
-import com.java.luolingxiao.events.NightModeChangeEvent;
+import com.java.luolingxiao.event.NightModeChangeEvent;
 
 import org.greenrobot.eventbus.EventBus;
 

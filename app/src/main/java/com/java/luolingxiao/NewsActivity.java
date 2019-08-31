@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -61,12 +60,6 @@ public class NewsActivity extends DefaultSwipeBackActivity
         HashMap<String, Object> params = scene.getParams();
         HashMap<String, Object> news = (HashMap<String, Object>) Objects.requireNonNull(Objects.requireNonNull(params.get("news")));
         sharedJson = new JSONObject(news);
-//        onBackPressed();
-//        System.err.println(sharedJson.toJSONString());
-//        JSON.parseObject(news, HashMap.class);
-//        int a = 1;
-//        sharedJonString = ((HashMap<String, String>) Objects.requireNonNull(params.get("news"))).get("value");
-//        System.err.println(params);
     }
 
     // 必须重写该方法，防止MobLink在某些情景下无法还原
@@ -78,6 +71,7 @@ public class NewsActivity extends DefaultSwipeBackActivity
     }
 
     public static void startAction(Context mContext, NewsBean newsbean) {
+//        EventBus.getDefault().postSticky(new OpenNewsEvent(newsbean));
         Intent intent = new Intent(mContext, NewsActivity.class);
 //        intent.putExtra(AppConstant.NEWS_POST_ID, postId);
         intent.putExtra("NewsBean", newsbean.getNewsJson().toString());
@@ -111,8 +105,6 @@ public class NewsActivity extends DefaultSwipeBackActivity
 
         shareParams.setUrl(newsBean.getShareUrl());
         System.err.println(newsBean.getShareUrl());
-//        Toast.makeText(this, newsBean.getShareUrl(), Toast.LENGTH_SHORT).show();
-//        shareParams.setUrl(newsBean.getNewsJson().getString("url"));
         shareParams.setShareType(Platform.SHARE_WEBPAGE);
         wechat.share(shareParams);
     }
@@ -123,10 +115,6 @@ public class NewsActivity extends DefaultSwipeBackActivity
         if (!newsBean.getImageUrls().isEmpty()) {
             shareParams.setImageUrl(newsBean.getImageUrls().get(0));
         }
-//        if (newsBean.getImages().size() > 0) {
-//            shareParams.setImageData(newsBean.getImages().get(0));
-//        }
-//        shareParams.setTitleUrl(newsBean.getNewsJson().getString("url"));
         shareParams.setTitleUrl(newsBean.getShareUrl());
         shareParams.setShareType(Platform.SHARE_WEBPAGE);
         qq.share(shareParams);
@@ -155,16 +143,24 @@ public class NewsActivity extends DefaultSwipeBackActivity
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+//        EventBus.getDefault().unregister(this);
+    }
+    NewsBean newsBean = null;
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        EventBus.getDefault().register(this);
 
-        NewsBean newsBean;
         if (getIntent().getStringExtra("NewsBean") != null) {
             newsBean = NewsBean.parse((JSONObject) Objects.requireNonNull(JSONObject.parse(getIntent().getStringExtra("NewsBean"))));
         } else {
             newsBean = NewsBean.parse(sharedJson);
             sharedJson = null;
         }
+
         List<String> images = newsBean.getImageUrls();
         if (images.size() == 0) {
             setContentView(R.layout.act_news_detail_no_picture);
@@ -172,9 +168,9 @@ public class NewsActivity extends DefaultSwipeBackActivity
             setContentView(R.layout.act_news_detail);
         }
 
-        AppBarLayout appBarLayout = findViewById(R.id.app_bar);
         toolbarLayout = findViewById(R.id.toolbar_layout);
         toolbar = findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
         appBar = findViewById(R.id.app_bar);
         newsDetailFromTv = findViewById(R.id.news_detail_from_tv);
         newsDetailFromTv.setText(newsBean.getPublisher() + "\n" + newsBean.getPublishTime().toString());
@@ -202,18 +198,8 @@ public class NewsActivity extends DefaultSwipeBackActivity
         circleImageView.setImageBitmap(bitmap);
         newsDetailBodyTv = findViewById(R.id.news_detail_body_tv);
         progressBar = findViewById(R.id.progress_bar);
-//        newsDetailPhotoIv = findViewById(R.id.news_detail_photo_iv);
-//        maskView = findViewById(R.id.mask_view);
-//        ImageView imageView = findViewById(R.id.news_detail_photo_iv);
 
         mXBanner = findViewById(R.id.xbanner);
-//        mXBanner.setBannerData(null);
-
-
-//        if (images.size() == 0) {
-//            //must be CoordinatorLayout.LayoutParams
-//            appBarLayout.setLayoutParams(new CoordinatorLayout.LayoutParams(appBarLayout.getLayoutParams().width, 56));
-//        }
 
         List<LocalImageInfo> data = new ArrayList<>();
         for (int i = 0; i < images.size(); ++i) {
@@ -223,99 +209,67 @@ public class NewsActivity extends DefaultSwipeBackActivity
         mXBanner.setAutoPlayAble(true);
 
         //加载广告图片
-        mXBanner.loadImage(new XBanner.XBannerAdapter() {
-            @Override
-            public void loadBanner(XBanner banner, Object model, View view, int position) {
-                ImageView imageView = (ImageView) view;
+        mXBanner.loadImage((banner, model, view, position) -> {
+            ImageView imageView = (ImageView) view;
 //                imageView.setImageResource(R.mipmap.ic_care_normal);
-                NewsApi.requestImage(images.get(position), new NewsApi.ImageCallback() {
-                    @Override
-                    public void onReceived(Bitmap bitmap) {
-                        imageView.setImageBitmap(bitmap);
-                    }
-
-                    @Override
-                    public void onException(Exception e) {
-
-                    }
-                });
-            }
-        });
-
-
-//        if (newsBean.getImages().size() > 0) {
-//            imageView.setImageBitmap(newsBean.getImages().get(0));
-//        }
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    finishAfterTransition();
-                } else {
-                    finish();
+            NewsApi.requestImage(images.get(position), new NewsApi.ImageCallback() {
+                @Override
+                public void onReceived(Bitmap bitmap1) {
+                    imageView.setImageBitmap(bitmap1);
                 }
-            }
+
+                @Override
+                public void onException(Exception e) {
+
+                }
+            });
         });
+
+        toolbar.setNavigationOnClickListener(view -> onBackPressed());
         toolbar.inflateMenu(R.menu.news_detail);
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.action_share:
-                        OnekeyShare oks = new OnekeyShare();
-                        oks.setShareContentCustomizeCallback(new ShareContentCustomizeCallback() {
-                            @Override
-                            public void onShare(Platform platform, Platform.ShareParams shareParams) {
-                                if (platform.getName().equals(Wechat.NAME)) {
-                                    shareWechat(platform, shareParams, newsBean);
-                                } else if (platform.getName().equals(QQ.NAME)) {
-                                    shareQQ(platform, shareParams, newsBean);
-                                }
+        MenuItem localFavoriteItem = toolbar.getMenu().findItem(R.id.action_local_favorite);
+        if (getDataRepository().isLocalFavorite(newsBean)) {
+            localFavoriteItem.setIcon(R.mipmap.action_local_favorite);
+        } else {
+            localFavoriteItem.setIcon(R.mipmap.action_local_unfavorite);
+        }
+
+        toolbar.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.action_share: {
+                    OnekeyShare oks = new OnekeyShare();
+                    oks.setShareContentCustomizeCallback(new ShareContentCustomizeCallback() {
+                        @Override
+                        public void onShare(Platform platform, Platform.ShareParams shareParams) {
+                            if (platform.getName().equals(Wechat.NAME)) {
+                                shareWechat(platform, shareParams, newsBean);
+                            } else if (platform.getName().equals(QQ.NAME)) {
+                                shareQQ(platform, shareParams, newsBean);
                             }
-                        });
-                        oks.disableSSOWhenAuthorize();
-                        oks.show(NewsActivity.this);
-                        break;
-//                    case R.id.action_web_view:
-//                        NewsBrowserActivity.startAction(NewsActivity.this, mShareLink, mNewsTitle);
-//                        break;
-//                    case R.id.action_browser:
-//                        Intent intent = new Intent();
-//                        intent.setAction("android.intent.action.VIEW");
-//                        if (canBrowse(intent)) {
-//                            Uri uri = Uri.parse(mShareLink);
-//                            intent.setData(uri);
-//                            startActivity(intent);
-//                        }
-//                        break;
+                        }
+                    });
+                    oks.disableSSOWhenAuthorize();
+                    oks.show(NewsActivity.this);
                 }
-                return true;
+                break;
+
+                case R.id.action_local_favorite: {
+                    if (getDataRepository().isLocalFavorite(newsBean)) {
+                        getDataRepository().setFavorite(newsBean, false);
+                        item.setIcon(R.mipmap.action_local_unfavorite);
+                    } else {
+                        getDataRepository().setFavorite(newsBean, true);
+                        item.setIcon(R.mipmap.action_local_favorite);
+                    }
+                    getDataRepository().insertNews(newsBean);
+                }
+                break;
             }
+            return true;
         });
-//        fab = findViewById(R.id.fab);
-//        //分享
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if (mShareLink == null) {
-//                    mShareLink = "";
-//                }
-//                Intent intent = new Intent(Intent.ACTION_SEND);
-//                intent.setType("text/plain");
-//                intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share));
-//                intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_contents, mNewsTitle, mShareLink));
-//                startActivity(Intent.createChooser(intent, getTitle()));
-//            }
-//        });
-
-//        mShareLink = newsDetail.getShareLink();
         mNewsTitle = newsBean.getTitle();
-//        String newsSource = newsDetail.getSource();
-//        String newsTime = TimeUtil.formatDate(newsDetail.getPtime());
         String newsBody = newsBean.getContent().replace("\\n", "\n");
-
         setToolBarLayout(mNewsTitle);
-        //mNewsDetailTitleTv.setText(newsTitle);
         setBody(newsBody);
         onCompleted();
     }
@@ -338,6 +292,11 @@ public class NewsActivity extends DefaultSwipeBackActivity
         progressBar.setVisibility(View.GONE);
 //        fab.setVisibility(View.VISIBLE);
     }
+
+//    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+//    public void onEvent(OpenNewsEvent event) {
+//        newsBean = event.getNewsBean();
+//    }
 
 
 }

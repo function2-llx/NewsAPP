@@ -5,7 +5,10 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.java.luolingxiao.DataRepository;
+import com.java.luolingxiao.DeFaultActivity;
 import com.java.luolingxiao.bean.NewsBean;
+import com.java.luolingxiao.database.AppDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,8 +28,8 @@ public class SavedNews {
     @ColumnInfo(name = "favorite")
     private boolean favorite;
 
-    @ColumnInfo(name = "read")
-    private boolean read;
+//    @ColumnInfo(name = "read")
+//    private boolean read;
 
     @NonNull
     @ColumnInfo(name = "content")
@@ -35,17 +38,18 @@ public class SavedNews {
     private SavedNews(@NonNull NewsBean newsBean) {
         this.newsId = newsBean.getNewsId() ;
         this.category = newsBean.getCategory();
-        this.favorite = newsBean.isFavorite();
-        this.read = newsBean.isRead();
+        this.favorite = DataRepository.getInstance(AppDatabase.getInstance(DeFaultActivity.getAnyActivity())).isLocalFavorite(newsBean);
+//        this.favorite = newsBean.isFavorite();
+//        this.read = newsBean.isRead();
         this.content = newsBean.getNewsJson().toString();
     }
 
     // support room
-    public SavedNews(@NonNull String newsId, @NonNull String category, boolean favorite, boolean read, @NonNull String content) {
+    public SavedNews(@NonNull String newsId, @NonNull String category, boolean favorite, @NonNull String content) {
         this.newsId = newsId;
         this.category = category;
         this.favorite = favorite;
-        this.read = read;
+//        this.read = read;
         this.content = content;
     }
 
@@ -62,8 +66,8 @@ public class SavedNews {
     }
 
     @NonNull public String getNewsId() { return newsId; }
-    public boolean isRead() { return read; }
-    @NonNull public boolean isFavorite() { return favorite; }
+//    public boolean isRead() { return read; }
+    public boolean isFavorite() { return favorite; }
     @NonNull public String getContent() {
         return content;
     }

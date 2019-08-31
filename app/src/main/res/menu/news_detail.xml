@@ -9,19 +9,9 @@
         android:icon="@drawable/menu_share" />
 
     <item
-        android:id="@+id/action_favorite"
+        android:id="@+id/action_local_favorite"
         app:showAsAction="always"
-        android:title="收藏"
-        />
-<!--        android:icon="@drawable/ic_action_favorite"-->
-    <!--<item-->
-        <!--android:id="@+id/action_web_view"-->
-        <!--android:orderInCategory="100"-->
-        <!--android:title="@string/web_view"-->
-        <!--app:showAsAction="never"/>-->
-    <!--<item-->
-        <!--android:id="@+id/action_browser"-->
-        <!--android:orderInCategory="200"-->
-        <!--android:title="@string/browser"-->
-        <!--app:showAsAction="never"/>-->
+        android:icon="@mipmap/action_local_unfavorite"
+        android:title="本地收藏" />
+
 </menu>

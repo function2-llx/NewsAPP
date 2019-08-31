@@ -3,6 +3,7 @@ package com.java.luolingxiao.bean;
 
 import androidx.annotation.NonNull;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.java.luolingxiao.database.entity.SavedNews;
 
@@ -17,33 +18,34 @@ public class NewsBean {
     private String title, category, content, publisher;
     private NewsDateTime publishTime;
     private JSONObject newsJson;
-    private String url;
-    private List<String> keywords;
+    private List<Keyword> keywords;
     private List<String> imageUrls;
-    private boolean read;
-    private boolean favorite;
 
-    private class Keyword {
-        private String word;
-        private double score;
+    public static class Keyword {
+        public String word;
+        public double score;
+
+        Keyword(String word, double score) {
+            this.word = word;
+            this.score = score;
+        }
     }
 
-    private NewsBean() {}
+//    private NewsBean() {}
     public JSONObject getNewsJson() { return newsJson; }
     public List<String> getImageUrls() { return imageUrls; }
     public String getTitle() { return title; }
     public String getCategory() { return category; }
     public String getContent() { return content; }
     public String getPublisher() { return publisher; }
-    public List<String> getKeywords() { return this.keywords; }
+//    public List<String> getKeywords() { return this.keywords; }
+    public List<Keyword> getKeywords() { return this.keywords; }
     public NewsDateTime getPublishTime() { return publishTime; }
     public String getValue(String key) { return newsJson.getString(key); }
 
     public void setContent(String content) {
         this.content = content;
     }
-
-
 
     public static NewsBean parse(JSONObject newsJson) {
         NewsBean news = new NewsBean();
@@ -53,23 +55,28 @@ public class NewsBean {
         news.content = newsJson.getString("content");
         news.publisher = newsJson.getString("publisher");
         news.publishTime = NewsDateTime.parse(newsJson.getString("publishTime"));
-        news.read = false;
+//        news.read = false;
+
         String imageUrlsRaw = newsJson.getString("image");
         if (imageUrlsRaw.length() > 2) {
             news.imageUrls = Arrays.asList(imageUrlsRaw.substring(1, imageUrlsRaw.length() - 1).split(", "));
         } else {
             news.imageUrls = Collections.emptyList();
         }
+
+//        news.favorite = DeFaultActivity.getAnyActivity().getDataRepository().isLocalFavorite(news);
         news.keywords = new ArrayList<>();
-        for (Object object: newsJson.getJSONArray("keywords")) {
-            news.keywords.add(((JSONObject)object).getString("word"));
+        JSONArray keywords = newsJson.getJSONArray("keywords");
+        for (int i = 0; i < keywords.size(); i++) {
+            JSONObject keyword = keywords.getJSONObject(i);
+            news.keywords.add(new Keyword(keyword.getString("word"), keyword.getDouble("score")));
         }
         return news;
     }
 
     public static NewsBean decode(SavedNews savedNews) {
         NewsBean newsBean = parse(savedNews.getContent());
-        newsBean.read = savedNews.isRead();
+//        newsBean.read = savedNews.isRead();
         return newsBean;
     }
 
@@ -81,11 +88,8 @@ public class NewsBean {
         return ret;
     }
 
-    public boolean isRead() { return read; }
-    public boolean setRead(boolean read) { return this.read = read; }
-
-    public boolean isFavorite() { return favorite; }
-    public void setFavorite(boolean favorite) { this.favorite = favorite; }
+    //    public boolean isFavorite() { return favorite; }
+//    public void setFavorite(boolean favorite) { this.favorite = favorite; }
 
     @NonNull
     @Override

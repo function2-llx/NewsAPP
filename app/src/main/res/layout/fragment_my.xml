@@ -73,4 +73,16 @@
         </LinearLayout>
     </LinearLayout>
 
+    <LinearLayout
+        style="@style/selection_wrapper"
+        >
+        <LinearLayout
+            android:id="@+id/local_container"
+            style="@style/single_layout">
+            <TextView
+                style="@style/selection_text"
+                android:text="本地收藏" />
+        </LinearLayout>
+    </LinearLayout>
+
 </LinearLayout>

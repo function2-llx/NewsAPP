@@ -29,8 +29,6 @@
                 android:layout_height="wrap_content"
                 app:tabMode="fixed"/>
         </LinearLayout>
-
-
     </LinearLayout>
 
 
