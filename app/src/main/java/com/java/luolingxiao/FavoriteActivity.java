@@ -7,6 +7,11 @@ import androidx.appcompat.widget.Toolbar;
 import com.java.luolingxiao.fragment.SimpleNewsListFragment;
 
 public class FavoriteActivity extends DefaultSwipeBackActivity {
+    boolean isLocalFavorite() {
+        return getIntent().getBooleanExtra("local_favorite", false);
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -16,9 +21,16 @@ public class FavoriteActivity extends DefaultSwipeBackActivity {
         toolbar.setTitle(getIntent().getStringExtra("title"));
         setSupportActionBar(toolbar);
 
+        SimpleNewsListFragment fragment;
+        if (isLocalFavorite()) {
+            fragment = SimpleNewsListFragment.localFavorite();
+        } else {
+            fragment = SimpleNewsListFragment.userFavorite();
+        }
+
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.container_favorite, new SimpleNewsListFragment())
+                .replace(R.id.container_favorite, fragment)
                 .commit();
     }
 }

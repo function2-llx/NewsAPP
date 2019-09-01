@@ -102,6 +102,7 @@ public class MyFragment extends DefaultFragment {
         localContainer.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), FavoriteActivity.class);
             intent.putExtra("title", "本地收藏");
+            intent.putExtra("local_favorite", true);
             startActivity(intent);
         });
 

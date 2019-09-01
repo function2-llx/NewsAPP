@@ -49,6 +49,21 @@ public class SimpleNewsListFragment extends DefaultFragment implements OnRefresh
 
     BaseRecyclerAdapter<Model> mAdapter;
 
+    private boolean isLocalFavorite() {
+        boolean ret = false;
+        if (getArguments() != null) {
+            ret = getArguments().getBoolean("local_favorite", false);
+        }
+        return ret;
+    }
+    private boolean isUserFavorite() {
+        boolean ret = false;
+        if (getArguments() != null) {
+            ret = getArguments().getBoolean("user_favorite", false);
+        }
+        return ret;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -118,7 +133,32 @@ public class SimpleNewsListFragment extends DefaultFragment implements OnRefresh
         });
         recyclerView.setAdapter(mAdapter);
         refreshLayout.setOnRefreshLoadMoreListener(this);
+
+        if (isLocalFavorite()) {
+            getDataRepository().getLocalFavoriteNews(favorites -> {
+                setNewsList(favorites, false, false);
+            });
+        } else if (isUserFavorite()) {
+
+        }
+
         return view;
+    }
+
+    public static SimpleNewsListFragment localFavorite() {
+        SimpleNewsListFragment fragment = new SimpleNewsListFragment();
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("local_favorite", true);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
+    public static SimpleNewsListFragment userFavorite() {
+        SimpleNewsListFragment fragment = new SimpleNewsListFragment();
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("user_favorite", true);
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     @Override
@@ -142,7 +182,6 @@ public class SimpleNewsListFragment extends DefaultFragment implements OnRefresh
             List<String> images = newsBeanList.get(finalI).getImageUrls();
             data.add(newsBeanList.get(finalI));
             newsList.add(new Model() {{
-
                 this.name = newsBeanList.get(finalI).getTitle();
                 this.nickname = newsBeanList.get(finalI).getContent();
                 for (int i = 0; i < this.nickname.length() - 1; ++i) {
