@@ -168,7 +168,10 @@ public class NewsActivity extends DefaultSwipeBackActivity
         toolbar = findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
         appBar = findViewById(R.id.app_bar);
-//        appBar.getLayoutParams().height = (int) (120 * getResources().getDisplayMetrics().density + 0.5f);
+        if (images.size() == 0) {
+            appBar.getLayoutParams().height = (int) (120 * getResources().getDisplayMetrics().density + 0.5f);
+        }
+
         appBar.requestLayout();
         newsDetailFromTv = findViewById(R.id.news_detail_from_tv);
         newsDetailFromTv.setText(newsBean.getPublisher() + "\n" + newsBean.getPublishTime().toString());
