@@ -1,7 +1,6 @@
 package com.java.luolingxiao;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -19,12 +18,12 @@ import java.util.Set;
 
 @SuppressLint("Registered")
 public class DeFaultActivity extends AppCompatActivity {
-    private static Set<Activity> activitySet = new HashSet<>();
+    private static Set<DeFaultActivity> activitySet = new HashSet<>();
     private static DeFaultActivity anyActivity;
 
 //    public static Context getContext() { return context; }
     public static DeFaultActivity getAnyActivity() {
-        return (DeFaultActivity)activitySet.iterator().next();
+        return activitySet.iterator().next();
 //        return anyActivity;
 
     }
@@ -42,8 +41,8 @@ public class DeFaultActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        anyActivity = this;
-
+//        anyActivity = this;
+        activitySet.add(this);
         StatusBarCompat.setStatusBarColor(this, getResources().getColor(R.color.colorPrimary));
     }
 
