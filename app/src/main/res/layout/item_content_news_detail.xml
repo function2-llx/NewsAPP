@@ -11,8 +11,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
-        android:padding="@dimen/text_margin">
+        android:layout_margin="16dp"
+        >
 
         <LinearLayout
             android:id="@+id/linearLayout"
@@ -48,12 +48,12 @@
 
         </LinearLayout>
 
-        <ProgressBar
-            android:id="@+id/progress_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="200dp" />
+<!--        <ProgressBar-->
+<!--            android:id="@+id/progress_bar"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_centerHorizontal="true"-->
+<!--            android:layout_marginTop="200dp" />-->
 
         <TextView
             android:id="@+id/news_detail_body_tv"
@@ -61,6 +61,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/linearLayout"
             android:layout_marginTop="10dp"
+            android:layout_marginBottom="50dp"
             android:lineSpacingExtra="8dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             android:textSize="17dp"

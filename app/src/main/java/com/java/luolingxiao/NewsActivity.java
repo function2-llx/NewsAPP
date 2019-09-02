@@ -162,16 +162,17 @@ public class NewsActivity extends DefaultSwipeBackActivity
         }
 
         List<String> images = newsBean.getImageUrls();
-        if (images.size() == 0) {
-            setContentView(R.layout.act_news_detail_no_picture);
-        } else {
-            setContentView(R.layout.act_news_detail);
-        }
+        setContentView(R.layout.act_news_detail);
 
         toolbarLayout = findViewById(R.id.toolbar_layout);
         toolbar = findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
         appBar = findViewById(R.id.app_bar);
+        if (images.size() == 0) {
+            appBar.getLayoutParams().height = (int) (120 * getResources().getDisplayMetrics().density + 0.5f);
+        }
+
+        appBar.requestLayout();
         newsDetailFromTv = findViewById(R.id.news_detail_from_tv);
         newsDetailFromTv.setText(newsBean.getPublisher() + "\n" + newsBean.getPublishTime().toString());
         circleImageView = findViewById(R.id.profile_image);
@@ -197,8 +198,8 @@ public class NewsActivity extends DefaultSwipeBackActivity
         }
         circleImageView.setImageBitmap(bitmap);
         newsDetailBodyTv = findViewById(R.id.news_detail_body_tv);
-        progressBar = findViewById(R.id.progress_bar);
-
+//        progressBar = findViewById(R.id.progress_bar);
+//
         mXBanner = findViewById(R.id.xbanner);
 
         List<LocalImageInfo> data = new ArrayList<>();
@@ -271,7 +272,7 @@ public class NewsActivity extends DefaultSwipeBackActivity
         String newsBody = newsBean.getContent().replace("\\n", "\n");
         setToolBarLayout(mNewsTitle);
         setBody(newsBody);
-        onCompleted();
+//        onCompleted();
     }
 
 
