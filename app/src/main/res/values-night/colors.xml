@@ -2,11 +2,13 @@
 <resources>
     <color name="colorPrimary">#1D1D1D</color>
     <color name="colorPrimaryDark">#030303</color>
-    <color name="colorAccent">#BC1BD8</color>
+    <color name="colorAccent">#000F44</color>
     <color name="container_background">#EBEBEB</color>
     <color name="primary_text_white">#deffffff</color>
     <color name="expanded_title">#FFFFFF</color>
     <color name="bottom_navigation">#1D1D1D</color>
+    <color name="background_primary">#3F3F3F</color>
+
 
     <!--87%white-->
 </resources>

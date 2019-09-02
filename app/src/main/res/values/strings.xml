@@ -20,4 +20,5 @@
 
     <!--动态 -->
     <string name="unauthorized">还没有登录</string>
+    <string name="channel_default">综合</string>
 </resources>

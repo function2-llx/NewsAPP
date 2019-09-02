@@ -3,7 +3,7 @@
     <color name="red_500">#ef4836</color>
     <color name="bg_focus">#DDDDDD</color>
     <color name="tip">#9c9c9c</color>
+    <color name="background_primary">#3F3F3F</color>
 
-    <color name="background_primary">#C7C7C7</color>
 
 </resources>

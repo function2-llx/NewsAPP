@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -18,7 +17,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 public class MainActivity extends DeFaultActivity {
 //    private View navigationHeader;
-    private Toolbar toolbar;
+//    private Toolbar toolbar;
 
     private ViewPager viewPager;
 //    private TabLayout tabLayout;
@@ -32,10 +31,10 @@ public class MainActivity extends DeFaultActivity {
 //        initSearchBar();
 //        initSearchBar();
 
-        this.toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+//        this.toolbar = findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
 
-        viewPager = findViewById(R.id.view_pager_main);
+        viewPager = findViewById(R.id.view_pager_main_activity);
         viewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager()));
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override

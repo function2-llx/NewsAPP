@@ -29,7 +29,7 @@ public class ChannelManagerView extends FrameLayout {
 
     public ChannelManagerView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        inflate(context,R.layout.view_channel_manager, this);
+        inflate(context, R.layout.view_channel_manager, this);
         init();
     }
 

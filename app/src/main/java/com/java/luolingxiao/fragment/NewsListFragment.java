@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.java.luolingxiao.DataRepository;
+import com.java.luolingxiao.R;
 import com.java.luolingxiao.api.NetworkChecker;
 import com.java.luolingxiao.api.NewsApi;
 import com.java.luolingxiao.bean.NewsBean;
@@ -112,7 +113,7 @@ public class NewsListFragment extends SimpleNewsListFragment {
             NewsApi.requestNews(new NewsApi.SearchParams()
                             .setSize(size)
                             .setWords(getWords())
-                            .setCategory(getChannel().equals("首页") ? "" : getChannel())
+                            .setCategory(getChannel().equals(getString(R.string.channel_default)) ? "" : getChannel())
 //                        .setStartDate()
                             .setEndDate(endDate),
                     new NewsApi.NewsCallback() {

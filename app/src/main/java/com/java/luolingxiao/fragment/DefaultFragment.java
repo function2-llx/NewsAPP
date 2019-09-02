@@ -11,4 +11,5 @@ public class DefaultFragment extends Fragment {
     protected DataRepository getDataRepository() {
         return ((DeFaultActivity) Objects.requireNonNull(getActivity())).getDataRepository();
     }
+    public DefaultFragment() {}
 }

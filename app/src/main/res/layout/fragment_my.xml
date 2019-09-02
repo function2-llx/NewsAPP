@@ -5,14 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <androidx.appcompat.widget.Toolbar
-            app:title="我的"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize" />
-    </com.google.android.material.appbar.AppBarLayout>
+<!--    <com.google.android.material.appbar.AppBarLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content">-->
+<!--        <androidx.appcompat.widget.Toolbar-->
+<!--            app:title="我的"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="?attr/actionBarSize" />-->
+<!--    </com.google.android.material.appbar.AppBarLayout>-->
 
     <LinearLayout
         style="@style/selection_wrapper"

@@ -19,9 +19,8 @@ import java.util.Set;
 @SuppressLint("Registered")
 public class DeFaultActivity extends AppCompatActivity {
     private static Set<DeFaultActivity> activitySet = new HashSet<>();
-    private static DeFaultActivity anyActivity;
 
-//    public static Context getContext() { return context; }
+    //    public static Context getContext() { return context; }
     public static DeFaultActivity getAnyActivity() {
         return activitySet.iterator().next();
 //        return anyActivity;

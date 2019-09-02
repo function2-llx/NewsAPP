@@ -21,5 +21,6 @@ public class ChannelBean implements ChannelEntity.ChannelEntityCreater {
         return entity;
     }
 
+    public boolean isFixed() { return fixed; }
     public String getName() { return name; }
 }

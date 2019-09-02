@@ -19,7 +19,7 @@ public class SettingsActivity extends DefaultSwipeBackActivity {
                 .replace(R.id.settings_container, new SettingsFragment())
                 .commit();
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar_settings);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);

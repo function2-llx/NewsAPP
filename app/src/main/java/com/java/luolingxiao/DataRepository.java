@@ -52,6 +52,20 @@ public class DataRepository {
         }).start();
     }
 
+    public List<String> getAllSearchRecordsSync() {
+        List<String> records = new ArrayList<>();
+        Thread thread = new Thread(() -> {
+            for (SearchRecord record: database.searchRecordDao().getAll()) {
+                records.add(record.getRecord());
+            }
+        });
+        thread.start();
+        try {
+            thread.join();
+        } catch (Throwable ignored) {}
+        return records;
+    }
+
     public void insertSearchRecords(@NonNull String... records) {
         new Thread(() -> {
             for (String record: records) {

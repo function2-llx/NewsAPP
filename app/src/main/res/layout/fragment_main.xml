@@ -1,15 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/container_main" >
+    android:id="@+id/container_main">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.Toolbar
+            app:title="咕鸽时事"
+            android:id="@+id/toolbar_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="50dp"
         android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" >
 
@@ -38,20 +46,10 @@
         </LinearLayout>
 
         <androidx.viewpager.widget.ViewPager
-            android:id="@+id/view_pager"
+            android:id="@+id/view_pager_main"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
     </LinearLayout>
-
-    <com.mancj.materialsearchbar.MaterialSearchBar
-        style="@style/CustomMaterialSearchBarTheme"
-        app:mt_hint="家事国事天下事"
-        app:mt_maxSuggestionsCount="10"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:mt_menuDividerEnabled="true"
-        android:id="@+id/search_view" />
-
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

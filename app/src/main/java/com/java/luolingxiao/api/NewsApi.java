@@ -34,24 +34,6 @@ public class NewsApi {
         return imageRequestQueue;
     }
 
-//    private static class FastJsonRequest extends Request<JSONObject> {
-//
-//        public FastJsonRequest(String url) {
-//            this(url, RequestMethod.GET);
-//        }
-//
-//        public FastJsonRequest(String url, RequestMethod requestMethod) {
-//            super(url, requestMethod);
-//            setAccept(Headers.HEAD_VALUE_CONTENT_TYPE_JSON);
-//        }
-//
-//        @Override
-//        public JSONObject parseResponse(Headers responseHeaders, byte[] responseBody) {
-//            String result = StringRequest.parseResponseString(responseHeaders, responseBody);
-//            return JSON.parseObject(result);
-//        }
-//    }
-
     public static class SearchParams {
         private int size = 10;
         private NewsDateTime start, end;

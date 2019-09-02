@@ -165,7 +165,7 @@ public class NewsActivity extends DefaultSwipeBackActivity
         setContentView(R.layout.act_news_detail);
 
         toolbarLayout = findViewById(R.id.toolbar_layout);
-        toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar_settings);
 //        setSupportActionBar(toolbar);
         appBar = findViewById(R.id.app_bar);
         if (images.size() == 0) {
