@@ -49,14 +49,14 @@ public class SimpleNewsListFragment extends DefaultFragment implements OnRefresh
 
     BaseRecyclerAdapter<Model> mAdapter;
 
-    private boolean isLocalFavorite() {
+    protected boolean isLocalFavorite() {
         boolean ret = false;
         if (getArguments() != null) {
             ret = getArguments().getBoolean("local_favorite", false);
         }
         return ret;
     }
-    private boolean isUserFavorite() {
+    protected boolean isUserFavorite() {
         boolean ret = false;
         if (getArguments() != null) {
             ret = getArguments().getBoolean("user_favorite", false);

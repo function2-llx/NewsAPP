@@ -68,15 +68,6 @@ public class DataRepository {
         }).start();
     }
 
-//    private void checkLocalFavoriteCache(NewsBean newsBean) {
-//        if (!newsBean.isFavorite() && localFavoriteCache.contains(newsBean.getNewsId())) {
-//            localFavoriteCache.remove(newsBean.getNewsId());
-//        }
-//        if (newsBean.isFavorite()) {
-//            localFavoriteCache.add(newsBean.getNewsId());
-//        }
-//    }
-
     void setFavorite(NewsBean newsBean, boolean favorite) {
         if (favorite) {
             localFavoriteCache.add(newsBean.getNewsId());

@@ -1,6 +1,7 @@
 package com.java.luolingxiao;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -12,14 +13,21 @@ import com.java.luolingxiao.bean.ChannelBean;
 import com.java.luolingxiao.database.AppDatabase;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @SuppressLint("Registered")
 public class DeFaultActivity extends AppCompatActivity {
+    private static Set<Activity> activitySet = new HashSet<>();
     private static DeFaultActivity anyActivity;
 
 //    public static Context getContext() { return context; }
-    public static DeFaultActivity getAnyActivity() { return anyActivity; }
+    public static DeFaultActivity getAnyActivity() {
+        return (DeFaultActivity)activitySet.iterator().next();
+//        return anyActivity;
+
+    }
 
     protected boolean isNightMode() {
         SharedPreferences preferences = getSharedPreferences(getString(R.string.preferences_name), 0);
@@ -35,7 +43,14 @@ public class DeFaultActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         anyActivity = this;
+
         StatusBarCompat.setStatusBarColor(this, getResources().getColor(R.color.colorPrimary));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        activitySet.remove(this);
     }
 
     public List<ChannelBean> getAllChannels() {

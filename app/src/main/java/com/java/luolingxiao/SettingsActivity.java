@@ -30,10 +30,10 @@ public class SettingsActivity extends DefaultSwipeBackActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
-                break;
+            break;
 
             default:
-                break;
+            break;
         }
         return super.onOptionsItemSelected(item);
     }
