@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#000285</color>
-    <color name="colorPrimaryDark">#105700</color>
+    <color name="colorPrimary">#1D1D1D</color>
+    <color name="colorPrimaryDark">#030303</color>
     <color name="colorAccent">#BC1BD8</color>
-    <color name="zone_textcolor_bg">#DDDDDD</color>
-    <color name="circle_name_selector_color">#cccccc</color>
     <color name="container_background">#EBEBEB</color>
     <color name="primary_text_white">#deffffff</color>
+    <color name="expanded_title">#FFFFFF</color>
+    <color name="bottom_navigation">#1D1D1D</color>
+
     <!--87%white-->
-    <color name="progress_bar_unfinished">#D4D4D4</color>
 </resources>

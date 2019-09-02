@@ -1,37 +1,28 @@
 package com.java.luolingxiao;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.view.View;
+import android.view.MenuItem;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
-import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.java.luolingxiao.adapter.MainPagerAdapter;
 import com.java.luolingxiao.event.NightModeChangeEvent;
-import com.wildma.pictureselector.PictureSelector;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
 public class MainActivity extends DeFaultActivity {
-    private View navigationHeader;
+//    private View navigationHeader;
     private Toolbar toolbar;
 
     private ViewPager viewPager;
-    private TabLayout tabLayout;
+//    private TabLayout tabLayout;
+    private BottomNavigationView bottomNavigationView;
 
 
     @Override
@@ -46,8 +37,37 @@ public class MainActivity extends DeFaultActivity {
 
         viewPager = findViewById(R.id.view_pager_main);
         viewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager()));
-        tabLayout = findViewById(R.id.tab_layout_main);
-        tabLayout.setupWithViewPager(viewPager);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                MenuItem menuItem = bottomNavigationView.getMenu().getItem(position);
+                menuItem.setChecked(true);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+        bottomNavigationView = findViewById(R.id.bottom_navigation_view);
+        bottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {
+            switch (menuItem.getItemId()) {
+                case R.id.bottom_home:
+                    viewPager.setCurrentItem(0);
+                break;
+                case R.id.bottom_my:
+                    viewPager.setCurrentItem(1);
+                break;
+            }
+            return true;
+        });
+//        tabLayout = findViewById(R.id.tab_layout_main);
+//        tabLayout.setupWithViewPager(viewPager);
 
 //        configureNavigationView();
 //        initTabs();
@@ -101,54 +121,53 @@ public class MainActivity extends DeFaultActivity {
 //        reFreshCover();
 //    }
 
-    private String getCoverPath() {
-        String dir = getExternalFilesDir(null).getAbsolutePath();
-        if (dir.charAt(dir.length() - 1) != '/') {
-            dir = dir + "/";
-        }
-        return dir + "path.jpg";
-    }
+//    private String getCoverPath() {
+//        String dir = getExternalFilesDir(null).getAbsolutePath();
+//        if (dir.charAt(dir.length() - 1) != '/') {
+//            dir = dir + "/";
+//        }
+//        return dir + "path.jpg";
+//    }
 
-    private Drawable getCoverDrawable() {
-        String coverPath = getCoverPath();
-        Bitmap bitmap = BitmapFactory.decodeFile(coverPath);
-        return new BitmapDrawable(getResources(), bitmap);
-    }
+//    private Drawable getCoverDrawable() {
+//        String coverPath = getCoverPath();
+//        Bitmap bitmap = BitmapFactory.decodeFile(coverPath);
+//        return new BitmapDrawable(getResources(), bitmap);
+//    }
 
-    private void reFreshCover() {
-        navigationHeader.setBackground(getCoverDrawable());
-    }
+//    private void reFreshCover() {
+//        navigationHeader.setBackground(getCoverDrawable());
+//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        switch (requestCode) {
-            case PictureSelector.SELECT_REQUEST_CODE:
-                if (data != null) {
-                    String path = data.getStringExtra(PictureSelector.PICTURE_PATH);
-                    try {
-                        assert path != null;
-                        FileInputStream is = new FileInputStream(path);
-                        FileOutputStream os = new FileOutputStream(getCoverPath());
-                        for (;;) {
-                            byte[] buf = new byte[1024];
-                            int byteRead = is.read(buf);
-                            if (byteRead == -1) break;
-                            os.write(buf, 0, byteRead);
-                        }
-                        is.close();
-                        os.flush();
-                        os.close();
-                        reFreshCover();
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            break;
-        }
+//        switch (requestCode) {
+//            case PictureSelector.SELECT_REQUEST_CODE:
+//                if (data != null) {
+//                    String path = data.getStringExtra(PictureSelector.PICTURE_PATH);
+//                    try {
+//                        assert path != null;
+//                        FileInputStream is = new FileInputStream(path);
+//                        FileOutputStream os = new FileOutputStream(getCoverPath());
+//                        for (;;) {
+//                            byte[] buf = new byte[1024];
+//                            int byteRead = is.read(buf);
+//                            if (byteRead == -1) break;
+//                            os.write(buf, 0, byteRead);
+//                        }
+//                        is.close();
+//                        os.flush();
+//                        os.close();
+//                        reFreshCover();
+//                    } catch (FileNotFoundException e) {
+//                        e.printStackTrace();
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            break;
+//        }
     }
 
 //    @Override

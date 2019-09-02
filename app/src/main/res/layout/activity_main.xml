@@ -23,11 +23,20 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_gravity="bottom">
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tab_layout_main"
+
+            <com.google.android.material.bottomnavigation.BottomNavigationView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:tabMode="fixed"/>
+                android:id="@+id/bottom_navigation_view"
+                android:background="@color/bottom_navigation"
+                app:itemIconTint="@color/bottom_color_selector"
+                app:itemTextColor="@color/bottom_color_selector"
+                app:menu="@menu/menu_bottom_navigation" />
+<!--            <com.google.android.material.tabs.TabLayout-->
+<!--                android:id="@+id/tab_layout_main"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                app:tabMode="fixed"/>-->
         </LinearLayout>
     </LinearLayout>
 

@@ -278,7 +278,7 @@ public class NewsActivity extends DefaultSwipeBackActivity
 
     private void setToolBarLayout(String newsTitle) {
         toolbarLayout.setTitle(newsTitle);
-        toolbarLayout.setExpandedTitleColor(ContextCompat.getColor(this, R.color.white));
+        toolbarLayout.setExpandedTitleColor(getColor(R.color.expanded_title));
         toolbarLayout.setCollapsedTitleTextColor(ContextCompat.getColor(this, R.color.primary_text_white));
     }
 
