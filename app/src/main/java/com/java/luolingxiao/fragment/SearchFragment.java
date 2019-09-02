@@ -72,17 +72,32 @@ public class SearchFragment extends DefaultFragment {
         return view;
     }
 
-    private void removeFragments() {
-        FragmentTransaction transaction = Objects.requireNonNull(getFragmentManager()).beginTransaction();
-        for (Fragment fragment: fragments) {
-            transaction.remove(fragment);
+    public void removeFragments() {
+        if (fragments != null) {
+            FragmentTransaction transaction = Objects.requireNonNull(getFragmentManager()).beginTransaction();
+            for (Fragment fragment: fragments) {
+                transaction.remove(fragment);
+            }
+            transaction.commit();
+            fragments = null;
         }
-        transaction.commit();
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        removeFragments();
-    }
+//    @Override
+//    public void onPause() {
+//        super.onPause();
+//
+//    }
+
+    //    @Override
+//    public void onSaveInstanceState(@NonNull Bundle outState) {
+//        removeFragments();
+//        super.onSaveInstanceState(outState);
+//    }
+//
+//    @Override
+//    public void onStop() {
+//        removeFragments();
+//        super.onStop();
+//    }
 }
