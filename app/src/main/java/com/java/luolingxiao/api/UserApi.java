@@ -22,8 +22,8 @@ import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.tencent.qq.QQ;
 
 public class UserApi {
-//    private static final String ip = "149.28.67.105";
-    private static final String ip = "183.172.238.14";
+    private static final String ip = "149.28.67.105";
+//    private static final String ip = "183.172.238.14";
     private static final int port = 8080;
 
     public void logout() {
