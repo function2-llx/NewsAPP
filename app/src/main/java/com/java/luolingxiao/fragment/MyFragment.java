@@ -101,9 +101,7 @@ public class MyFragment extends DefaultFragment {
 
                 @Override
                 public void onError(Platform platform, int i, Throwable throwable) {
-                    Objects.requireNonNull(getActivity()).runOnUiThread(() -> {
-                        Toast.makeText(getActivity(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
-                    });
+                    Objects.requireNonNull(getActivity()).runOnUiThread(() -> Toast.makeText(getActivity(), throwable.getMessage(), Toast.LENGTH_SHORT).show());
                 }
 
                 @Override
