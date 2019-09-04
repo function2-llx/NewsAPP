@@ -88,6 +88,7 @@ public class DataRepository {
         } else {
             localFavoriteCache.remove(newsBean.getNewsId());
         }
+        insertNews(newsBean);
     }
 
     public void insertNews(NewsBean... newsBeans) {
@@ -96,7 +97,6 @@ public class DataRepository {
             protected void doInBackGround() {
                 List<SavedNews> savedNews = new ArrayList<>();
                 for (NewsBean newsBean: newsBeans) {
-//                    checkLocalFavoriteCache(newsBean);
                     savedNews.add(SavedNews.encode(newsBean));
                 }
                 database.savedNewsDao().insert(savedNews);
@@ -181,6 +181,7 @@ public class DataRepository {
     }
 
     public List<NewsBean> getLocalFavoriteNewsSync() {
+
         List<NewsBean> ret = new ArrayList<>();
         Thread thread = new Thread(() -> ret.addAll(NewsBean.decode(database.savedNewsDao().getFavoriteSavedNews())));
         thread.start();

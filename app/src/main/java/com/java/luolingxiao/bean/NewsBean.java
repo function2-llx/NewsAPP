@@ -2,6 +2,7 @@ package com.java.luolingxiao.bean;
 
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -122,5 +123,16 @@ public class NewsBean {
 
     public String getNewsId() {
         return newsJson.getString("newsID");
+    }
+
+    @Override
+    public int hashCode() { return getNewsId().hashCode(); }
+
+    @Override
+    public boolean equals(@Nullable Object news) {
+        if (news instanceof NewsBean) {
+            return getNewsId().equals(((NewsBean) news).getNewsId());
+        }
+        return false;
     }
 }

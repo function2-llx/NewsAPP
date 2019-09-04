@@ -32,12 +32,19 @@ public class MyFragment extends DefaultFragment {
 
     private LinearLayout authorizedContainer, unauthorizedContainer, localContainer;
 
+    public interface AuthorizedListener {
+        void onLogin();
+        void onLogout();
+    }
+
+    private AuthorizedListener authorizedListener;
+
     private void switchLayout() {
-        if (UserApi.isAuthorized()) {
+        if (UserApi.getInstance().isAuthorized()) {
             authorizedContainer.setVisibility(View.VISIBLE);
             unauthorizedContainer.setVisibility(View.GONE);
-            username.setText(UserApi.getUsername());
-            NewsApi.requestImage(UserApi.getPortraitUrl(), new NewsApi.ImageCallback() {
+            username.setText(UserApi.getInstance().getUsername());
+            NewsApi.requestImage(UserApi.getInstance().getPortraitUrl(), new NewsApi.ImageCallback() {
                 @Override
                 public void onReceived(Bitmap bitmap) {
                     userPortrait.setImageBitmap(bitmap);
@@ -66,23 +73,30 @@ public class MyFragment extends DefaultFragment {
         authorizedContainer = view.findViewById(R.id.container_authorized);
         unauthorizedContainer = view.findViewById(R.id.container_unauthorized);
         localContainer = view.findViewById(R.id.local_container);
-
         switchLayout();
 
         authorizedContainer.findViewById(R.id.logout).setOnClickListener(v -> new AlertDialog.Builder(getActivity())
                 .setTitle("提示")
                 .setMessage("确定要退出当前账号吗？")
                 .setPositiveButton("确定", (dialog, which) -> {
-                    UserApi.logout();
+                    UserApi.getInstance().logout();
                     switchLayout();
+                    if (authorizedListener != null) authorizedListener.onLogout();
                 }).setNegativeButton("取消", null)
                 .show());
+        authorizedContainer.findViewById(R.id.user_favorite).setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), FavoriteActivity.class);
+            intent.putExtra("title", "我的收藏");
+            intent.putExtra("local", false);
+            startActivity(intent);
+        });
 
         unauthorizedContainer.findViewById(R.id.login).setOnClickListener(v -> {
-            UserApi.authorize(getActivity(), new PlatformActionListener() {
+            UserApi.getInstance().authorize(getActivity(), new PlatformActionListener() {
                 @Override
                 public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
                     Objects.requireNonNull(getActivity()).runOnUiThread(() -> switchLayout());
+                    if (authorizedListener != null) authorizedListener.onLogin();
                 }
 
                 @Override
@@ -108,7 +122,12 @@ public class MyFragment extends DefaultFragment {
 
         return view;
     }
+
     public MyFragment() {}
+
+    public void setAuthorizedListener(AuthorizedListener listener) {
+        this.authorizedListener = listener;
+    }
 
     public static MyFragment newInstance() {
         MyFragment fragment = new MyFragment();

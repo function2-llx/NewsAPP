@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -18,6 +17,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.java.luolingxiao.api.NewsApi;
+import com.java.luolingxiao.api.UserApi;
 import com.java.luolingxiao.bean.NewsBean;
 import com.java.luolingxiao.widget.Utils;
 import com.mob.moblink.MobLink;
@@ -33,9 +33,10 @@ import java.util.Objects;
 
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.onekeyshare.OnekeyShare;
-import cn.sharesdk.onekeyshare.ShareContentCustomizeCallback;
 import cn.sharesdk.tencent.qq.QQ;
+import cn.sharesdk.tencent.qzone.QZone;
 import cn.sharesdk.wechat.friends.Wechat;
+import cn.sharesdk.wechat.moments.WechatMoments;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class NewsActivity extends DefaultSwipeBackActivity
@@ -43,7 +44,7 @@ public class NewsActivity extends DefaultSwipeBackActivity
 //    ImageView newsDetailPhotoIv;
     View maskView;
 
-    Toolbar toolbar;
+    private Toolbar toolbar;
 
     CollapsingToolbarLayout toolbarLayout;
     AppBarLayout appBar;
@@ -109,7 +110,31 @@ public class NewsActivity extends DefaultSwipeBackActivity
         wechat.share(shareParams);
     }
 
+    void shareWechatMoments(Platform wechat, Platform.ShareParams shareParams, NewsBean newsBean) {
+        shareParams.setTitle(newsBean.getTitle());
+        shareParams.setText(newsBean.getAbstract());
+        if (!newsBean.getImageUrls().isEmpty()) {
+            shareParams.setImageUrl(newsBean.getImageUrls().get(0));
+        }
+
+        shareParams.setUrl(newsBean.getShareUrl());
+        System.err.println(newsBean.getShareUrl());
+        shareParams.setShareType(Platform.SHARE_WEBPAGE);
+        wechat.share(shareParams);
+    }
+
     void shareQQ(Platform qq, Platform.ShareParams shareParams, NewsBean newsBean) {
+        shareParams.setTitle(newsBean.getTitle());
+        shareParams.setText(newsBean.getAbstract());
+        if (!newsBean.getImageUrls().isEmpty()) {
+            shareParams.setImageUrl(newsBean.getImageUrls().get(0));
+        }
+        shareParams.setTitleUrl(newsBean.getShareUrl());
+        shareParams.setShareType(Platform.SHARE_WEBPAGE);
+        qq.share(shareParams);
+    }
+
+    void shareQZone(Platform qq, Platform.ShareParams shareParams, NewsBean newsBean) {
         shareParams.setTitle(newsBean.getTitle());
         shareParams.setText(newsBean.getAbstract());
         if (!newsBean.getImageUrls().isEmpty()) {
@@ -148,6 +173,11 @@ public class NewsActivity extends DefaultSwipeBackActivity
 //        EventBus.getDefault().unregister(this);
     }
     NewsBean newsBean = null;
+
+    private void updateIcons() {
+        toolbar.getMenu().findItem(R.id.action_local_favorite).setIcon(getDataRepository().isLocalFavorite(newsBean) ? R.mipmap.action_local_favorite : R.mipmap.action_local_unfavorite);
+        toolbar.getMenu().findItem(R.id.action_user_favorite).setIcon(UserApi.getInstance().isFavorite(newsBean) ? R.drawable.action_user_favorite : R.drawable.action_user_unfavorite);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -228,25 +258,29 @@ public class NewsActivity extends DefaultSwipeBackActivity
 
         toolbar.setNavigationOnClickListener(view -> onBackPressed());
         toolbar.inflateMenu(R.menu.news_detail);
-        MenuItem localFavoriteItem = toolbar.getMenu().findItem(R.id.action_local_favorite);
-        if (getDataRepository().isLocalFavorite(newsBean)) {
-            localFavoriteItem.setIcon(R.mipmap.action_local_favorite);
-        } else {
-            localFavoriteItem.setIcon(R.mipmap.action_local_unfavorite);
-        }
+
+        updateIcons();
+
+//        MenuItem localFavoriteItem = toolbar.getMenu().findItem(R.id.action_local_favorite);
+//        if (getDataRepository().isLocalFavorite(newsBean)) {
+//            localFavoriteItem.setIcon(R.mipmap.action_local_favorite);
+//        } else {
+//            localFavoriteItem.setIcon(R.mipmap.action_local_unfavorite);
+//        }
 
         toolbar.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
                 case R.id.action_share: {
                     OnekeyShare oks = new OnekeyShare();
-                    oks.setShareContentCustomizeCallback(new ShareContentCustomizeCallback() {
-                        @Override
-                        public void onShare(Platform platform, Platform.ShareParams shareParams) {
-                            if (platform.getName().equals(Wechat.NAME)) {
-                                shareWechat(platform, shareParams, newsBean);
-                            } else if (platform.getName().equals(QQ.NAME)) {
-                                shareQQ(platform, shareParams, newsBean);
-                            }
+                    oks.setShareContentCustomizeCallback((platform, shareParams) -> {
+                        if (platform.getName().equals(Wechat.NAME)) {
+                            shareWechat(platform, shareParams, newsBean);
+                        } else if (platform.getName().equals(QQ.NAME)) {
+                            shareQQ(platform, shareParams, newsBean);
+                        } else if (platform.getName().equals(QZone.NAME)) {
+                            shareQZone(platform, shareParams, newsBean);
+                        } else if (platform.getName().equals(WechatMoments.NAME)) {
+                            shareWechatMoments(platform, shareParams, newsBean);
                         }
                     });
                     oks.disableSSOWhenAuthorize();
@@ -255,14 +289,29 @@ public class NewsActivity extends DefaultSwipeBackActivity
                 break;
 
                 case R.id.action_local_favorite: {
-                    if (getDataRepository().isLocalFavorite(newsBean)) {
-                        getDataRepository().setFavorite(newsBean, false);
-                        item.setIcon(R.mipmap.action_local_unfavorite);
-                    } else {
-                        getDataRepository().setFavorite(newsBean, true);
-                        item.setIcon(R.mipmap.action_local_favorite);
-                    }
-                    getDataRepository().insertNews(newsBean);
+                    getDataRepository().setFavorite(newsBean, !getDataRepository().isLocalFavorite(newsBean));
+                    updateIcons();
+//                    if (getDataRepository().isLocalFavorite(newsBean)) {
+//                        getDataRepository().setFavorite(newsBean, false);
+////                        item.setIcon(R.mipmap.action_local_unfavorite);
+//                    } else {
+//                        getDataRepository().setFavorite(newsBean, true);
+////                        item.setIcon(R.mipmap.action_local_favorite);
+//                    }
+////                    getDataRepository().insertNews(newsBean);
+                }
+                break;
+
+                case R.id.action_user_favorite: {
+                    UserApi.getInstance().setFavorite(newsBean, !UserApi.getInstance().isFavorite(newsBean));
+                    updateIcons();
+//                    if (UserApi.isFavorite(newsBean)) {
+//                        UserApi.setFavorite(newsBean, false);
+//                        item.setIcon(R.drawable.action_user_unfavorite);
+//                    } else {
+//                        UserApi.setFavorite(newsBean, true);
+//                        item.setIcon(R.drawable.action_user_favorite);
+//                    }
                 }
                 break;
             }
@@ -288,16 +337,8 @@ public class NewsActivity extends DefaultSwipeBackActivity
 //        newsDetailBodyTv.setText(Html.fromHtml(newsBody));
     }
 
-
     public void onCompleted() {
         progressBar.setVisibility(View.GONE);
 //        fab.setVisibility(View.VISIBLE);
     }
-
-//    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
-//    public void onEvent(OpenNewsEvent event) {
-//        newsBean = event.getNewsBean();
-//    }
-
-
 }

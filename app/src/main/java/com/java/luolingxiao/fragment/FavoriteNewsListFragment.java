@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.java.luolingxiao.api.UserApi;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 
 import java.util.Objects;
@@ -28,14 +29,7 @@ public class FavoriteNewsListFragment extends SimpleNewsListFragment {
 
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-        if (isLocal()) {
-            getDataRepository().getLocalFavoriteNews(savedNews -> {
-                setNewsList(savedNews, true, false);
-                refreshLayout.finishRefresh();
-            });
-        } else {
-
-        }
+        updateNewsList(true);
     }
 
     @Override
@@ -43,17 +37,24 @@ public class FavoriteNewsListFragment extends SimpleNewsListFragment {
 
     }
 
+    private void updateNewsList(boolean refresh) {
+        if (isLocal()) {
+            getDataRepository().getLocalFavoriteNews(savedNews -> {
+                setNewsList(savedNews, refresh, false);
+                if (refresh) refreshLayout.finishRefresh();
+            });
+        } else {
+            setNewsList(UserApi.getInstance().getFavoriteSync(), refresh, false);
+            if (refresh) refreshLayout.finishRefresh();
+        }
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
-        if (isLocal()) {
-            getDataRepository().getLocalFavoriteNews(savedNews -> setNewsList(savedNews, false, false));
-        } else {
-
-        }
-
         refreshLayout.setEnableLoadMore(false);
+        updateNewsList(false);
         return view;
     }
 }

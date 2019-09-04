@@ -42,6 +42,8 @@ public class MainFragment extends DefaultFragment
     private SectionsPagerAdapter pagerAdapter;
     private Toolbar toolbar;
 
+
+
     //static 代码段可以防止内存泄露
     static {
         //设置全局的Header构建器

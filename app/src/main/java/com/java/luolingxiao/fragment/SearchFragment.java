@@ -21,8 +21,6 @@ import java.util.Objects;
 
 public class SearchFragment extends DefaultFragment {
 
-    private ViewPager viewPager;
-    private FragmentPagerAdapter adapter;
     private List<NormalNewsListFragment> fragments;
 
     public SearchFragment() {}
@@ -41,14 +39,14 @@ public class SearchFragment extends DefaultFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search, container, false);
         TabLayout tabLayout = view.findViewById(R.id.tab_layout_search);
-        viewPager = view.findViewById(R.id.view_pager_search);
+        ViewPager viewPager = view.findViewById(R.id.view_pager_search);
         List<String> channels = Objects.requireNonNull(getArguments()).getStringArrayList("channels");
         String word = Objects.requireNonNull(getArguments()).getString("word");
         fragments = new ArrayList<>();
         for (String channel: Objects.requireNonNull(channels)) {
             fragments.add(NormalNewsListFragment.newInstance(channel, word));
         }
-        adapter = new FragmentPagerAdapter(Objects.requireNonNull(getFragmentManager())) {
+        FragmentPagerAdapter adapter = new FragmentPagerAdapter(Objects.requireNonNull(getFragmentManager())) {
             @Override
             public Fragment getItem(int position) {
                 return fragments.get(position);
@@ -82,22 +80,4 @@ public class SearchFragment extends DefaultFragment {
             fragments = null;
         }
     }
-
-//    @Override
-//    public void onPause() {
-//        super.onPause();
-//
-//    }
-
-    //    @Override
-//    public void onSaveInstanceState(@NonNull Bundle outState) {
-//        removeFragments();
-//        super.onSaveInstanceState(outState);
-//    }
-//
-//    @Override
-//    public void onStop() {
-//        removeFragments();
-//        super.onStop();
-//    }
 }

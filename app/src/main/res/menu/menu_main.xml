@@ -12,16 +12,4 @@
         android:title="@string/action_settings"
         android:icon="@drawable/ic_action_settings"
         app:showAsAction="ifRoom" />
-
-    <!--showAsAction 属性必须设为 always，否则无法监听关闭事件-->
-    <!--<item-->
-        <!--android:id="@+id/action_search"-->
-        <!--android:title="@string/action_search"-->
-        <!--android:orderInCategory="100"-->
-        <!--android:icon="@drawable/ic_action_action_search"-->
-        <!--app:showAsAction="always" />-->
-
-<!--    <item-->
-<!--        android:id="@+id/login"-->
-<!--        android:title="登录惹" />-->
 </menu>

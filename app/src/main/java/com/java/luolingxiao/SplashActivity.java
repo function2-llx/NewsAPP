@@ -10,6 +10,7 @@ import android.view.WindowManager;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
 
+import com.java.luolingxiao.api.UserApi;
 import com.mob.moblink.MobLink;
 import com.mob.moblink.RestoreSceneListener;
 import com.mob.moblink.Scene;
@@ -53,7 +54,10 @@ public class SplashActivity extends DeFaultActivity {
         });
 
         // init
-        getDataRepository();
+        new Thread(() -> {
+            UserApi.getInstance();
+            getDataRepository();
+        }).start();
 
         new Handler().postDelayed(() -> {
             Intent intent = new Intent(SplashActivity.this, MainActivity.class);

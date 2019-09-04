@@ -2,11 +2,19 @@ package com.java.luolingxiao.api;
 
 import android.app.Activity;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.java.luolingxiao.bean.NewsBean;
+import com.yanzhenjie.nohttp.NoHttp;
+import com.yanzhenjie.nohttp.RequestMethod;
+import com.yanzhenjie.nohttp.rest.Response;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
@@ -14,17 +22,18 @@ import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.tencent.qq.QQ;
 
 public class UserApi {
-    private static final String ip = "149.28.67.105";
-    private static final String port = "8080";
+//    private static final String ip = "149.28.67.105";
+    private static final String ip = "183.172.238.14";
+    private static final int port = 8080;
 
-    public static void logout() {
+    public void logout() {
         getPlatForm().removeAccount(true);
-        favorites.clear();
+        userFavoriteCache = null;
     }
-    public static boolean isAuthorized() { return getPlatForm().isAuthValid(); }
-    private static Platform getPlatForm() { return ShareSDK.getPlatform(QQ.NAME); }
+    public boolean isAuthorized() { return getPlatForm().isAuthValid(); }
+    private Platform getPlatForm() { return ShareSDK.getPlatform(QQ.NAME); }
 
-    public static void authorize(Activity activity, PlatformActionListener listener) {
+    public void authorize(Activity activity, PlatformActionListener listener) {
         if (isAuthorized()) return;
         Platform platform = getPlatForm();
         ShareSDK.setActivity(activity);
@@ -33,23 +42,7 @@ public class UserApi {
             @Override
             public void onComplete(Platform platform, int index, HashMap<String, Object> hashMap) {
                 // 获取 favorite
-//                FastJsonRequest request = new FastJsonRequest("http://" + ip + ":" + port + "/database/favorite");
-//                request.add("id", getUserId())
-//                        .add("type", "get");
-//
-//                Response<JSONObject> response = NoHttp.startRequestSync(request);
-//                if (response.getException() != null) {
-//                    platform.removeAccount(true);
-//                    activity.runOnUiThread(() -> {
-//                        Toast.makeText(activity, "你收藏服务器呢，写了吗？", Toast.LENGTH_SHORT).show();
-//                    });
-//                    listener.onError(platform, index, new Exception("无法获取收藏信息"));
-//                    return;
-//                }
-//                JSONArray array = response.get().getJSONArray("data");
-//                for (int i = 0; i < array.size(); i++) {
-//                    favorites.add(NewsBean.parse(array.getJSONObject(i)));
-//                }
+                getFavoriteSync();
                 listener.onComplete(platform, index, hashMap);
             }
 
@@ -66,11 +59,61 @@ public class UserApi {
         platform.authorize();
     }
 
-    public static String getUsername() { return getPlatForm().getDb().getUserName(); }
-    public static String getPortraitUrl() { return getPlatForm().getDb().getUserIcon(); }
-    public static String getUserId() { return getPlatForm().getDb().getUserId(); }
+    public String getUsername() { return getPlatForm().getDb().getUserName(); }
+    public String getPortraitUrl() { return getPlatForm().getDb().getUserIcon(); }
+    public String getUserId() { return getPlatForm().getDb().getUserId(); }
 
-    private static List<NewsBean> favorites = new ArrayList<>();
+    private Set<NewsBean> userFavoriteCache;
 
+    public void setFavorite(NewsBean newsBean, boolean favorite) {
+        new Thread(() -> {
+            FastJsonRequest request = new FastJsonRequest(String.format(Locale.getDefault(), "http://%s:%d/favorite/%s", ip, port, favorite ? "insert" : "remove"), RequestMethod.POST);
+            request.add("id", getUserId()).add("newsJson", newsBean.toString());
+            NoHttp.startRequestSync(request);
+        }).start();
+        if (favorite) {
+            userFavoriteCache.add(newsBean);
+        } else {
+            userFavoriteCache.remove(newsBean);
+        }
+    }
 
+    public boolean isFavorite(NewsBean newsBean) {
+        boolean ret = userFavoriteCache.contains(newsBean);
+        return ret;
+    }
+
+    public List<NewsBean> getFavoriteSync() {
+        if (userFavoriteCache == null) {
+            synchronized (this) {
+                if (userFavoriteCache == null) {
+                    userFavoriteCache = new HashSet<>();
+                    FastJsonRequest request = new FastJsonRequest(String.format(Locale.getDefault(), "http://%s:%d/favorite/get", ip, port));
+                    request.add("id", getUserId());
+                    Response<JSONObject> response = NoHttp.startRequestSync(request);
+                    JSONArray data = response.get().getJSONArray("data");
+                    for (int i = 0; i < data.size(); i++) {
+                        userFavoriteCache.add(NewsBean.parse(data.getJSONObject(i)));
+                    }
+                }
+            }
+        }
+        return new ArrayList<>(userFavoriteCache);
+    }
+
+    private static UserApi instance;
+
+    public static UserApi getInstance() {
+        if (instance == null) {
+            synchronized (UserApi.class) {
+                if (instance == null) {
+                    instance = new UserApi();
+                    if (instance.isAuthorized()) {
+                        instance.getFavoriteSync();
+                    }
+                }
+            }
+        }
+        return instance;
+    }
 }

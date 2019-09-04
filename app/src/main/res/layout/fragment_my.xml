@@ -6,15 +6,6 @@
     android:background="@color/background_primary"
     android:layout_height="match_parent">
 
-<!--    <com.google.android.material.appbar.AppBarLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content">-->
-<!--        <androidx.appcompat.widget.Toolbar-->
-<!--            app:title="我的"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="?attr/actionBarSize" />-->
-<!--    </com.google.android.material.appbar.AppBarLayout>-->
-
     <LinearLayout
         style="@style/selection_wrapper"
         android:orientation="horizontal"
@@ -47,7 +38,7 @@
         style="@style/selection_wrapper"
         android:id="@+id/container_authorized">
         <LinearLayout
-            android:id="@+id/my_favorite"
+            android:id="@+id/user_favorite"
             style="@style/top_layout">
             <TextView
                 style="@style/selection_text"

@@ -45,8 +45,70 @@ let favorite = new sqlite3.Database('db/favorite.db', (err) => {
     console.log('Connected to database: favorite');
 })
 
-app.get('/database/favorite', (req, res) => {
-    console.log(req.url)
-    data = url.parse(req.url, true).query
+function internalError(res) {
+    res.statusCode = 50
+    res.end()
+}
 
+app.get('/favorite/get', (req, res) => {
+    console.log(req.url)
+
+    data = url.parse(req.url, true).query
+    favorite.serialize(() => {
+        favorite.run(`create table if not exists [${data.id}] (
+            id text primary_key,
+            json text
+        )`, (err) => {
+            if (err) {
+                console.log('233')
+                console.error(err)
+                res.sendStatus(500)
+            } else {
+                console.log(`user login: ${data.id}`)
+                favorite.all(`select * from [${data.id}]`, (err, rows) => {
+                    if (err) {
+                        console.error(err)
+                        res.sendStatus(500)
+                    } else {
+                        console.log
+                        let result = []
+                        rows.forEach((row) => {
+                            console.log(row.id)
+                            result.push(JSON.parse(row.json))
+                        })
+                        console.log('parse over')
+                        res.json({data: result})
+                    }
+                })
+            }
+        })
+    })
+})
+
+app.post('/favorite/insert', (req, res) => {
+    data = req.body
+    news = JSON.parse(data.newsJson)
+    console.log(`insert ${news.newsID}:${news.title} of user ${data.id}`)
+    favorite.serialize(() => {
+        favorite.run(`insert into [${data.id}] values(?, ?)`, [news.newsID, req.body.newsJson], function(err) {
+            if (err) console.log(err)
+            else {
+                console.log('insert success')
+            }
+        })
+    })
+})
+
+app.post('/favorite/remove', (req, res) => {
+    data = req.body
+    news = JSON.parse(data.newsJson)
+    console.log(`remove ${news.newsID}:${news.title} of user ${data.id}`)
+    favorite.serialize(() => {
+        favorite.run(`delete from [${data.id}] where id == ?`, [news.newsID],function(err) {
+            if (err) console.log(err)
+            else {
+                console.log('remove success')
+            }
+        })
+    })
 })

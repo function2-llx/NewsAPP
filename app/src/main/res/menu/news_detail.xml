@@ -14,4 +14,9 @@
         android:icon="@mipmap/action_local_unfavorite"
         android:title="本地收藏" />
 
+    <item android:id="@+id/action_user_favorite"
+        app:showAsAction="always"
+        android:icon="@drawable/action_user_unfavorite"
+        android:title=" 云端收藏"/>
+
 </menu>
