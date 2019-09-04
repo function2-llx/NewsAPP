@@ -2,7 +2,7 @@
 <resources>
     <string-array name="fixed_channels">
         <item>@string/channel_default</item>
-        <item>推荐</item>
+<!--        <item>推荐</item>-->
     </string-array>
     <string-array name="unfixed_channels">
         <item>娱乐</item>

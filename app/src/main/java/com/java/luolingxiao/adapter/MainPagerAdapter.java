@@ -9,7 +9,7 @@ import com.java.luolingxiao.fragment.MainFragment;
 import com.java.luolingxiao.fragment.MyFragment;
 
 public class MainPagerAdapter extends FragmentPagerAdapter {
-    private String[] titles = new String[] {"首页", "我的"};
+    private String[] titles = new String[] {"首页", "推荐", "我的"};
     public MainPagerAdapter(FragmentManager fragmentManager) {
         super(fragmentManager);
     }
@@ -22,17 +22,20 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
+
         switch (position) {
             case 0:
                 return MainFragment.newInstance();
             case 1:
+                return new Fragment();
+            case 2:
                 return MyFragment.newInstance();
         }
-        return MainFragment.newInstance();
+        return new Fragment();
     }
 
     @Override
     public int getCount() {
-        return 2;
+        return 3;
     }
 }

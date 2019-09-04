@@ -13,10 +13,9 @@
 
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
-    <fragment
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/container_favorite"
-        android:name="com.java.luolingxiao.fragment.SimpleNewsListFragment" />
+        android:id="@+id/container_favorite" />
 
 </LinearLayout>

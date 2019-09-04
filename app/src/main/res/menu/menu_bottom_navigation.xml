@@ -5,6 +5,13 @@
         android:id="@+id/bottom_home"
         android:enabled="true"
         android:icon="@drawable/ic_bottom_home" />
+
+    <item
+        android:title="推荐"
+        android:id="@+id/bottom_recommend"
+        android:enabled="true"
+        android:icon="@drawable/ic_bottom_recommend" />
+
     <item
         android:title="我的"
         android:enabled="true"

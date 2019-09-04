@@ -23,7 +23,7 @@ public class SearchFragment extends DefaultFragment {
 
     private ViewPager viewPager;
     private FragmentPagerAdapter adapter;
-    private List<NewsListFragment> fragments;
+    private List<NormalNewsListFragment> fragments;
 
     public SearchFragment() {}
 
@@ -46,7 +46,7 @@ public class SearchFragment extends DefaultFragment {
         String word = Objects.requireNonNull(getArguments()).getString("word");
         fragments = new ArrayList<>();
         for (String channel: Objects.requireNonNull(channels)) {
-            fragments.add(NewsListFragment.newInstance(channel, word));
+            fragments.add(NormalNewsListFragment.newInstance(channel, word));
         }
         adapter = new FragmentPagerAdapter(Objects.requireNonNull(getFragmentManager())) {
             @Override

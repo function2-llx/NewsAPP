@@ -2,14 +2,16 @@ package com.java.luolingxiao;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
+import android.view.Menu;
 
 import androidx.annotation.Nullable;
-import androidx.viewpager.widget.ViewPager;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.java.luolingxiao.adapter.MainPagerAdapter;
 import com.java.luolingxiao.event.NightModeChangeEvent;
+import com.java.luolingxiao.fragment.MainFragment;
+import com.java.luolingxiao.fragment.MyFragment;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -19,10 +21,20 @@ public class MainActivity extends DeFaultActivity {
 //    private View navigationHeader;
 //    private Toolbar toolbar;
 
-    private ViewPager viewPager;
+//    private ViewPager viewPager;
 //    private TabLayout tabLayout;
     private BottomNavigationView bottomNavigationView;
 
+    Fragment fragment;
+
+    void setFragment(Fragment fragment) {
+        if (this.fragment != fragment) {
+            FragmentTransaction transaction =  getSupportFragmentManager().beginTransaction();
+            if (this.fragment != null) transaction.hide(this.fragment);
+            transaction.show(fragment).commit();
+            this.fragment = fragment;
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,35 +46,47 @@ public class MainActivity extends DeFaultActivity {
 //        this.toolbar = findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
 
-        viewPager = findViewById(R.id.view_pager_main_activity);
-        viewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager()));
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+//        viewPager = findViewById(R.id.view_pager_main_activity);
+//        viewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager()));
+//        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+//            @Override
+//            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+//
+//            }
+//
+//            @Override
+//            public void onPageSelected(int position) {
+//                MenuItem menuItem = bottomNavigationView.getMenu().getItem(position);
+//                menuItem.setChecked(true);
+//            }
+//
+//            @Override
+//            public void onPageScrollStateChanged(int state) {
+//
+//            }
+//        });
+//        viewPager.setOffscreenPageLimit(100);
 
-            }
 
-            @Override
-            public void onPageSelected(int position) {
-                MenuItem menuItem = bottomNavigationView.getMenu().getItem(position);
-                menuItem.setChecked(true);
-            }
+        Fragment[] fragments = new Fragment[] {MainFragment.newInstance(), new Fragment(), MyFragment.newInstance()};
 
-            @Override
-            public void onPageScrollStateChanged(int state) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        for (Fragment fragment: fragments) {
+            transaction.add(R.id.container_main, fragment);
+            transaction.hide(fragment);
+        }
+        transaction.commit();
+        setFragment(fragments[0]);
 
-            }
-        });
         bottomNavigationView = findViewById(R.id.bottom_navigation_view);
         bottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {
-            switch (menuItem.getItemId()) {
-                case R.id.bottom_home:
-                    viewPager.setCurrentItem(0);
-                break;
-                case R.id.bottom_my:
-                    viewPager.setCurrentItem(1);
-                break;
+            Menu menu = bottomNavigationView.getMenu();
+            for (int i = 0; i < menu.size(); i++) {
+                if (menu.getItem(i) == menuItem) {
+                    setFragment(fragments[i]);
+                }
             }
+//            bottomNavigationView.getMenu().
             return true;
         });
 //        tabLayout = findViewById(R.id.tab_layout_main);

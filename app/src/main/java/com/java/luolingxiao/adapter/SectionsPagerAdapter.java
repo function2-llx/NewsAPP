@@ -7,14 +7,14 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.java.luolingxiao.bean.ChannelBean;
-import com.java.luolingxiao.fragment.NewsListFragment;
+import com.java.luolingxiao.fragment.NormalNewsListFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
     private List<ChannelBean> channels;
-    private List<NewsListFragment> fragments;
+    private List<NormalNewsListFragment> fragments;
     private String words = "";
 
     public SectionsPagerAdapter(FragmentManager fm) {
@@ -26,7 +26,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     private void updateFragments() {
         fragments.clear();
         for (ChannelBean channel: channels) {
-            fragments.add(NewsListFragment.newInstance(channel.getName(), words));
+            fragments.add(NormalNewsListFragment.newInstance(channel.getName(), words));
         }
     }
 
@@ -47,7 +47,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     @NonNull
     public Fragment getItem(int position) {
         return fragments.get(position);
-//        return NewsListFragment.newInstance(channels.get(position).getName(), words);
+//        return NormalNewsListFragment.newInstance(channels.get(position).getName(), words);
     }
 
     @Nullable

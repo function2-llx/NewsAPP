@@ -25,7 +25,7 @@ import java.util.Collection;
 import java.util.List;
 
 
-public class NewsListFragment extends SimpleNewsListFragment {
+public class NormalNewsListFragment extends SimpleNewsListFragment {
 //    private ArrayList<NewsBean> data = new ArrayList<>();
     private ArrayList<Boolean> data_read = new ArrayList<>();
     private String mNewsId;
@@ -36,25 +36,12 @@ public class NewsListFragment extends SimpleNewsListFragment {
     private boolean isVisible;
     private int offset;
 
-
-
-//    private String mNewsId;
-//    private String mNewsType;
-//    private int mStartPage = 0;
-//    private boolean noMore = false;
-//    private boolean offline = false;
-//    Context a;
-
-    // 标志位，标志已经初始化完成。
-//    RefreshLayout refreshLayout;
-//    private boolean isPrepared;
-//    private boolean isVisible;
     private NewsDateTime lastDate;
 
-    public NewsListFragment() {}
+    public NormalNewsListFragment() {}
 
-    public static NewsListFragment newInstance(String channel, String words) {
-        NewsListFragment fragment = new NewsListFragment();
+    public static NormalNewsListFragment newInstance(String channel, String words) {
+        NormalNewsListFragment fragment = new NormalNewsListFragment();
         Bundle bundle = new Bundle();
         bundle.putString("channel", channel);
         bundle.putString("words", words);
@@ -97,7 +84,6 @@ public class NewsListFragment extends SimpleNewsListFragment {
                 refreshLayout.finishLoadMoreWithNoMoreData();//设置之后，将不会再触发加载事件
             } else {
                 getNewsListDataRequest("", 6, lastDate, false, true);
-//                mAdapter.loadMore(loadModels());
             }
         }, 100);
     }
@@ -119,6 +105,8 @@ public class NewsListFragment extends SimpleNewsListFragment {
                     new NewsApi.NewsCallback() {
                         @Override
                         public void onReceived(List<NewsBean> newsBeanList) {
+                            // 可能已经莫得了
+                            if (getActivity() == null) return;
                             if (newsBeanList.size() > 0) {
                                 lastDate = newsBeanList.get(newsBeanList.size() - 1).getPublishTime();
                             } else {

@@ -23,8 +23,6 @@ public class DeFaultActivity extends AppCompatActivity {
     //    public static Context getContext() { return context; }
     public static DeFaultActivity getAnyActivity() {
         return activitySet.iterator().next();
-//        return anyActivity;
-
     }
 
     protected boolean isNightMode() {
@@ -40,7 +38,6 @@ public class DeFaultActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        anyActivity = this;
         activitySet.add(this);
         StatusBarCompat.setStatusBarColor(this, getResources().getColor(R.color.colorPrimary));
     }

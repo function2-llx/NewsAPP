@@ -28,7 +28,7 @@ import java.util.Collection;
 import java.util.List;
 
 
-public class SimpleNewsListFragment extends DefaultFragment implements OnRefreshLoadMoreListener {
+public abstract class SimpleNewsListFragment extends DefaultFragment implements OnRefreshLoadMoreListener {
     ArrayList<NewsBean> data = new ArrayList<>();
 
     boolean noMore = false;
@@ -48,21 +48,6 @@ public class SimpleNewsListFragment extends DefaultFragment implements OnRefresh
     }
 
     BaseRecyclerAdapter<Model> mAdapter;
-
-    protected boolean isLocalFavorite() {
-        boolean ret = false;
-        if (getArguments() != null) {
-            ret = getArguments().getBoolean("local_favorite", false);
-        }
-        return ret;
-    }
-    protected boolean isUserFavorite() {
-        boolean ret = false;
-        if (getArguments() != null) {
-            ret = getArguments().getBoolean("user_favorite", false);
-        }
-        return ret;
-    }
 
     @Nullable
     @Override
@@ -108,6 +93,7 @@ public class SimpleNewsListFragment extends DefaultFragment implements OnRefresh
             }
 
             @Override
+            @NonNull
             public SmartViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
                 if (viewType == 0) {
                     return new SmartViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_news_no_picture, parent, false), mListener);
@@ -121,8 +107,6 @@ public class SimpleNewsListFragment extends DefaultFragment implements OnRefresh
         mAdapter.setOnItemClickListener((parent, view1, position, id) -> {
             NewsBean newsBean = data.get(position);
 
-//            newsBean.setRead(true);
-//            getDataRepository().insertNews(newsBean);
             NewsActivity.startAction(getContext(), newsBean);
             TextView subView = view1.findViewById(R.id.name);
             subView.setTextColor(Color.parseColor("#1A000000"));
@@ -134,42 +118,34 @@ public class SimpleNewsListFragment extends DefaultFragment implements OnRefresh
         recyclerView.setAdapter(mAdapter);
         refreshLayout.setOnRefreshLoadMoreListener(this);
 
-        if (isLocalFavorite()) {
-            getDataRepository().getLocalFavoriteNews(favorites -> {
-                setNewsList(favorites, false, false);
-            });
-        } else if (isUserFavorite()) {
-
-        }
-
         return view;
     }
 
-    public static SimpleNewsListFragment localFavorite() {
-        SimpleNewsListFragment fragment = new SimpleNewsListFragment();
-        Bundle bundle = new Bundle();
-        bundle.putBoolean("local_favorite", true);
-        fragment.setArguments(bundle);
-        return fragment;
-    }
+//    public static SimpleNewsListFragment localFavorite() {
+//        SimpleNewsListFragment fragment = new SimpleNewsListFragment();
+//        Bundle bundle = new Bundle();
+//        bundle.putBoolean("local_favorite", true);
+//        fragment.setArguments(bundle);
+//        return fragment;
+//    }
+//
+//    public static SimpleNewsListFragment userFavorite() {
+//        SimpleNewsListFragment fragment = new SimpleNewsListFragment();
+//        Bundle bundle = new Bundle();
+//        bundle.putBoolean("user_favorite", true);
+//        fragment.setArguments(bundle);
+//        return fragment;
+//    }
 
-    public static SimpleNewsListFragment userFavorite() {
-        SimpleNewsListFragment fragment = new SimpleNewsListFragment();
-        Bundle bundle = new Bundle();
-        bundle.putBoolean("user_favorite", true);
-        fragment.setArguments(bundle);
-        return fragment;
-    }
-
-    @Override
-    public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-        refreshLayout.getLayout().postDelayed(() -> refreshLayout.finishRefresh(), 1000);
-    }
-
-    @Override
-    public void onLoadMore(@NonNull final RefreshLayout refreshLayout) {
-        refreshLayout.getLayout().postDelayed(() -> refreshLayout.finishLoadMore(), 1000);
-    }
+//    @Override
+//    public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+//        refreshLayout.getLayout().postDelayed(() -> refreshLayout.finishRefresh(), 1000);
+//    }
+//
+//    @Override
+//    public void onLoadMore(@NonNull final RefreshLayout refreshLayout) {
+//        refreshLayout.getLayout().postDelayed(() -> refreshLayout.finishLoadMore(), 1000);
+//    }
 
     // append?
     public void setNewsList(List<NewsBean> newsBeanList, boolean isOnRefresh, boolean isOnLoadMore) {
