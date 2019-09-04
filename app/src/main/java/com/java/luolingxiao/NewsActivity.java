@@ -176,7 +176,7 @@ public class NewsActivity extends DefaultSwipeBackActivity
 
     private void updateIcons() {
         toolbar.getMenu().findItem(R.id.action_local_favorite).setIcon(getDataRepository().isLocalFavorite(newsBean) ? R.mipmap.action_local_favorite : R.mipmap.action_local_unfavorite);
-        toolbar.getMenu().findItem(R.id.action_user_favorite).setIcon(UserApi.getInstance().isFavorite(newsBean) ? R.drawable.action_user_favorite : R.drawable.action_user_unfavorite);
+        if(UserApi.getInstance().isAuthorized()) toolbar.getMenu().findItem(R.id.action_user_favorite).setIcon(UserApi.getInstance().isFavorite(newsBean) ? R.drawable.action_user_favorite : R.drawable.action_user_unfavorite);
     }
 
     @Override

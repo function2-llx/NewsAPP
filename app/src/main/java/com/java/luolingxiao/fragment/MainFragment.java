@@ -147,7 +147,7 @@ public class MainFragment extends DefaultFragment
         viewPager.setAdapter(pagerAdapter);
         tabLayout = view.findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(viewPager);
-        channelDataHelper = new ChannelDataHelper<>(getActivity(), this, view.findViewById(R.id.container_main));
+        channelDataHelper = new ChannelDataHelper<>(getActivity(), this, view.findViewById(R.id.container_main_channels));
         channelDataHelper.setSwitchView(view.findViewById(R.id.subscribe));
         viewPager.setOffscreenPageLimit(100);
         refreshTabs();
