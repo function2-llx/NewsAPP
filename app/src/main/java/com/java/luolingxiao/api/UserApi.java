@@ -44,8 +44,13 @@ public class UserApi {
             @Override
             public void onComplete(Platform platform, int index, HashMap<String, Object> hashMap) {
                 // 获取 favorite
-                getFavoriteSync();
-                listener.onComplete(platform, index, hashMap);
+                try {
+                    getFavoriteSync();
+                    listener.onComplete(platform, index, hashMap);
+                } catch (Exception e) {
+                    logout();
+                    listener.onError(platform, index, e);
+                }
             }
 
             @Override
@@ -95,7 +100,7 @@ public class UserApi {
         return userFavoriteCache.contains(newsBean);
     }
 
-    public List<NewsBean> getFavoriteSync() {
+    public List<NewsBean> getFavoriteSync() throws Exception{
         if (userFavoriteCache == null) {
             synchronized (this) {
                 if (userFavoriteCache == null) {
@@ -103,6 +108,7 @@ public class UserApi {
                     FastJsonRequest request = new FastJsonRequest(String.format(Locale.getDefault(), "http://%s:%d/favorite/get", ip, port));
                     request.add("id", getUserId());
                     Response<JSONObject> response = NoHttp.startRequestSync(request);
+                    if (response.getException() != null) throw response.getException();
                     JSONArray data = response.get().getJSONArray("data");
                     for (int i = 0; i < data.size(); i++) {
                         userFavoriteCache.add(NewsBean.parse(data.getJSONObject(i)));
@@ -120,8 +126,13 @@ public class UserApi {
             synchronized (UserApi.class) {
                 if (instance == null) {
                     instance = new UserApi();
+
                     if (instance.isAuthorized()) {
-                        instance.getFavoriteSync();
+                        try {
+                            instance.getFavoriteSync();
+                        } catch (Exception e) {
+                            instance.logout();
+                        }
                     }
                 }
             }

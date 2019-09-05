@@ -1,6 +1,7 @@
 package com.java.luolingxiao;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 
@@ -8,6 +9,7 @@ import com.java.luolingxiao.api.UserApi;
 import com.java.luolingxiao.bean.NewsBean;
 import com.java.luolingxiao.fragment.DisplayNewsListFragment;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -26,7 +28,12 @@ public class DisplayActivity extends DefaultSwipeBackActivity {
     public static class UserFavoritesFragment extends DisplayNewsListFragment {
         @Override
         protected List<NewsBean> getNews() {
-            return UserApi.getInstance().getFavoriteSync();
+            try {
+                return UserApi.getInstance().getFavoriteSync();
+            } catch (Exception e) {
+                Toast.makeText(getContext(), "获取云收藏列表失败惹", Toast.LENGTH_SHORT).show();
+                return Collections.emptyList();
+            }
         }
     }
 
