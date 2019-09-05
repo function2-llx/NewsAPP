@@ -64,10 +64,6 @@ public class MainFragment extends DefaultFragment
         });
     }
 
-//    private List<String> getShowChannels() {
-////        return channelDataHelper.getShowChannels((()));
-//    }
-
     private void configureMenu() {
         toolbar.inflateMenu(R.menu.menu_main);
         toolbar.setOnMenuItemClickListener(item -> {
@@ -78,7 +74,6 @@ public class MainFragment extends DefaultFragment
 
                 case R.id.action_search: {
                     Intent intent = new Intent(getContext(), SearchActivity.class);
-//                    ArrayList<String> unfixedNames = new ArrayList<>();
                     ArrayList<String> channels = new ArrayList<>();
                     for (ChannelBean bean: getShowChannels()) channels.add(bean.getName());
                     intent.putStringArrayListExtra("channels", channels);
@@ -97,7 +92,6 @@ public class MainFragment extends DefaultFragment
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         toolbar = view.findViewById(R.id.toolbar_main);
         configureMenu();
-
         initTabs(view);
         return view;
     }

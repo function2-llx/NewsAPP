@@ -8,12 +8,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.java.luolingxiao.api.UserApi;
 import com.java.luolingxiao.event.NightModeChangeEvent;
 import com.java.luolingxiao.fragment.MainFragment;
 import com.java.luolingxiao.fragment.MyFragment;
 import com.java.luolingxiao.fragment.RecommendNewsListFragment;
-import com.java.luolingxiao.fragment.UnauthorizedFragment;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -25,7 +23,7 @@ public class MainActivity extends DeFaultActivity {
     // 当前显示 fragment
     private Fragment fragment;
     private MainFragment mainFragment;
-    private UnauthorizedFragment unauthorizedFragment;
+//    private UnauthorizedFragment unauthorizedFragment;
     private RecommendNewsListFragment recommendNewsListFragment;
     private MyFragment myFragment;
     private Fragment[] fragments;
@@ -39,34 +37,33 @@ public class MainActivity extends DeFaultActivity {
         }
     }
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mainFragment = MainFragment.newInstance();
-        recommendNewsListFragment = new RecommendNewsListFragment();
-        unauthorizedFragment = new UnauthorizedFragment();
-        myFragment = MyFragment.newInstance();
 
-        myFragment.setAuthorizedListener(new MyFragment.AuthorizedListener() {
-            @Override
-            public void onLogin() { fragments[1] = recommendNewsListFragment; }
-
-            @Override
-            public void onLogout() { fragments[1] = unauthorizedFragment; }
-        });
-
-        fragments = new Fragment[] {mainFragment, UserApi.getInstance().isAuthorized() ? recommendNewsListFragment : unauthorizedFragment, myFragment};
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        for (Fragment fragment: fragments) {
-            transaction.add(R.id.container_main, fragment);
-            transaction.hide(fragment);
+        if (savedInstanceState == null) {
+            mainFragment = MainFragment.newInstance();
+            recommendNewsListFragment = new RecommendNewsListFragment();
+            myFragment = MyFragment.newInstance();
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.container_main, mainFragment, "main")
+                    .hide(mainFragment)
+                    .add(R.id.container_main, recommendNewsListFragment, "recommend")
+                    .hide(recommendNewsListFragment)
+                    .add(R.id.container_main, myFragment, "my")
+                    .hide(myFragment)
+                    .commit();
+        } else {
+            mainFragment = (MainFragment) getSupportFragmentManager().findFragmentByTag("main");
+            recommendNewsListFragment = (RecommendNewsListFragment) getSupportFragmentManager().findFragmentByTag("recommend");
+            myFragment = (MyFragment) getSupportFragmentManager().findFragmentByTag("my");
         }
-        transaction.commit();
-        setFragment(fragments[0]);
 
+        fragments = new Fragment[] {mainFragment, recommendNewsListFragment, myFragment};
+        setFragment(fragments[0]);
         bottomNavigationView = findViewById(R.id.bottom_navigation_view);
         bottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {
             Menu menu = bottomNavigationView.getMenu();
@@ -94,6 +91,11 @@ public class MainActivity extends DeFaultActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(NightModeChangeEvent event) {
-        recreate();
+//        if (isNightMode()) {
+//            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+//        } else {
+//            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+//        }
+       recreate();
     }
 }

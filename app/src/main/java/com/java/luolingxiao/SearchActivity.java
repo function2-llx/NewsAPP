@@ -26,7 +26,7 @@ public class SearchActivity extends DefaultSwipeBackActivity {
                 getDataRepository().insertSearchRecords(text);
             }
             searchBar.setPlaceHolder(text);
-            searchBar.disableSearch();
+//            searchBar.disableSearch();
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             if (fragment != null) {
                 transaction.remove(fragment);

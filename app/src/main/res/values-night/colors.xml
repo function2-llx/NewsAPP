@@ -3,11 +3,16 @@
     <color name="colorPrimary">#1D1D1D</color>
     <color name="colorPrimaryDark">#030303</color>
     <color name="colorAccent">#000F44</color>
-    <color name="container_background">#EBEBEB</color>
+    <color name="container_background">#131313</color>
     <color name="primary_text_white">#deffffff</color>
     <color name="expanded_title">#FFFFFF</color>
     <color name="bottom_navigation">#1D1D1D</color>
-    <color name="background_primary">#3F3F3F</color>
+    <color name="background_primary">#141414</color>
+    <color name="item_background">#3D5168</color>
+    <color name="text_primary">#777777</color>
+    <color name="text_secondary">#BBBBBB</color>
+    <color name="search_bar">#4B4B4B</color>
+
 
 
     <!--87%white-->

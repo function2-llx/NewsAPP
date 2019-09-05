@@ -29,7 +29,6 @@ public abstract class DisplayNewsListFragment extends SimpleNewsListFragment {
     }
 
     private void updateNewsList(boolean refresh) {
-//        setNewsList(isLocal() ? getDataRepository().getLocalFavoritesSync() : UserApi.getInstance().getFavoriteSync(), refresh, false);
         setNewsList(getNews(), refresh, false);
         if (refresh) refreshLayout.finishRefresh();
     }

@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:elevation="2dp"
-    android:layout_marginTop="10dp"
-    >
+    android:layout_marginTop="10dp" >
 
 
 
@@ -13,7 +12,7 @@
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/white"
+        android:background="@color/item_background"
         android:orientation="vertical"
         android:gravity="center"
         android:padding="10dp">

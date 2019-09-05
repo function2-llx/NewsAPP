@@ -14,7 +14,6 @@
         android:layout_height="wrap_content" />
 
     <androidx.viewpager.widget.ViewPager
-        android:background="@drawable/ssdk_oks_classic_bluetooth"
         android:id="@+id/view_pager_search"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
