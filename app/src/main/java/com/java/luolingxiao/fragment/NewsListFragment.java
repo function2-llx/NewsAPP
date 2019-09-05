@@ -22,11 +22,16 @@ import com.yanzhenjie.nohttp.error.NetworkError;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+
+import static java.lang.Math.min;
 
 
 public class NewsListFragment extends SimpleNewsListFragment {
-//    private ArrayList<NewsBean> data = new ArrayList<>();
+    //    private ArrayList<NewsBean> data = new ArrayList<>();
     private ArrayList<Boolean> data_read = new ArrayList<>();
     private String mNewsId;
     private String mNewsType;
@@ -35,8 +40,7 @@ public class NewsListFragment extends SimpleNewsListFragment {
     private boolean isPrepared;
     private boolean isVisible;
     private int offset;
-
-
+    ArrayList<NewsBean> dataCache = new ArrayList<>();
 
 //    private String mNewsId;
 //    private String mNewsType;
@@ -51,7 +55,8 @@ public class NewsListFragment extends SimpleNewsListFragment {
 //    private boolean isVisible;
     private NewsDateTime lastDate;
 
-    public NewsListFragment() {}
+    public NewsListFragment() {
+    }
 
     public static NewsListFragment newInstance(String channel, String words) {
         NewsListFragment fragment = new NewsListFragment();
@@ -77,7 +82,9 @@ public class NewsListFragment extends SimpleNewsListFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
         lastDate = new NewsDateTime();
-        getNewsListDataRequest("", 1, lastDate, false, false);
+        if (getChannel().equals("推荐")) {
+//            getNewsListBestMatch();
+        } else getNewsListDataRequest("", 1, lastDate, false, false);
         return view;
     }
 
@@ -102,11 +109,92 @@ public class NewsListFragment extends SimpleNewsListFragment {
         }, 100);
     }
 
+    public List<NewsBean> getNewsListBestMatch(List<NewsBean> newsBeanListRead, List<NewsBean> newsBeanListNotRead, int size) {
+        HashMap<String, Double> word2score = new HashMap<>();
+        for (NewsBean newsBean :
+                newsBeanListRead) {
+            List<NewsBean.Keyword> keywords = newsBean.getKeywords();
+            for (NewsBean.Keyword keyword :
+                    keywords) {
+                Double t = word2score.get(keyword.word);
+                if (t == null) {
+                    t = new Double(0);
+                }
+                word2score.put(keyword.word, t + keyword.score);
+
+            }
+        }
+        List<NewsBean.Keyword> keywordsRead = new ArrayList<>();
+        Double maxScore = new Double(0);
+        for (String key :
+                word2score.keySet()) {
+            Double value = word2score.get(key);
+            maxScore = Math.max(value, maxScore);
+            keywordsRead.add(new NewsBean.Keyword(key, value));
+        }
+        for (int i = 0; i < keywordsRead.size(); ++i) {
+            keywordsRead.get(i).score /= maxScore;
+        }
+
+        for (NewsBean newsBean :
+                newsBeanListNotRead) {
+            List<NewsBean.Keyword> keywords = new ArrayList<>();
+            for (NewsBean.Keyword keyword :
+                    newsBean.getKeywords()) {
+                keywords.add(new NewsBean.Keyword(keyword.word, keyword.score));
+            }
+
+            double scoreSum = 0, scoreAccuracy = 0, scoreTotal = 0;
+            for (NewsBean.Keyword keyword :
+                    keywords) {
+                int fg = 0;
+                scoreTotal += keyword.score;
+                for (NewsBean.Keyword keywordRead :
+                        keywordsRead) {
+                    if (keyword.word.equals(keywordRead.word)) {
+                        keyword.score = min(keywordRead.score, keyword.score);
+                        fg = 1;
+                        break;
+                    }
+                }
+                if (fg == 0) {
+                    keyword.score = 0;
+                }
+                scoreSum += keyword.score;
+            }
+
+            scoreAccuracy = scoreSum / scoreTotal;
+            newsBean.score = 2 * scoreSum * scoreAccuracy / (scoreSum + scoreAccuracy);
+        }
+
+
+        Collections.sort(newsBeanListNotRead, new Comparator<NewsBean>() {
+            @Override
+            public int compare(NewsBean newsBean, NewsBean t1) {
+                double t = t1.score - newsBean.score;
+                return t == 0 ? 0 : (t > 0 ? 1 : -1);
+            }
+        });
+        return newsBeanListNotRead.subList(0, min(newsBeanListNotRead.size(), size));
+    }
+
     public void getNewsListDataRequest(String type, int size, NewsDateTime endDate, boolean isOnRefresh, boolean isOnLoadMore) {
+
         if (endDate != null) {
             endDate = endDate.minusSeconds(1);
         }
 
+        if (getChannel().equals("推荐")) {
+            List<NewsBean> newsBeanList = new ArrayList<>();
+            while (dataCache.size() > 0 && size > 0) {
+                newsBeanList.add(dataCache.get(dataCache.size() - 1));
+                dataCache.remove(dataCache.size() - 1);
+            }
+            setNewsList(newsBeanList, isOnRefresh, isOnLoadMore);
+            refreshLayout.finishLoadMore();
+            refreshLayout.finishRefresh();
+            return;
+        }
         if (NetworkChecker.isNetworkConnected(getContext())) {
             if (offline) Toast.makeText(getContext(), "进入在线模式", Toast.LENGTH_SHORT).show();
             offline = false;

@@ -8,12 +8,38 @@ import android.graphics.Path;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.appcompat.widget.AppCompatImageView;
 
 public class Utils {
+    public static int widthPixels, heightPixels;
+    public static float density;
+    static public int dp2px(int dp) {
+        return (int) (dp * density + 0.5f);
+    }
+    static public int getWidthPixels(int percentage) {
+         return (int)(percentage / 100.0 * widthPixels);
+    }
 
+    static public int getHeightPixels(int percentage) {
+        return (int)(percentage / 100.0 * heightPixels);
+    }
 
+    static int px2dp(int px) {
+        return (int)(px / density +0.5f);
+    }
 //    https://blog.csdn.net/qq_42022077/article/details/89351273
     static public Bitmap reshapeImage(Bitmap bitmap) {
         //获取原始宽高，并获取宽高中较大的

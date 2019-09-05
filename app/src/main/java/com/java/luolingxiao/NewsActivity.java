@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -152,6 +153,13 @@ public class NewsActivity extends DefaultSwipeBackActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.act_news_detail);
+
+        Utils.widthPixels = getResources().getDisplayMetrics().widthPixels;
+        Utils.heightPixels = getResources().getDisplayMetrics().heightPixels;
+        Utils.density = getResources().getDisplayMetrics().density;
+
+
 //        EventBus.getDefault().register(this);
 
         if (getIntent().getStringExtra("NewsBean") != null) {
@@ -162,15 +170,29 @@ public class NewsActivity extends DefaultSwipeBackActivity
         }
 
         List<String> images = newsBean.getImageUrls();
-        setContentView(R.layout.act_news_detail);
+
+
+//        findViewById(R.id.btn).setOnTouchListener(new View.OnTouchListener() {
+//            @Override public boolean onTouch(View v, MotionEvent event) {
+//                switch (event.getAction()){
+//
+//                    case MotionEvent.ACTION_MOVE:
+//                        v.setX(event.getRawX()-v.getWidth()/2);
+//                        v.setY(event.getRawY()-v.getHeight()/2);
+//                        break;
+//                }
+//                return false;
+//            }
+//        });
 
         toolbarLayout = findViewById(R.id.toolbar_layout);
         toolbar = findViewById(R.id.toolbar_settings);
 //        setSupportActionBar(toolbar);
         appBar = findViewById(R.id.app_bar);
         if (images.size() == 0) {
-            appBar.getLayoutParams().height = (int) (120 * getResources().getDisplayMetrics().density + 0.5f);
+//            appBar.getLayoutParams().height = Utils.;
         }
+
 
         appBar.requestLayout();
         newsDetailFromTv = findViewById(R.id.news_detail_from_tv);
@@ -272,6 +294,9 @@ public class NewsActivity extends DefaultSwipeBackActivity
         String newsBody = newsBean.getContent().replace("\\n", "\n");
         setToolBarLayout(mNewsTitle);
         setBody(newsBody);
+
+        TextView textView = findViewById(R.id.title);
+        textView.setText(mNewsTitle);
 //        onCompleted();
     }
 
