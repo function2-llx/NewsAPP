@@ -24,12 +24,13 @@ public class NewsBean {
     private JSONObject newsJson;
     private List<Keyword> keywords;
     private List<String> imageUrls;
+    public double score = 0;
 
     public static class Keyword {
         public String word;
         public double score;
 
-        Keyword(String word, double score) {
+        public Keyword(String word, double score) {
             this.word = word;
             this.score = score;
         }
