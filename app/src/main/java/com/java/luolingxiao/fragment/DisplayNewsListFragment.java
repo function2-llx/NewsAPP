@@ -8,24 +8,15 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.java.luolingxiao.api.UserApi;
+import com.java.luolingxiao.bean.NewsBean;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 
-import java.util.Objects;
+import java.util.List;
 
-public class FavoriteNewsListFragment extends SimpleNewsListFragment {
-    public FavoriteNewsListFragment() {}
+public abstract class DisplayNewsListFragment extends SimpleNewsListFragment {
+    public DisplayNewsListFragment() {}
 
-    public static FavoriteNewsListFragment newInstance(boolean local) {
-        FavoriteNewsListFragment fragment = new FavoriteNewsListFragment();
-        Bundle bundle = new Bundle();
-        bundle.putBoolean("local", local);
-        fragment.setArguments(bundle);
-        return fragment;
-    }
-
-    private boolean isLocal() { return Objects.requireNonNull(getArguments()).getBoolean("local"); }
-    private boolean isUser() { return !isLocal(); }
+    protected abstract List<NewsBean> getNews();
 
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
@@ -38,7 +29,8 @@ public class FavoriteNewsListFragment extends SimpleNewsListFragment {
     }
 
     private void updateNewsList(boolean refresh) {
-        setNewsList(isLocal() ? getDataRepository().getLocalFavoriteNewsSync() : UserApi.getInstance().getFavoriteSync(), refresh, false);
+//        setNewsList(isLocal() ? getDataRepository().getLocalFavoritesSync() : UserApi.getInstance().getFavoriteSync(), refresh, false);
+        setNewsList(getNews(), refresh, false);
         if (refresh) refreshLayout.finishRefresh();
     }
 

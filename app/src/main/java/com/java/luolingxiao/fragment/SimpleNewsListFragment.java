@@ -106,11 +106,11 @@ public abstract class SimpleNewsListFragment extends DefaultFragment implements 
         };
         mAdapter.setOnItemClickListener((parent, view1, position, id) -> {
             NewsBean newsBean = data.get(position);
-
             NewsActivity.startAction(getContext(), newsBean);
             TextView subView = view1.findViewById(R.id.name);
             subView.setTextColor(Color.parseColor("#1A000000"));
             subView = view1.findViewById(R.id.nickname);
+            getDataRepository().setRead(newsBean, true);
             if (subView != null) {
                 subView.setTextColor(Color.parseColor("#1A000000"));
             }
@@ -120,32 +120,6 @@ public abstract class SimpleNewsListFragment extends DefaultFragment implements 
 
         return view;
     }
-
-//    public static SimpleNewsListFragment localFavorite() {
-//        SimpleNewsListFragment fragment = new SimpleNewsListFragment();
-//        Bundle bundle = new Bundle();
-//        bundle.putBoolean("local_favorite", true);
-//        fragment.setArguments(bundle);
-//        return fragment;
-//    }
-//
-//    public static SimpleNewsListFragment userFavorite() {
-//        SimpleNewsListFragment fragment = new SimpleNewsListFragment();
-//        Bundle bundle = new Bundle();
-//        bundle.putBoolean("user_favorite", true);
-//        fragment.setArguments(bundle);
-//        return fragment;
-//    }
-
-//    @Override
-//    public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-//        refreshLayout.getLayout().postDelayed(() -> refreshLayout.finishRefresh(), 1000);
-//    }
-//
-//    @Override
-//    public void onLoadMore(@NonNull final RefreshLayout refreshLayout) {
-//        refreshLayout.getLayout().postDelayed(() -> refreshLayout.finishLoadMore(), 1000);
-//    }
 
     // append?
     public void setNewsList(List<NewsBean> newsBeanList, boolean isOnRefresh, boolean isOnLoadMore) {

@@ -15,6 +15,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
+import static com.java.luolingxiao.api.UserApi.ip;
+import static com.java.luolingxiao.api.UserApi.port;
+
 public class NewsBean {
     private String title, category, content, publisher;
     private NewsDateTime publishTime;
@@ -116,8 +119,8 @@ public class NewsBean {
         return content.substring(0, 100) + "...";
     }
 
-    private static final String ip = "149.28.67.105";
-    private static final String port = "8080";
+//    private static final String ip = "115.182.62.169";
+//    private static final String port = "8080";
     private static final String shareUrl = "http://" + ip + ":" + port + "/news?";
     public String getShareUrl() { return shareUrl + "publishTime=" + publishTime.toQueryValue() + "&newsID=" + getNewsId(); }
 

@@ -1,3 +1,3 @@
-# scp -r public appserver:~/news_server
-# scp -r views appserver:~/news_server
-scp server.js appserver:~/news_server
+scp -r public appserver:~/appserver
+scp -r views appserver:~/appserver
+scp server.js appserver:~/appserver

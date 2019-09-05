@@ -18,8 +18,7 @@ public class DataRepository {
     private static DataRepository instance = null;
     private AppDatabase database;
 
-//    private Set<String> localFavoriteCache = new HashSet<>();
-    private Set<NewsBean> localFavoriteCache = new HashSet<>();
+    private Set<NewsBean> localFavoriteCache = null;
 
     private DataRepository(AppDatabase database) { this.database = database; }
 
@@ -28,10 +27,7 @@ public class DataRepository {
             synchronized (DataRepository.class) {
                 if (instance == null) {
                     instance = new DataRepository(database);
-                    instance.getLocalFavoriteNewsSync();
-//                    for (NewsBean newsBean: favorites) {
-//                        instance.localFavoriteCache.add(newsBean.getNewsId());
-//                    }
+                    instance.getLocalFavoritesSync();
                 }
             }
         }
@@ -83,13 +79,21 @@ public class DataRepository {
         }).start();
     }
 
-    void setFavorite(NewsBean newsBean, boolean favorite) {
+    public void setRead(NewsBean newsBean, boolean read) {
+        new Thread(() -> database.savedNewsDao().setRead(newsBean.getNewsId(), read)).start();
+    }
+
+    public void setFavorite(NewsBean newsBean, boolean favorite) {
+        new Thread(() -> database.savedNewsDao().setFavorite(newsBean.getNewsId(), favorite)).start();
         if (favorite) {
             localFavoriteCache.add(newsBean);
         } else {
             localFavoriteCache.remove(newsBean);
         }
-        insertNews(newsBean);
+    }
+
+    public boolean isLocalFavorite(NewsBean newsBean) {
+        return localFavoriteCache.contains(newsBean);
     }
 
     public void insertNews(NewsBean... newsBeans) {
@@ -163,34 +167,29 @@ public class DataRepository {
         }
     }
 
-//    public void getLocalFavoriteNews(OnReceiveSavedNewsCallback callback) {
-//        new GetNewsAsyncTask(callback) {
-//            @Override
-//            protected void doInBackGround() {
-//                newsBeans = NewsBean.decode(database.savedNewsDao().getFavoriteSavedNews());
-//            }
-//        }.start();
-//    }
-//
-//    public void getLocalFavoriteNews(int limit, int offset, OnReceiveSavedNewsCallback callback) {
-//        new GetNewsAsyncTask(callback) {
-//            @Override
-//            protected void doInBackGround() {
-//                newsBeans = NewsBean.decode(database.savedNewsDao().getFavoriteSavedNews(limit, offset));
-//            }
-//        }.start();
-//    }
-
-    public List<NewsBean> getLocalFavoriteNewsSync() {
-        Thread thread = new Thread(() -> localFavoriteCache.addAll(NewsBean.decode(database.savedNewsDao().getFavoriteSavedNews())));
-        thread.start();
-        try  {
-            thread.join();
-        } catch (Throwable ignored) {}
+    public List<NewsBean> getLocalFavoritesSync() {
+        if (localFavoriteCache == null) {
+            synchronized (this) {
+                if (localFavoriteCache == null) {
+                    localFavoriteCache = new HashSet<>();
+                    Thread thread = new Thread(() -> localFavoriteCache.addAll(NewsBean.decode(database.savedNewsDao().getFavoriteSavedNews())));
+                    thread.start();
+                    try  {
+                        thread.join();
+                    } catch (Throwable ignored) {}
+                }
+            }
+        }
         return new ArrayList<>(localFavoriteCache);
     }
 
-    public boolean isLocalFavorite(NewsBean newsBean) {
-        return localFavoriteCache.contains(newsBean);
+    public List<NewsBean> getReadsSync() {
+        List<NewsBean> reads = new ArrayList<>();
+        Thread thread = new Thread(() -> {
+            reads.addAll(NewsBean.decode(database.savedNewsDao().getReads()));
+        });
+        thread.start();
+        try { thread.join(); } catch (Throwable ignored) {}
+        return reads;
     }
 }

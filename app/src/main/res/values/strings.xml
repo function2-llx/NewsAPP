@@ -21,4 +21,7 @@
     <!--动态 -->
     <string name="unauthorized">还没有登录</string>
     <string name="channel_default">综合</string>
+    <string name="local_favorites">本地收藏</string>
+    <string name="local_reads">本地浏览记录</string>
+    <string name="user_favorites">我的收藏</string>
 </resources>

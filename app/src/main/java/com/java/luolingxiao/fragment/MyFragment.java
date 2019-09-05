@@ -14,7 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.java.luolingxiao.FavoriteActivity;
+import com.java.luolingxiao.DisplayActivity;
 import com.java.luolingxiao.R;
 import com.java.luolingxiao.api.NewsApi;
 import com.java.luolingxiao.api.UserApi;
@@ -85,9 +85,8 @@ public class MyFragment extends DefaultFragment {
                 }).setNegativeButton("取消", null)
                 .show());
         authorizedContainer.findViewById(R.id.user_favorite).setOnClickListener(v -> {
-            Intent intent = new Intent(getContext(), FavoriteActivity.class);
-            intent.putExtra("title", "我的收藏");
-            intent.putExtra("local", false);
+            Intent intent = new Intent(getContext(), DisplayActivity.class);
+            intent.putExtra("name", getString(R.string.user_favorites));
             startActivity(intent);
         });
 
@@ -111,10 +110,15 @@ public class MyFragment extends DefaultFragment {
             });
         });
 
-        localContainer.setOnClickListener(v -> {
-            Intent intent = new Intent(getContext(), FavoriteActivity.class);
-            intent.putExtra("title", "本地收藏");
-            intent.putExtra("local", true);
+        localContainer.findViewById(R.id.local_favorites).setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), DisplayActivity.class);
+            intent.putExtra("name", getString(R.string.local_favorites));
+            startActivity(intent);
+        });
+
+        localContainer.findViewById(R.id.local_reads).setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), DisplayActivity.class);
+            intent.putExtra("name", getString(R.string.local_reads));
             startActivity(intent);
         });
 

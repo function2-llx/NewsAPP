@@ -40,9 +40,12 @@
         <LinearLayout
             android:id="@+id/user_favorite"
             style="@style/top_layout">
+            <ImageView
+                style="@style/selection_icon"
+                android:src="@drawable/action_user_favorite" />
             <TextView
                 style="@style/selection_text"
-                android:text="我的收藏" />
+                android:text="@string/user_favorites" />
         </LinearLayout>
         <LinearLayout
             android:id="@+id/logout"
@@ -66,14 +69,28 @@
     </LinearLayout>
 
     <LinearLayout
-        style="@style/selection_wrapper"
-        >
+        android:id="@+id/local_container"
+        style="@style/selection_wrapper">
         <LinearLayout
-            android:id="@+id/local_container"
-            style="@style/single_layout">
+            android:id="@+id/local_favorites"
+            style="@style/top_layout">
+            <ImageView
+                style="@style/selection_icon"
+                android:src="@mipmap/action_local_favorite" />
             <TextView
                 style="@style/selection_text"
-                android:text="本地收藏" />
+                android:text="@string/local_favorites" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/local_reads"
+            style="@style/bottom_layout">
+            <ImageView
+                style="@style/selection_icon"
+                android:src="@drawable/ic_history_black_48dp" />
+
+            <TextView
+                style="@style/selection_text"
+                android:text="@string/local_reads" />
         </LinearLayout>
     </LinearLayout>
 
