@@ -13,7 +13,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
-import com.java.luolingxiao.DeFaultActivity;
+import com.java.luolingxiao.DefaultActivity;
 import com.java.luolingxiao.MainActivity;
 import com.java.luolingxiao.R;
 import com.java.luolingxiao.SearchActivity;
@@ -132,7 +132,7 @@ public class MainFragment extends DefaultFragment
     }
 
     private List<ChannelBean> getShowChannels() {
-        return channelDataHelper.getShowChannels(((DeFaultActivity) Objects.requireNonNull(getActivity())).getAllChannels());
+        return channelDataHelper.getShowChannels(((DefaultActivity) Objects.requireNonNull(getActivity())).getAllChannels());
     }
 
     private void initTabs(View view) {

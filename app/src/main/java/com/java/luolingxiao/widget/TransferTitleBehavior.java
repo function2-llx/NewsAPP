@@ -3,14 +3,12 @@ package com.java.luolingxiao.widget;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
-import com.stx.xhb.xbanner.XBanner;
 
 import static com.java.luolingxiao.widget.Utils.dp2px;
 import static com.java.luolingxiao.widget.Utils.getWidthPixels;
@@ -76,19 +74,19 @@ public class TransferTitleBehavior extends CoordinatorLayout.Behavior<TextView> 
         int heightDependency = px2dp(dependency.getHeight());
 //        child.getHeight()
         int heightChild = px2dp(child.getHeight());
-        System.out.println(yDependency + " " + dependency.getX() + " " + px2dp(dependency.getHeight()));
+//        System.out.println(yDependency + " " + dependency.getX() + " " + px2dp(dependency.getHeight()));
 
-        System.out.println("text_height " + heightChild);
+//        System.out.println("text_height " + heightChild);
 
 
-        System.out.println("xChild " + xChild);
-        System.out.println("yChild " + yChild);
+//        System.out.println("xChild " + xChild);
+//        System.out.println("yChild " + yChild);
 
         int bottom = heightDependency - yDependency;
 
 
 //        System.out.println("bottom " + dependency.getRawX);
-        System.out.println("bottom " + bottom);
+//        System.out.println("bottom " + bottom);
         child.setX(dp2px(24));
         child.setY(dp2px(Math.max(bottom - heightChild, 36)));
 
@@ -101,7 +99,7 @@ public class TransferTitleBehavior extends CoordinatorLayout.Behavior<TextView> 
 
             CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) dependency.getParent();
 
-            System.out.println("title " + collapsingToolbarLayout.getTitle());
+//            System.out.println("title " + collapsingToolbarLayout.getTitle());
 //            child.bringToFront(); //uesless
             if (bottom == 56) {
                 child.setVisibility(View.INVISIBLE);

@@ -17,7 +17,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-public class MainActivity extends DeFaultActivity {
+public class MainActivity extends DefaultActivity {
     private BottomNavigationView bottomNavigationView;
 
     // 当前显示 fragment

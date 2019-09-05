@@ -6,6 +6,7 @@ import androidx.annotation.Nullable;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.java.luolingxiao.DefaultActivity;
 import com.java.luolingxiao.database.entity.SavedNews;
 
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ public class NewsBean {
     private NewsDateTime publishTime;
     private JSONObject newsJson;
     private List<Keyword> keywords;
-    private List<String> imageUrls;
+    public List<String> imageUrls;
     public double score = 0;
 
     public static class Keyword {
@@ -63,13 +64,14 @@ public class NewsBean {
 //        news.read = false;
 
         String imageUrlsRaw = newsJson.getString("image");
-        if (imageUrlsRaw.length() > 2) {
+
+        if (!DefaultActivity.getAnyActivity().isSaveTrafficMode() && imageUrlsRaw.length() > 2) {
             news.imageUrls = Arrays.asList(imageUrlsRaw.substring(1, imageUrlsRaw.length() - 1).split(", "));
         } else {
             news.imageUrls = Collections.emptyList();
         }
 
-//        news.favorite = DeFaultActivity.getAnyActivity().getDataRepository().isLocalFavorite(news);
+//        news.favorite = DefaultActivity.getAnyActivity().getDataRepository().isLocalFavorite(news);
         news.keywords = new ArrayList<>();
         JSONArray keywords = newsJson.getJSONArray("keywords");
         for (int i = 0; i < keywords.size(); i++) {

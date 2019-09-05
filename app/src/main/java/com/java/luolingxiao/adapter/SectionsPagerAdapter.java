@@ -47,7 +47,6 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     @NonNull
     public Fragment getItem(int position) {
         return fragments.get(position);
-//        return NormalNewsListFragment.newInstance(channels.get(position).getName(), words);
     }
 
     @Nullable

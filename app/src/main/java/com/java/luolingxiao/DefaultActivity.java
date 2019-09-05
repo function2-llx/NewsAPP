@@ -17,11 +17,11 @@ import java.util.List;
 import java.util.Set;
 
 @SuppressLint("Registered")
-public class DeFaultActivity extends AppCompatActivity {
-    private static Set<DeFaultActivity> activitySet = new HashSet<>();
+public class DefaultActivity extends AppCompatActivity {
+    private static Set<DefaultActivity> activitySet = new HashSet<>();
 
     //    public static Context getContext() { return context; }
-    public static DeFaultActivity getAnyActivity() {
+    public static DefaultActivity getAnyActivity() {
         return activitySet.iterator().next();
     }
 

@@ -11,7 +11,7 @@ import me.imid.swipebacklayout.lib.app.SwipeBackActivityBase;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivityHelper;
 
 
-public class SwipeBackActivity extends DeFaultActivity implements SwipeBackActivityBase {
+public class SwipeBackActivity extends DefaultActivity implements SwipeBackActivityBase {
     private SwipeBackActivityHelper mHelper;
 
     @Override
