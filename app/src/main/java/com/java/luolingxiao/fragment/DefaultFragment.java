@@ -13,7 +13,7 @@ public class DefaultFragment extends Fragment {
     }
 
     protected boolean isSaveTrafficMode() {
-        return ((DefaultActivity)getActivity()).isSaveTrafficMode();
+        return ((DefaultActivity) Objects.requireNonNull(getActivity())).isSaveTrafficMode();
     }
 
     public DefaultFragment() {}

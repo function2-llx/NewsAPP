@@ -30,11 +30,6 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         }
     }
 
-    public void updateWords(String words) {
-        this.words = words;
-        updateFragments();
-    }
-
     public void updateChannels(List<ChannelBean> newChannels) {
 //        Collections.copy(channels, newChannels);
         channels.clear();

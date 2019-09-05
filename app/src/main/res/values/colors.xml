@@ -11,7 +11,7 @@
     <color name="item_background">#FFFFFF</color>
     <color name="text_primary">#181818</color>
     <color name="text_secondary">@color/alpha_30_black</color>
-    <color name="search_bar">#C0C0C0</color>
+    <color name="search_bar">#E6E6E6</color>
 
     <!--白天主题-->
     <!--夜间主题-->

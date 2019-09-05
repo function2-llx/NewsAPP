@@ -64,6 +64,11 @@ public class DisplayActivity extends DefaultSwipeBackActivity {
         toolbar.setTitle(getName());
         setSupportActionBar(toolbar);
 
+        Objects.requireNonNull(getSupportActionBar()).setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        toolbar.setNavigationOnClickListener(v -> onBackPressed());
+
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.container_favorite, Objects.requireNonNull(getFragment()))

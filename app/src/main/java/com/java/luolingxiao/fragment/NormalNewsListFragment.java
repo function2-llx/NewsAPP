@@ -66,7 +66,7 @@ public class NormalNewsListFragment extends SimpleNewsListFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
         lastDate = new NewsDateTime();
-        getNewsListDataRequest("", 1, lastDate, false, false);
+        getNewsListDataRequest("", chunkSize, lastDate, false, false);
         return view;
     }
 
@@ -85,7 +85,7 @@ public class NormalNewsListFragment extends SimpleNewsListFragment {
                 Toast.makeText(getContext(), "数据全部加载完毕", Toast.LENGTH_SHORT).show();
                 refreshLayout.finishLoadMoreWithNoMoreData();//设置之后，将不会再触发加载事件
             } else {
-                getNewsListDataRequest("", 6, lastDate, false, true);
+                getNewsListDataRequest("", chunkSize, lastDate, false, true);
             }
         }, 100);
     }
@@ -103,20 +103,13 @@ public class NormalNewsListFragment extends SimpleNewsListFragment {
                             .setSize(size)
                             .setWords(getWords())
                             .setCategory(getChannel().equals(getString(R.string.channel_default)) ? "" : getChannel())
-//                        .setStartDate()
                             .setEndDate(endDate),
                     new NewsApi.NewsCallback() {
                         @Override
                         public void onReceived(List<NewsBean> newsBeanList) {
-                            if (isSaveTrafficMode()) {
-                                for (NewsBean newsBean: newsBeanList) {
-                                    newsBean.imageUrls.clear();
-//                                    newsBean.imageUrls = new ArrayList<>();
-                                }
-                            }
-
                             // 可能已经莫得了
                             if (getActivity() == null) return;
+
                             if (newsBeanList.size() > 0) {
                                 lastDate = newsBeanList.get(newsBeanList.size() - 1).getPublishTime();
                             } else {
@@ -127,12 +120,6 @@ public class NormalNewsListFragment extends SimpleNewsListFragment {
 
                             refreshLayout.finishLoadMore();
                             refreshLayout.finishRefresh();
-//                        returnNewsListData(newsBeanList);
-//                        if (newsBeanList.isEmpty()) {
-//                            Toast.makeText(MainActivity.this, "莫得新闻了，等哈再来哈", Toast.LENGTH_SHORT).show();
-//                        } else {
-//                            Toast.makeText(MainActivity.this, newsBeanList.get(0).getTitle(), Toast.LENGTH_SHORT).show();
-//                        }
                         }
 
                         @Override

@@ -31,6 +31,8 @@ import java.util.List;
 public abstract class SimpleNewsListFragment extends DefaultFragment implements OnRefreshLoadMoreListener {
     ArrayList<NewsBean> data = new ArrayList<>();
 
+    protected static final int chunkSize = 5;
+
     boolean noMore = false;
 
     // 标志位，标志已经初始化完成。

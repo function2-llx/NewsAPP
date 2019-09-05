@@ -1,7 +1,6 @@
 package com.java.luolingxiao;
 
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -26,13 +25,14 @@ public class SearchActivity extends DefaultSwipeBackActivity {
                 getDataRepository().insertSearchRecords(text);
             }
             searchBar.setPlaceHolder(text);
-//            searchBar.disableSearch();
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             if (fragment != null) {
+                fragment.removeFragments();
                 transaction.remove(fragment);
             }
             fragment = SearchFragment.newInstance(channels, text);
             transaction.add(R.id.container_search, fragment).commit();
+            searchBar.disableSearch();
         } else {
             // back to default mode
         }
@@ -48,11 +48,11 @@ public class SearchActivity extends DefaultSwipeBackActivity {
                 if (enabled) {
                     searchBar.setHint(searchBar.getPlaceHolderText());
                 } else {
-                    if (fragment != null) {
-                        fragment.removeFragments();
-                        getSupportFragmentManager().beginTransaction().remove(fragment).commit();
-                        fragment = null;
-                    }
+//                    if (fragment != null) {
+//                        fragment.removeFragments();
+//                        getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+//                        fragment = null;
+//                    }
                 }
             }
 
@@ -99,6 +99,7 @@ public class SearchActivity extends DefaultSwipeBackActivity {
 
             }
         });
+
         getDataRepository().getAllSearchRecords(records -> searchBar.setLastSuggestions(records));
     }
 
@@ -114,11 +115,11 @@ public class SearchActivity extends DefaultSwipeBackActivity {
         initSearchBar();
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
-        super.onSaveInstanceState(outState, outPersistentState);
-        if (fragment != null) {
-            fragment.removeFragments();
-        }
-    }
+//    @Override
+//    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+//        super.onSaveInstanceState(outState, outPersistentState);
+//        if (fragment != null) {
+//            fragment.removeFragments();
+//        }
+//    }
 }

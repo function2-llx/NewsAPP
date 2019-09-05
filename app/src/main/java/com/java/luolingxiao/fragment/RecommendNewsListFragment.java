@@ -120,23 +120,17 @@ public class RecommendNewsListFragment extends NormalNewsListFragment {
                 new NewsApi.NewsCallback() {
                     @Override
                     public void onReceived(List<NewsBean> newsBeanList) {
-                        if (isSaveTrafficMode()) {
-                            for (NewsBean newsBean: newsBeanList) {
-//                                newsBean.imageUrls = new ArrayList<>();
-                                newsBean.imageUrls.clear();
-                            }
-                        }
-
-                        dataCache = getNewsListBestMatch(getDataRepository().getReadsSync(), newsBeanList, 20);
                         // 可能已经莫得了
                         if (getActivity() == null) return;
+
+                        dataCache = getNewsListBestMatch(getDataRepository().getReadsSync(), newsBeanList, 20);
                         if (newsBeanList.size() > 0) {
                             lastDate = newsBeanList.get(newsBeanList.size() - 1).getPublishTime();
                         } else {
                             noMore = true;
                         }
                         getDataRepository().insertNews(newsBeanList);
-                        getNewsListDataRequest("", 1, lastDate, false, false);
+                        getNewsListDataRequest("", chunkSize, lastDate, false, false);
 
                     }
 
