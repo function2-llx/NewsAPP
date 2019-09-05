@@ -75,13 +75,7 @@
 <!--                app:layout_collapseMode="parallax"-->
 <!--                app:layout_collapseParallaxMultiplier="0.9" />-->
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar_settings"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                app:layout_collapseMode="pin"
-                app:navigationIcon="@drawable/ic_arrow_back"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
 
             <com.stx.xhb.xbanner.XBanner
                 android:id="@+id/xbanner"
@@ -111,7 +105,13 @@
                 <!--                    app:layout_collapseParallaxMultiplier="0.9" />-->
             </com.stx.xhb.xbanner.XBanner>
 
-
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar_settings"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                app:layout_collapseMode="pin"
+                app:navigationIcon="@drawable/ic_arrow_back"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
