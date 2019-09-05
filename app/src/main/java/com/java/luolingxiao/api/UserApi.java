@@ -1,6 +1,7 @@
 package com.java.luolingxiao.api;
 
 import android.app.Activity;
+import android.os.Handler;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -65,22 +66,32 @@ public class UserApi {
 
     private Set<NewsBean> userFavoriteCache;
 
-    public void setFavorite(NewsBean newsBean, boolean favorite) {
+    public interface SetFavoriteCallback {
+        void onSuccess();
+        void onException(Exception e);
+    }
+
+    public void setFavorite(NewsBean newsBean, boolean favorite, SetFavoriteCallback callback) {
+        Handler handler = new Handler();
         new Thread(() -> {
             FastJsonRequest request = new FastJsonRequest(String.format(Locale.getDefault(), "http://%s:%d/favorite/%s", ip, port, favorite ? "insert" : "remove"), RequestMethod.POST);
             request.add("id", getUserId()).add("newsJson", newsBean.toString());
-            NoHttp.startRequestSync(request);
+            Response<JSONObject> response =  NoHttp.startRequestSync(request);
+            if (response.getException() != null) {
+                handler.post(() -> callback.onException(response.getException()));
+            } else {
+                if (favorite) {
+                    userFavoriteCache.add(newsBean);
+                } else {
+                    userFavoriteCache.remove(newsBean);
+                }
+                handler.post(callback::onSuccess);
+            }
         }).start();
-        if (favorite) {
-            userFavoriteCache.add(newsBean);
-        } else {
-            userFavoriteCache.remove(newsBean);
-        }
     }
 
     public boolean isFavorite(NewsBean newsBean) {
-        boolean ret = userFavoriteCache.contains(newsBean);
-        return ret;
+        return userFavoriteCache.contains(newsBean);
     }
 
     public List<NewsBean> getFavoriteSync() {

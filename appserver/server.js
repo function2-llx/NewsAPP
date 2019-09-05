@@ -91,9 +91,12 @@ app.post('/favorite/insert', (req, res) => {
     console.log(`insert ${news.newsID}:${news.title} of user ${data.id}`)
     favorite.serialize(() => {
         favorite.run(`insert into [${data.id}] values(?, ?)`, [news.newsID, req.body.newsJson], function(err) {
-            if (err) console.log(err)
-            else {
+            if (err) {
+                console.log(err)
+                res.sendStatus(500)
+            } else {
                 console.log('insert success')
+                res.end()
             }
         })
     })
@@ -105,9 +108,12 @@ app.post('/favorite/remove', (req, res) => {
     console.log(`remove ${news.newsID}:${news.title} of user ${data.id}`)
     favorite.serialize(() => {
         favorite.run(`delete from [${data.id}] where id == ?`, [news.newsID],function(err) {
-            if (err) console.log(err)
-            else {
+            if (err) {
+                console.log(err)
+                res.sendStatus(500)
+            } else {
                 console.log('remove success')
+                res.end()
             }
         })
     })

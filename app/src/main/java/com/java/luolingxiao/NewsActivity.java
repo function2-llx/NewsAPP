@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
@@ -303,15 +304,23 @@ public class NewsActivity extends DefaultSwipeBackActivity
                 break;
 
                 case R.id.action_user_favorite: {
-                    UserApi.getInstance().setFavorite(newsBean, !UserApi.getInstance().isFavorite(newsBean));
-                    updateIcons();
-//                    if (UserApi.isFavorite(newsBean)) {
-//                        UserApi.setFavorite(newsBean, false);
-//                        item.setIcon(R.drawable.action_user_unfavorite);
-//                    } else {
-//                        UserApi.setFavorite(newsBean, true);
-//                        item.setIcon(R.drawable.action_user_favorite);
-//                    }
+                    UserApi api = UserApi.getInstance();
+                    if (!api.isAuthorized()) {
+                        Toast.makeText(this, "登录后使用云端收藏功能哦", Toast.LENGTH_SHORT).show();
+                    } else {
+                        api.setFavorite(newsBean, !api.isFavorite(newsBean), new UserApi.SetFavoriteCallback() {
+                            @Override
+                            public void onSuccess() {
+                                updateIcons();
+                                Toast.makeText(NewsActivity.this, api.isFavorite(newsBean) ? "成功收藏到云端" : "成功从云端收藏删除", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onException(Exception e) {
+                                Toast.makeText(NewsActivity.this, "操作失败", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
                 }
                 break;
             }

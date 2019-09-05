@@ -38,15 +38,8 @@ public class FavoriteNewsListFragment extends SimpleNewsListFragment {
     }
 
     private void updateNewsList(boolean refresh) {
-        if (isLocal()) {
-            getDataRepository().getLocalFavoriteNews(savedNews -> {
-                setNewsList(savedNews, refresh, false);
-                if (refresh) refreshLayout.finishRefresh();
-            });
-        } else {
-            setNewsList(UserApi.getInstance().getFavoriteSync(), refresh, false);
-            if (refresh) refreshLayout.finishRefresh();
-        }
+        setNewsList(isLocal() ? getDataRepository().getLocalFavoriteNewsSync() : UserApi.getInstance().getFavoriteSync(), refresh, false);
+        if (refresh) refreshLayout.finishRefresh();
     }
 
     @Nullable
