@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.java.luolingxiao.DefaultActivity;
 import com.java.luolingxiao.NewsActivity;
 import com.java.luolingxiao.R;
 import com.java.luolingxiao.adapter.BaseRecyclerAdapter;
@@ -110,11 +111,11 @@ public abstract class SimpleNewsListFragment extends DefaultFragment implements 
             NewsBean newsBean = data.get(position);
             NewsActivity.startAction(getContext(), newsBean);
             TextView subView = view1.findViewById(R.id.name);
-            subView.setTextColor(Color.parseColor("#1A000000"));
+            subView.setTextColor(DefaultActivity.getAnyActivity().getColor(R.color.text_read));
             subView = view1.findViewById(R.id.nickname);
             getDataRepository().setRead(newsBean, true);
             if (subView != null) {
-                subView.setTextColor(Color.parseColor("#1A000000"));
+                subView.setTextColor(DefaultActivity.getAnyActivity().getColor(R.color.text_read));
             }
         });
         recyclerView.setAdapter(mAdapter);

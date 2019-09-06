@@ -1,24 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#969696</color>
-    <color name="colorPrimaryDark">#444444</color>
+    <color name="colorPrimary">#20894d</color>
+    <color name="colorPrimaryDark">#1a6840</color>
     <color name="colorAccent">#3F51B5</color>
-    <color name="container_background">#EBEBEB</color>
-    <color name="primary_text_white">#deffffff</color>
+    <color name="container_background">#ffffff</color>
+    <color name="primary_text_white">#ffffffff</color>
     <color name="expanded_title">#FFFFFF</color>
-    <color name="bottom_navigation">#8F8F8F</color>
-    <color name="background_primary">#C7C7C7</color>
+    <color name="bottom_navigation">#ffffff</color>
+    <color name="background_primary">#ffffff</color>
     <color name="item_background">#FFFFFF</color>
     <color name="text_primary">#181818</color>
     <color name="text_secondary">@color/alpha_30_black</color>
     <color name="search_bar">#E6E6E6</color>
+    <color name="item_text">#181818</color>
+    <color name="text_read">@color/alpha_10_black</color>
+    <color name="text_time">@color/alpha_30_black</color>
 
     <!--白天主题-->
     <!--夜间主题-->
     <!-- app主色调-->
     <color name="white">#FFFFFFFF</color>
 
+。
+    <color name="alpha_05_white">#0DFFFFFF</color>
+    <color name="alpha_10_white">#1AFFFFFF</color>
+    <color name="alpha_15_white">#26FFFFFF</color>
+    <color name="alpha_20_white">#33FFFFFF</color>
+    <color name="alpha_25_white">#40FFFFFF</color>
+    <color name="alpha_30_white">#4DFFFFFF</color>
+    <color name="alpha_35_white">#59FFFFFF</color>
+    <color name="alpha_40_white">#66FFFFFF</color>
+    <color name="alpha_45_white">#73FFFFFF</color>
+    <color name="alpha_50_white">#80FFFFFF</color>
+    <color name="alpha_55_white">#8CFFFFFF</color>
+    <color name="alpha_60_white">#99FFFFFF</color>
+    <color name="alpha_65_white">#A6FFFFFF</color>
+    <color name="alpha_70_white">#B3FFFFFF</color>
+    <color name="alpha_75_white">#BFFFFFFF</color>
+    <color name="alpha_80_white">#CCFFFFFF</color>
+    <color name="alpha_85_white">#D9FFFFFF</color>
+    <color name="alpha_90_white">#E6FFFFFF</color>
+    <color name="alpha_95_white">#F2FFFFFF</color>
 
+    <color name="alpha_05_black">#0D000000</color>
     <color name="alpha_10_black">#1A000000</color>
+    <color name="alpha_15_black">#26000000</color>
+    <color name="alpha_20_black">#33000000</color>
+    <color name="alpha_25_black">#40000000</color>
     <color name="alpha_30_black">#4D000000</color>
+    <color name="alpha_35_black">#59000000</color>
+    <color name="alpha_40_black">#66000000</color>
+    <color name="alpha_45_black">#73000000</color>
+    <color name="alpha_50_black">#80000000</color>
+    <color name="alpha_55_black">#8C000000</color>
+    <color name="alpha_60_black">#99000000</color>
+    <color name="alpha_65_black">#A6000000</color>
+    <color name="alpha_70_black">#B3000000</color>
+    <color name="alpha_75_black">#BF000000</color>
+    <color name="alpha_80_black">#CC000000</color>
+    <color name="alpha_85_black">#D9000000</color>
+    <color name="alpha_90_black">#E6000000</color>
+    <color name="alpha_95_black">#F2000000</color>
 </resources>

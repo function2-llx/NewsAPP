@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:elevation="2dp"
+    android:background="@color/item_background"
     android:layout_marginTop="10dp" >
 
 
@@ -23,15 +24,17 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:textColor="@color/item_text"
+            android:background="@color/item_background"
             tools:text="我是占位符我是占位符我是占位符我是占位符我是占位符我是占位符我是占位符..."/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="90dp"
-            android:background="@android:color/white"
             android:orientation="horizontal"
             android:gravity="center"
             android:padding="5dp"
+            android:background="@color/item_background"
             >
 
             <com.java.luolingxiao.widget.RoundImageView
@@ -43,7 +46,8 @@
                 android:scaleType="centerCrop"
                 android:contentDescription="@string/app_name"
                 android:src="@mipmap/ic_care_normal"
-                android:background="#ddd"/>
+                android:background="@color/item_background"
+                />
 
             <com.java.luolingxiao.widget.RoundImageView
                 android:id="@+id/image2"
@@ -54,7 +58,8 @@
                 android:scaleType="centerCrop"
                 android:contentDescription="@string/app_name"
                 android:src="@mipmap/ic_care_normal"
-                android:background="#ddd"/>
+                android:background="@color/item_background"
+                />
 
             <com.java.luolingxiao.widget.RoundImageView
                 android:id="@+id/image3"
@@ -65,7 +70,8 @@
                 android:scaleType="centerCrop"
                 android:contentDescription="@string/app_name"
                 android:src="@mipmap/ic_care_normal"
-                android:background="#ddd"/>
+                android:background="@color/item_background"
+                />
 
         </LinearLayout>
 
@@ -77,7 +83,8 @@
             android:layout_height="20dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             android:textSize="@dimen/font_small"
-            android:textColor="@color/alpha_30_black"
+            android:textColor="@color/text_time"
+            android:background="@color/item_background"
             tools:text="我是占位符我是占位符我是占位符我是占位符..." />
 
 
