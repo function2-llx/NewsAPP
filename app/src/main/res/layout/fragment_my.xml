@@ -12,6 +12,7 @@
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/item_background"
         android:id="@+id/user_container">
         <LinearLayout
             style="@style/single_layout">

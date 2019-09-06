@@ -15,7 +15,7 @@
     <color name="item_text">@color/alpha_60_white</color>
     <color name="text_read">@color/alpha_10_white</color>
     <color name="text_time">@color/alpha_10_white</color>
-
+    <color name="color_image_loading">@color/alpha_50_black</color>
 
     <!--87%white-->
 </resources>

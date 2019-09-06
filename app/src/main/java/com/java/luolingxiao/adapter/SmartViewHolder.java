@@ -120,7 +120,7 @@ public class SmartViewHolder extends RecyclerView.ViewHolder implements View.OnC
 
             Bitmap bitmap = Bitmap.createBitmap(100,100,Bitmap.Config.ARGB_8888);
             Canvas canvas = new Canvas(bitmap);
-            canvas.drawColor(Color.parseColor("#FFF0F0F0"));
+            canvas.drawColor(DefaultActivity.getAnyActivity().getColor(R.color.color_image_loading));
 
             imageView.setImageBitmap(bitmap);
             NewsApi.requestImage(url, new NewsApi.ImageCallback() {
