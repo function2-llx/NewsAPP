@@ -15,15 +15,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-/**
- *
- * Created by scwang on 2017/6/11.
- */
 @SuppressWarnings({"UnusedReturnValue", "unused"})
 public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<SmartViewHolder> implements ListAdapter {
-
-
-    //<editor-fold desc="BaseRecyclerAdapter">
     private final int mLayoutId;
     private final List<T> mList;
     private int mLastPosition = -1;
@@ -110,11 +103,6 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<SmartV
         mDataSetObservable.notifyChanged();
     }
 
-    /**
-     * Notifies the attached observers that the underlying data is no longer valid
-     * or available. Once invoked this adapter is no longer valid and should
-     * not report further data set changes.
-     */
     public void notifyDataSetInvalidated() {
         mDataSetObservable.notifyInvalidated();
     }
@@ -198,6 +186,4 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<SmartV
         notifyListDataSetChanged();
         return this;
     }
-    //</editor-fold>
-
 }

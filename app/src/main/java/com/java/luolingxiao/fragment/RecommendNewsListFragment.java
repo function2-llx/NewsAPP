@@ -98,10 +98,10 @@ public class RecommendNewsListFragment extends NormalNewsListFragment {
             newsBean.score = 2 * scoreSum * scoreAccuracy / (scoreSum + scoreAccuracy);
         }
 
-
         Collections.sort(newsBeanListNotRead, (newsBean, t1) -> {
-            double t = t1.score - newsBean.score;
-            return t == 0 ? 0 : (t > 0 ? 1 : -1);
+//                if (Math.abs(newsBean.score - t1.score) < 1e-10) return 0;
+            if (newsBean.score == t1.score) return 0;
+            return newsBean.score > t1.score ? -1 : 1;
         });
         return newsBeanListNotRead.subList(0, min(newsBeanListNotRead.size(), size));
     }

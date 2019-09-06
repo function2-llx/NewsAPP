@@ -2,7 +2,6 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
 
     <dimen name="item_margin">8dp</dimen>
-    <dimen name="title_margin">24dp</dimen>
 
     <!-- Default screen margins, per the Android Design guidelines. -->
 

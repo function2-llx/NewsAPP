@@ -6,20 +6,6 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-
-<!--    <ImageView-->
-<!--        android:layout_width="50dp"-->
-<!--        android:layout_height="50dp"-->
-<!--        android:elevation="5dp"-->
-<!--        android:src="@mipmap/ic_care_normal"-->
-<!--        app:layout_anchor="@id/xbanner"-->
-<!--        app:layout_behavior=".widget.TransferHeaderBehavior" />-->
-<!--    android:layout_gravity="center_horizontal"-->
-
-
-
-
-
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
@@ -120,35 +106,6 @@
         android:id="@+id/include"
         layout="@layout/item_content_news_detail" />
 
-
-
-<!--    <TextView-->
-
-<!--        app:layout_behavior=".widget.EasyBehavior"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="观察者View child"-->
-<!--        />-->
-<!--    <Button-->
-<!--        android:id="@+id/btn"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_gravity="center"-->
-<!--        android:text="被观察View dependency"-->
-<!--        />-->
-
-    <!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
-    <!--        android:id="@+id/fab"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_margin="@dimen/fab_margin"-->
-    <!--        android:src="@drawable/ic_share"-->
-    <!--        android:visibility="gone"-->
-    <!--        app:layout_anchor="@id/app_bar"-->
-    <!--        app:backgroundTint="@color/red"-->
-    <!--        app:layout_anchorGravity="bottom|end"/>-->
-    <!--app:backgroundTint="?attr/fabColor"-->
-
     <TextView
         android:id="@+id/title"
         android:layout_width="360dp"
@@ -159,6 +116,5 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="@color/white"
         app:layout_anchor="@id/xbanner"
-        app:layout_behavior=".widget.TransferTitleBehavior"
-        />
+        app:layout_behavior=".widget.TransferTitleBehavior" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

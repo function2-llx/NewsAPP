@@ -31,7 +31,7 @@ import java.util.List;
 public abstract class SimpleNewsListFragment extends DefaultFragment implements OnRefreshLoadMoreListener {
     ArrayList<NewsBean> data = new ArrayList<>();
 
-    protected static final int chunkSize = 5;
+    protected static final int chunkSize = 1;
 
     boolean noMore = false;
 

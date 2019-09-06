@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -75,7 +73,6 @@ public class NewsActivity extends DefaultSwipeBackActivity
     }
 
     public static void startAction(Context mContext, NewsBean newsbean) {
-//        EventBus.getDefault().postSticky(new OpenNewsEvent(newsbean));
         Intent intent = new Intent(mContext, NewsActivity.class);
 //        intent.putExtra(AppConstant.NEWS_POST_ID, postId);
         intent.putExtra("NewsBean", newsbean.getNewsJson().toString());

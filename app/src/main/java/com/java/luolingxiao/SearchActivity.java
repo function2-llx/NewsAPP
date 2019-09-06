@@ -114,12 +114,4 @@ public class SearchActivity extends DefaultSwipeBackActivity {
         setContentView(R.layout.activity_search);
         initSearchBar();
     }
-
-//    @Override
-//    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
-//        super.onSaveInstanceState(outState, outPersistentState);
-//        if (fragment != null) {
-//            fragment.removeFragments();
-//        }
-//    }
 }
