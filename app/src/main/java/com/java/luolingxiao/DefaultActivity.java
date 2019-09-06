@@ -21,6 +21,7 @@ import java.util.Set;
 public class DefaultActivity extends AppCompatActivity {
     private static Set<DefaultActivity> activitySet = new HashSet<>();
 
+    public static boolean offline = false;
     //    public static Context getContext() { return context; }
     public static DefaultActivity getAnyActivity() {
         return activitySet.iterator().next();

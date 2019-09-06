@@ -24,23 +24,24 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import static com.java.luolingxiao.DefaultActivity.offline;
+
 
 public class NormalNewsListFragment extends SimpleNewsListFragment {
-//    private ArrayList<NewsBean> data = new ArrayList<>();
+    //    private ArrayList<NewsBean> data = new ArrayList<>();
     private ArrayList<Boolean> data_read = new ArrayList<>();
     private String mNewsId;
     private String mNewsType;
     private int mStartPage = 0;
-    private boolean offline = false;
     private boolean isPrepared;
     private boolean isVisible;
     private int offset;
 
 
-
     protected NewsDateTime lastDate;
 
-    public NormalNewsListFragment() {}
+    public NormalNewsListFragment() {
+    }
 
     public static NormalNewsListFragment newInstance(String channel, String words) {
         NormalNewsListFragment fragment = new NormalNewsListFragment();
@@ -138,15 +139,26 @@ public class NormalNewsListFragment extends SimpleNewsListFragment {
 //            if (getUserVisibleHint())
             if (!offline) Toast.makeText(getContext(), "离线模式", Toast.LENGTH_SHORT).show();
             offline = true;
-            getDataRepository().getSavedNewsByCategory(getChannel(), size, offset, new DataRepository.OnReceiveSavedNewsCallback() {
-                @Override
-                public void onReceive(List<NewsBean> savedNews) {
-                    offset += savedNews.size();
-                    setNewsList(savedNews, isOnRefresh, isOnLoadMore);
-                    refreshLayout.finishLoadMore();
-                    refreshLayout.finishRefresh();
-                }
-            });
+            if (getChannel().equals(getString(R.string.channel_default))) {
+                getDataRepository().getSavedNews(size, offset, new DataRepository.OnReceiveSavedNewsCallback() {
+                    @Override
+                    public void onReceive(List<NewsBean> savedNews) {
+                        offset += savedNews.size();
+                        setNewsList(savedNews, isOnRefresh, isOnLoadMore);
+                        refreshLayout.finishLoadMore();
+                        refreshLayout.finishRefresh();
+                    }
+                });
+            } else
+                getDataRepository().getSavedNewsByCategory(getChannel(), size, offset, new DataRepository.OnReceiveSavedNewsCallback() {
+                    @Override
+                    public void onReceive(List<NewsBean> savedNews) {
+                        offset += savedNews.size();
+                        setNewsList(savedNews, isOnRefresh, isOnLoadMore);
+                        refreshLayout.finishLoadMore();
+                        refreshLayout.finishRefresh();
+                    }
+                });
         }
 
     }
