@@ -227,7 +227,7 @@ public class NewsActivity extends DefaultSwipeBackActivity
 
 
         appBar.requestLayout();
-        newsDetailFromTv = findViewById(R.id.news_detail_from_tv);
+        newsDetailFromTv = findViewById(R.id.time);
         newsDetailFromTv.setText(newsBean.getPublisher() + "\n" + newsBean.getPublishTime().toString());
         circleImageView = findViewById(R.id.profile_image);
         Bitmap bitmap = Utils.reshapeImage(((BitmapDrawable)getResources().getDrawable(R.mipmap.ic_care_normal, getTheme())).getBitmap());

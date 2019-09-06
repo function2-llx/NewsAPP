@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/item_background"
     android:layout_marginTop="10dp"
     android:elevation="2dp">
 
@@ -15,6 +16,7 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
+            android:background="@color/item_background"
             android:layout_height="140dp">
 
             <com.java.luolingxiao.widget.RoundImageView
@@ -32,7 +34,7 @@
                 android:id="@+id/linearLayout"
                 android:layout_width="220dp"
                 android:layout_height="match_parent"
-                android:background="@android:color/white"
+                android:background="@color/item_background"
                 android:gravity="center"
                 android:orientation="vertical"
                 android:padding="10dp">
@@ -41,9 +43,11 @@
                     android:id="@+id/name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@color/item_background"
                     android:layout_marginTop="0dp"
                     android:maxLines="3"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:textColor="@color/item_text"
                     tools:text="我是占位符我是占位符我是占位符我是占位符我是占位符..." />
 
                 <TextView
@@ -52,6 +56,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                    android:textColor="@color/item_text"
                     android:maxLines="2"
                     tools:text="我是占位符我是占位符我是占位符我是占位符我是占位符..." />
 
@@ -66,10 +71,11 @@
             android:id="@+id/time"
             android:layout_width="match_parent"
             android:layout_height="20dp"
+            android:background="@color/item_background"
             android:paddingLeft="10dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             android:textSize="@dimen/font_small"
-            android:textColor="@color/alpha_30_black"
+            android:textColor="@color/text_time"
             tools:text="我是占位符我是占位符我是占位符我是占位符..." />
 
     </LinearLayout>

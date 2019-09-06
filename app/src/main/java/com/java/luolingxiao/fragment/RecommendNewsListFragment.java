@@ -95,7 +95,7 @@ public class RecommendNewsListFragment extends NormalNewsListFragment {
             }
 
             scoreAccuracy = scoreSum / scoreTotal;
-            newsBean.score = 2 * scoreSum * scoreAccuracy / (scoreSum + scoreAccuracy);
+            newsBean.score = scoreSum + scoreAccuracy < 1e-6 ? 0 : 2 * scoreSum * scoreAccuracy / (scoreSum + scoreAccuracy);
         }
 
 
@@ -105,7 +105,6 @@ public class RecommendNewsListFragment extends NormalNewsListFragment {
         });
         return newsBeanListNotRead.subList(0, min(newsBeanListNotRead.size(), size));
     }
-
 
 
     @Nullable

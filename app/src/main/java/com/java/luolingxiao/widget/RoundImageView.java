@@ -11,6 +11,8 @@ import android.view.View;
 import androidx.appcompat.widget.AppCompatImageView;
 
 import com.alibaba.fastjson.parser.deserializer.CollectionResolveFieldDeserializer;
+import com.java.luolingxiao.DefaultActivity;
+import com.java.luolingxiao.R;
 
 public class RoundImageView extends AppCompatImageView {
 
@@ -47,7 +49,7 @@ public class RoundImageView extends AppCompatImageView {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        canvas.drawColor(Color.WHITE);
+        canvas.drawColor(DefaultActivity.getAnyActivity().getColor(R.color.item_background));
         int dp = 25;
         if (width >= dp && height > dp) {
             Path path = new Path();

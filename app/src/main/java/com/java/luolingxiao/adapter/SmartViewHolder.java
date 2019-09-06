@@ -14,6 +14,8 @@ import androidx.annotation.StringRes;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.java.luolingxiao.DefaultActivity;
+import com.java.luolingxiao.R;
 import com.java.luolingxiao.api.NewsApi;
 
 public class SmartViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -76,8 +78,8 @@ public class SmartViewHolder extends RecyclerView.ViewHolder implements View.OnC
         if (view instanceof TextView) {
             ((TextView) view).setText(sequence);
             if (read) {
-                ((TextView) view).setTextColor(Color.parseColor("#1A000000"));
-            } else ((TextView) view).setTextColor(Color.BLACK);
+                ((TextView) view).setTextColor(DefaultActivity.getAnyActivity().getColor(R.color.text_read));
+            } else ((TextView) view).setTextColor(DefaultActivity.getAnyActivity().getColor(R.color.item_text));
         }
         return this;
     }
