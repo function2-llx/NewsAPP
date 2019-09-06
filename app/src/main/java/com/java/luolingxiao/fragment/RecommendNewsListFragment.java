@@ -94,7 +94,8 @@ public class RecommendNewsListFragment extends NormalNewsListFragment {
                 scoreSum += keyword.score;
             }
 
-            scoreAccuracy = scoreSum / scoreTotal;
+
+            scoreAccuracy = scoreTotal < 1e-6 ? 0 : scoreSum / scoreTotal;
             newsBean.score = scoreSum + scoreAccuracy < 1e-6 ? 0 : 2 * scoreSum * scoreAccuracy / (scoreSum + scoreAccuracy);
         }
 
