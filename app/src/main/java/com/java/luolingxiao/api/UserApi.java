@@ -5,6 +5,7 @@ import android.os.Handler;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.java.luolingxiao.DefaultActivity;
 import com.java.luolingxiao.bean.NewsBean;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yanzhenjie.nohttp.RequestMethod;
@@ -113,6 +114,7 @@ public class UserApi {
                     for (int i = 0; i < data.size(); i++) {
                         userFavoriteCache.add(NewsBean.parse(data.getJSONObject(i)));
                     }
+                    DefaultActivity.getAnyActivity().runOnUiThread(() -> DefaultActivity.getAnyActivity().getDataRepository().insertNews(new ArrayList<>(userFavoriteCache)));
                 }
             }
         }
@@ -126,7 +128,6 @@ public class UserApi {
             synchronized (UserApi.class) {
                 if (instance == null) {
                     instance = new UserApi();
-
                     if (instance.isAuthorized()) {
                         try {
                             instance.getFavoriteSync();

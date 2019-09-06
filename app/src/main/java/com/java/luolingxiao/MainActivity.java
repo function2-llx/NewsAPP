@@ -22,11 +22,11 @@ public class MainActivity extends DefaultActivity {
 
     // 当前显示 fragment
     private Fragment fragment;
+    private Fragment[] fragments;
+
     private MainFragment mainFragment;
-//    private UnauthorizedFragment unauthorizedFragment;
     private RecommendNewsListFragment recommendNewsListFragment;
     private MyFragment myFragment;
-    private Fragment[] fragments;
 
     void setFragment(Fragment fragment) {
         if (this.fragment != fragment) {
@@ -91,11 +91,6 @@ public class MainActivity extends DefaultActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(NightModeChangeEvent event) {
-//        if (isNightMode()) {
-//            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-//        } else {
-//            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-//        }
        recreate();
     }
 }

@@ -1,7 +1,6 @@
 package com.java.luolingxiao.fragment;
 
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,20 +23,22 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 
 public abstract class SimpleNewsListFragment extends DefaultFragment implements OnRefreshLoadMoreListener {
     ArrayList<NewsBean> data = new ArrayList<>();
 
-    protected static final int chunkSize = 1;
+    static final int chunkSize = 4;
 
     boolean noMore = false;
 
     // 标志位，标志已经初始化完成。
     RefreshLayout refreshLayout;
+
+    public RefreshLayout getRefreshLayout() {
+        return refreshLayout;
+    }
 
     public SimpleNewsListFragment() {}
 
@@ -152,35 +153,4 @@ public abstract class SimpleNewsListFragment extends DefaultFragment implements 
             mAdapter.refresh(newsList);
         } else mAdapter.loadMore(newsList);
     }
-
-    private Collection<Model> loadModels() {
-        return Arrays.asList(
-                new Model() {{
-                    this.name = "但家香酥鸭";
-                    this.nickname = "爱过那张脸";
-//                    this.imageId = R.mipmap.image_practice_repast_1;
-                }}, new Model() {{
-                    this.name = "香菇蒸鸟蛋";
-                    this.nickname = "淑女算个鸟";
-//                    this.imageId = R.mipmap.image_practice_repast_2;
-                }}, new Model() {{
-                    this.name = "花溪牛肉粉";
-                    this.nickname = "性感妩媚";
-//                    this.imageId = R.mipmap.image_practice_repast_3;
-                }}, new Model() {{
-                    this.name = "破酥包";
-                    this.nickname = "一丝丝纯真";
-//                    this.imageId = R.mipmap.image_practice_repast_4;
-                }}, new Model() {{
-                    this.name = "盐菜饭";
-                    this.nickname = "等着你回来";
-//                    this.imageId = R.mipmap.image_practice_repast_5;
-                }}, new Model() {{
-                    this.name = "米豆腐";
-                    this.nickname = "宝宝树人";
-//                    this.imageId = R.mipmap.image_practice_repast_6;
-                }});
-    }
-//    public void scrolltoTop() {
-
 }

@@ -42,8 +42,6 @@ public class MainFragment extends DefaultFragment
     private SectionsPagerAdapter pagerAdapter;
     private Toolbar toolbar;
 
-
-
     //static 代码段可以防止内存泄露
     static {
         //设置全局的Header构建器
@@ -119,16 +117,14 @@ public class MainFragment extends DefaultFragment
     }
 
     private void refreshTabs() {
-        new Thread(() -> {
-            Objects.requireNonNull(getActivity()).runOnUiThread(() -> {
-                List<ChannelBean> channels = getShowChannels();
-                pagerAdapter.updateChannels(channels);
-                if (selectedChannelPosition != -1) {
-                    viewPager.setCurrentItem(selectedChannelPosition);
-                    selectedChannelPosition = -1;
-                }
-            });
-        }).start();
+        new Thread(() -> Objects.requireNonNull(getActivity()).runOnUiThread(() -> {
+            List<ChannelBean> channels = getShowChannels();
+            pagerAdapter.updateChannels(channels);
+            if (selectedChannelPosition != -1) {
+                viewPager.setCurrentItem(selectedChannelPosition);
+                selectedChannelPosition = -1;
+            }
+        })).start();
     }
 
     private List<ChannelBean> getShowChannels() {

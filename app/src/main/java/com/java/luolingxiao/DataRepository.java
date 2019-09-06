@@ -192,4 +192,18 @@ public class DataRepository {
         try { thread.join(); } catch (Throwable ignored) {}
         return reads;
     }
+
+    void clearReads(Runnable callback) {
+        new SimpleAsyncTask() {
+            @Override
+            protected void doInBackGround() {
+                database.savedNewsDao().clearReads();
+            }
+
+            @Override
+            protected void onComplete() {
+                callback.run();
+            }
+        }.start();
+    }
 }

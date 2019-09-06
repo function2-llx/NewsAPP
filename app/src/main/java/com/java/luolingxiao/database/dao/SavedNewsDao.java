@@ -45,4 +45,7 @@ public interface SavedNewsDao {
 
     @Query("select * from saved_news where read == 1")
     List<SavedNews> getReads();
+
+    @Query("update saved_news set read = 0")
+    void clearReads();
 }

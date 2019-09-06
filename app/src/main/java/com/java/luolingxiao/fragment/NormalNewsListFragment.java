@@ -73,7 +73,7 @@ public class NormalNewsListFragment extends SimpleNewsListFragment {
     @Override
     public void onRefresh(@NonNull final RefreshLayout refreshLayout) {
         refreshLayout.getLayout().postDelayed(() -> {
-            getNewsListDataRequest("", 6, lastDate, true, false);
+            getNewsListDataRequest("", chunkSize, lastDate, true, false);
             refreshLayout.resetNoMoreData();//setNoMoreData(false);//恢复上拉状态
         }, 100);
     }

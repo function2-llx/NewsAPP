@@ -1,6 +1,9 @@
 package com.java.luolingxiao;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
@@ -47,14 +50,38 @@ public class DisplayActivity extends DefaultSwipeBackActivity {
     private DisplayNewsListFragment getFragment() {
         String name = getName();
         if (name.equals(getString(R.string.local_favorites))) {
-            return new LocalFavoritesFragment();
+            fragment = new LocalFavoritesFragment();
         } else if (name.equals(getString(R.string.user_favorites))) {
-            return new UserFavoritesFragment();
+            fragment = new UserFavoritesFragment();
         } else if (name.equals(getString(R.string.local_reads))) {
-            return new LocalReadsFragment();
+            fragment = new LocalReadsFragment();
         }
-        return null;
+        return fragment;
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (getName().equals(getString(R.string.local_reads))) {
+            getMenuInflater().inflate(R.menu.menu_reads, menu);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_clear:
+                new AlertDialog.Builder(this)
+                        .setTitle("提示")
+                        .setMessage("确定要清空所有本地浏览记录吗")
+                        .setPositiveButton("确定", (dialog, which) -> getDataRepository().clearReads(() -> fragment.onRefresh(fragment.getRefreshLayout()))).setNegativeButton("取消", null)
+                        .show();
+            break;
+        }
+        return true;
+    }
+
+    private DisplayNewsListFragment fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
