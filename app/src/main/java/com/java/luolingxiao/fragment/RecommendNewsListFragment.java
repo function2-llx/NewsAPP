@@ -114,7 +114,7 @@ public class RecommendNewsListFragment extends NormalNewsListFragment {
         View view = super.onCreateView(inflater, container, savedInstanceState);
 
         NewsApi.requestNews(new NewsApi.SearchParams()
-                        .setSize(100)
+                        .setSize(1000)
 //                        .setStartDate()
                         .setEndDate(new NewsDateTime()),
                 new NewsApi.NewsCallback() {

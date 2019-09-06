@@ -42,8 +42,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class NewsActivity extends DefaultSwipeBackActivity
     implements SceneRestorable {
-//    ImageView newsDetailPhotoIv;
-    View maskView;
 
     private Toolbar toolbar;
 

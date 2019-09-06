@@ -63,6 +63,6 @@ public class SplashActivity extends DefaultActivity {
             Intent intent = new Intent(SplashActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
-        }, 1500);
+        }, 2000);
     }
 }
