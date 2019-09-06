@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#20894d</color>
+    <color name="colorPrimary">#17A764</color>
     <color name="colorPrimaryDark">#1a6840</color>
     <color name="colorAccent">#3F51B5</color>
     <color name="container_background">#ffffff</color>
@@ -15,6 +15,8 @@
     <color name="item_text">#181818</color>
     <color name="text_read">@color/alpha_10_black</color>
     <color name="text_time">@color/alpha_30_black</color>
+    <color name="color_image_loading">#FFF0F0F0</color>
+
 
     <!--白天主题-->
     <!--夜间主题-->
