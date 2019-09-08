@@ -29,34 +29,14 @@ public class NewsPhotoDetail implements Parcelable {
     public String getTitle() {
         return title;
     }
-
     public void setTitle(String title) {
         this.title = title;
     }
-
-    public List<Picture> getPictures() {
-        return pictures;
-    }
-
-    public void setPictures(List<Picture> pictures) {
-        this.pictures = pictures;
-    }
-
     public static class Picture implements Parcelable {
         private String title;
-
-        public String getImgSrc() {
-            return imgSrc;
-        }
-
-        public void setImgSrc(String imgSrc) {
-            this.imgSrc = imgSrc;
-        }
-
         public String getTitle() {
             return title;
         }
-
         public void setTitle(String title) {
             this.title = title;
         }
@@ -72,9 +52,6 @@ public class NewsPhotoDetail implements Parcelable {
         public void writeToParcel(Parcel dest, int flags) {
             dest.writeString(this.title);
             dest.writeString(this.imgSrc);
-        }
-
-        public Picture() {
         }
 
         protected Picture(Parcel in) {
@@ -104,9 +81,6 @@ public class NewsPhotoDetail implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.title);
         dest.writeList(this.pictures);
-    }
-
-    public NewsPhotoDetail() {
     }
 
     protected NewsPhotoDetail(Parcel in) {

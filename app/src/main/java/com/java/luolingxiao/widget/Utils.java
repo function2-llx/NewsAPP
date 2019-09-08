@@ -13,14 +13,9 @@ public class Utils {
          return (int)(percentage / 100.0 * widthPixels);
     }
 
-    static public int getHeightPixels(int percentage) {
-        return (int)(percentage / 100.0 * heightPixels);
-    }
-
     static int px2dp(int px) {
         return (int)(px / density +0.5f);
     }
-//    https://blog.csdn.net/qq_42022077/article/details/89351273
     static public Bitmap reshapeImage(Bitmap bitmap) {
         //获取原始宽高，并获取宽高中较大的
         int nWidth = bitmap.getWidth();
@@ -40,7 +35,6 @@ public class Utils {
         else
         {
             int nLen=  nHeight - nWidth  ;
-
             left =  (float) (nLen / 2.0) ;
         }
 
@@ -48,7 +42,6 @@ public class Utils {
         //生成正方形
         canvas.drawBitmap( bitmap, left , top, null );
 
-        canvas = null;
         return ret_bitmap;
     }
 }

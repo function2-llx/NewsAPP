@@ -5,9 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,10 +47,8 @@ public class NewsActivity extends DefaultSwipeBackActivity
     AppBarLayout appBar;
     TextView newsDetailFromTv;
     TextView newsDetailBodyTv;
-    ProgressBar progressBar;
     CircleImageView circleImageView;
 
-    private String mNewsTitle;
     XBanner mXBanner;
 
     @Override
@@ -72,28 +68,9 @@ public class NewsActivity extends DefaultSwipeBackActivity
 
     public static void startAction(Context mContext, NewsBean newsbean) {
         Intent intent = new Intent(mContext, NewsActivity.class);
-//        intent.putExtra(AppConstant.NEWS_POST_ID, postId);
         intent.putExtra("NewsBean", newsbean.getNewsJson().toString());
         mContext.startActivity(intent, null);
     }
-//    public static void startAction(Context mContext, View view, NewsBean newsbean) {
-//        Intent intent = new Intent(mContext, NewsActivity.class);
-////        intent.putExtra(AppConstant.NEWS_POST_ID, postId);
-//        intent.putExtra("NewsBean", newsbean.getNewsJson().toString());
-//
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            ActivityOptions options = ActivityOptions
-//                    .makeSceneTransitionAnimation((Activity) mContext,view, AppConstant.TRANSITION_ANIMATION_NEWS_PHOTOS);
-//            mContext.startActivity(intent, options.toBundle());
-//        } else {
-//
-//            //让新的Activity从一个小的范围扩大到全屏
-//            ActivityOptionsCompat options = ActivityOptionsCompat
-//                    .makeScaleUpAnimation(view, view.getWidth() / 2, view.getHeight() / 2, 0, 0);
-//            ActivityCompat.startActivity((Activity) mContext, intent, options.toBundle());
-//        }
-//    }
-
 
     void shareWechat(Platform wechat, Platform.ShareParams shareParams, NewsBean newsBean) {
         shareParams.setTitle(newsBean.getTitle());
@@ -197,20 +174,6 @@ public class NewsActivity extends DefaultSwipeBackActivity
         }
 
         List<String> images = newsBean.getImageUrls();
-
-
-//        findViewById(R.id.btn).setOnTouchListener(new View.OnTouchListener() {
-//            @Override public boolean onTouch(View v, MotionEvent event) {
-//                switch (event.getAction()){
-//
-//                    case MotionEvent.ACTION_MOVE:
-//                        v.setX(event.getRawX()-v.getWidth()/2);
-//                        v.setY(event.getRawY()-v.getHeight()/2);
-//                        break;
-//                }
-//                return false;
-//            }
-//        });
 
         toolbarLayout = findViewById(R.id.toolbar_layout);
         toolbar = findViewById(R.id.toolbar_settings);
@@ -344,14 +307,13 @@ public class NewsActivity extends DefaultSwipeBackActivity
             }
             return true;
         });
-        mNewsTitle = newsBean.getTitle();
+        String mNewsTitle = newsBean.getTitle();
         String newsBody = newsBean.getContent().replace("\\n", "\n");
         setToolBarLayout(mNewsTitle);
         setBody(newsBody);
 
         TextView textView = findViewById(R.id.title);
         textView.setText(mNewsTitle);
-//        onCompleted();
     }
 
 
@@ -367,8 +329,4 @@ public class NewsActivity extends DefaultSwipeBackActivity
 //        newsDetailBodyTv.setText(Html.fromHtml(newsBody));
     }
 
-    public void onCompleted() {
-        progressBar.setVisibility(View.GONE);
-//        fab.setVisibility(View.VISIBLE);
-    }
 }
